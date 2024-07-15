@@ -1,5 +1,8 @@
 #include "app.hpp"
 
+#include "events/close_window_event.hpp"
+#include "events/event.hpp"
+#include "managers/event_manager.hpp"
 #include "managers/resource_manager.hpp"
 #include "managers/view_manager.hpp"
 #include "raylib-cpp.hpp"
@@ -18,6 +21,14 @@ App::App() {
   last_render_time = window.GetTime();
 
   sleep_time = 0;
+
+  EventManager::addListener(CloseWindowEvent,
+                            [](Event event) { CloseWindow(); });
+
+  EventManager::addListener(ChangeViewEvent, [](Event event) {
+    ViewManager::closeView(std::get<ChangeViewEvent>(event).old_view);
+    ViewManager::addView(std::get<ChangeViewEvent>(event).new_view);
+  });
 }
 
 App::~App() {
@@ -66,4 +77,7 @@ void App::render(double delta_time) {
   ResourceManager::clearUnused();
 }
 
-void App::update(double delta_time) { ViewManager::update(window, delta_time); }
+void App::update(double delta_time) {
+  EventManager::update();
+  ViewManager::update(window, delta_time);
+}
