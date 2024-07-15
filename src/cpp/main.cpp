@@ -1,26 +1,15 @@
+#include "app.hpp"
+#include "game_state.hpp"
 #include "imgui.h"
 #include "raylib-cpp.hpp"
 #include "rlImGui.h"
 
+#include <iostream>
+
 int main(void) {
-  const int screenWidth = 600;
-  const int screenHeight = 800;
+  App app;
 
-  raylib::Window window(screenWidth, screenHeight, "block");
-  rlImGuiSetup(true);
-
-  while (!window.ShouldClose()) {
-    window.BeginDrawing();
-    rlImGuiBegin();
-
-    window.ClearBackground(BLACK);
-
-    rlImGuiEnd();
-    window.EndDrawing();
+  while (app.isOpen()) {
+    app.run();
   }
-
-  rlImGuiShutdown();
-  window.Close();
-
-  return 0;
 }

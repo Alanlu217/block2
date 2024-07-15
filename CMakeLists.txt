@@ -29,6 +29,12 @@ ENDIF()
 
 target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/main.cpp"
+    "src/cpp/app.cpp"
+
+    "src/cpp/managers/resource_manager.cpp"
+    "src/cpp/managers/view_manager.cpp"
+
+    "src/cpp/views/start_view.cpp"
 )
 
 target_include_directories(${PROJECT_NAME}
