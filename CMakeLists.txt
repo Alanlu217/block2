@@ -1,0 +1,58 @@
+cmake_minimum_required(VERSION 3.20)
+project(block)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+add_subdirectory("third_party/raylib")
+
+set(imgui_SOURCE_DIR "third_party/imgui")
+set(rlimgui_SOURCE_DIR "third_party/rlImGui")
+
+add_library(
+    imgui STATIC
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp)
+target_include_directories(imgui INTERFACE ${imgui_SOURCE_DIR})
+
+add_library(rlimgui STATIC ${rlimgui_SOURCE_DIR}/rlImgui.cpp)
+target_link_libraries(rlimgui PUBLIC imgui raylib)
+target_include_directories(rlimgui INTERFACE ${rlimgui_SOURCE_DIR})
+
+IF (WIN32)
+add_executable(${PROJECT_NAME} WIN32)
+ELSE()
+add_executable(${PROJECT_NAME})
+ENDIF()
+
+target_sources(${PROJECT_NAME} PRIVATE
+    "src/cpp/main.cpp"
+)
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE "src/include" "third_party/raylib-cpp/include"
+)
+
+target_link_libraries(${PROJECT_NAME}
+    "rlimgui"
+    "imgui"
+)
+
+target_compile_definitions(${PROJECT_NAME}
+    PRIVATE ASSETS_DIR="assets/"
+)
+
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
+    DEPENDS ${PROJECT_NAME}
+)
+
+if(APPLE)
+add_custom_target(app
+    COMMAND ${PROJECT_SOURCE_DIR}/util/create_app.sh ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_NAME}
+    DEPENDS ${PROJECT_NAME}
+)
+endif()

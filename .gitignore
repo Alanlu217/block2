@@ -1,0 +1,10 @@
+target/
+third_party/
+
+**/.DS_STORE
+
+.idea/
+.vscode/
+
+.clangd
+CMakePresets.json
