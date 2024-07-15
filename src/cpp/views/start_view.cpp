@@ -3,7 +3,7 @@
 
 StartView::StartView() {}
 
-void StartView::init(){};
+void StartView::init() {};
 
 void StartView::update(raylib::Window &window, const double deltaTime) {}
 
