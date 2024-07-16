@@ -1,6 +1,6 @@
 #include "managers/view_manager.hpp"
 #include "views/view.hpp"
-#include <__algorithm/ranges_for_each.h>
+#include <algorithm>
 
 std::vector<ViewP> ViewManager::active_views;
 ViewMap ViewManager::views;

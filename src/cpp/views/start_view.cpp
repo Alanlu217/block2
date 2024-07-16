@@ -1,4 +1,5 @@
 #include "views/start_view.hpp"
+
 #include "raylib.h"
 
 StartView::StartView() {}
