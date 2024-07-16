@@ -16,7 +16,7 @@ private:
                   std::vector<std::pair<EventListenerID, EventListener>>>
       event_listeners;
 
-  static EventListenerID currentID;
+  static EventListenerID current_id;
 
 public:
   EventManager() = delete;

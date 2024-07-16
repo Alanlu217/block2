@@ -9,18 +9,19 @@ std::vector<Event> EventManager::active_events;
 std::map<EventTypes, std::vector<std::pair<EventListenerID, EventListener>>>
     EventManager::event_listeners;
 
-EventListenerID EventManager::currentID = 0;
+EventListenerID EventManager::current_id = 0;
 
 EventListenerID EventManager::addListener(EventTypes event_type,
                                           EventListener event_listener) {
   if (event_listeners.count(event_type) != 0) {
     event_listeners[event_type].push_back(
-        std::make_pair(currentID++, event_listener));
+        std::make_pair(current_id++, event_listener));
   } else {
-    event_listeners[event_type] = {std::make_pair(currentID++, event_listener)};
+    event_listeners[event_type] = {
+        std::make_pair(current_id++, event_listener)};
   }
 
-  return currentID++;
+  return current_id++;
 }
 
 void EventManager::removeListener(EventTypes event_type,
@@ -46,4 +47,6 @@ void EventManager::update() {
       func.second(event);
     }
   }
+
+  active_events.clear();
 }

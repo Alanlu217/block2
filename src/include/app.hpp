@@ -18,6 +18,8 @@ private:
 
   double sleep_time;
 
+  bool show_debug;
+
   void update(double delta_time);
   void render(double delta_time);
 
