@@ -36,6 +36,10 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/managers/event_manager.cpp"
 
     "src/cpp/views/start_view.cpp"
+    "src/cpp/views/game_view.cpp"
+
+    "src/cpp/entities/basic_platform.cpp"
+    "src/cpp/entities/squircle.cpp"
 )
 
 target_include_directories(${PROJECT_NAME}

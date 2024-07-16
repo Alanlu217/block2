@@ -1,7 +1,18 @@
 #pragma once
 
+#include "entities/basic_platform.hpp"
+#include "entities/squircle.hpp"
+
+#include <memory>
 #include <string>
 
-static struct GameState {
+struct GameState {
   std::string name = "block";
-} GameState;
+
+  struct {
+    Squircle squircle;
+
+    std::vector<BasicPlatform> platforms;
+
+  } entities;
+};

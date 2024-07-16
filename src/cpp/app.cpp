@@ -1,8 +1,11 @@
 #include "app.hpp"
 
+#include "entities/basic_platform.hpp"
+#include "entities/squircle.hpp"
 #include "events/close_window_event.hpp"
 #include "events/event.hpp"
 #include "events/toggle_debug_event.hpp"
+#include "game_state.hpp"
 #include "imgui.h"
 #include "managers/event_manager.hpp"
 #include "managers/resource_manager.hpp"
@@ -10,13 +13,21 @@
 #include "raylib-cpp.hpp"
 #include "raylib.h"
 #include "rlImGui.h"
+#include "views/game_view.hpp"
 #include "views/start_view.hpp"
+
+#include <iostream>
+#include <memory>
 
 App::App() {
   rlImGuiSetup(true);
 
+  std::vector<BasicPlatform> &platforms = game_state.entities.platforms;
+  platforms.push_back({0, 0, 600, 10});
+
   views["start"] = std::make_shared<StartView>();
-  ViewManager::init("start", views);
+  views["game"] = std::make_shared<GameView>(game_state);
+  ViewManager::init("game", views);
 
   delta_update_time = 0;
   last_update_time = window.GetTime();
@@ -85,6 +96,20 @@ void App::render(double delta_time) {
     ImGui::Begin("Debug");
     ImGui::Text("FPS: %i", static_cast<int>(1 / delta_time));
     ImGui::Text("UPS: %i", static_cast<int>(1 / delta_update_time));
+
+    if (ImGui::BeginListBox(
+            "Views", ImVec2(-FLT_MIN - 35,
+                            ViewManager::getView().size() *
+                                    ImGui::GetTextLineHeightWithSpacing() +
+                                2))) {
+      for (const auto &item : ViewManager::getView()) {
+        if (ImGui::Selectable(item.first.c_str())) {
+          ViewManager::setView(item.first);
+        }
+      }
+
+      ImGui::EndListBox();
+    }
 
     ImGui::End();
   }
