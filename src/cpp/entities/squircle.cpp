@@ -18,6 +18,4 @@ Squircle::~Squircle() {}
 
 void Squircle::draw() { win::drawTexture(squircle_texture, pos); }
 
-Rectangle Squircle::getBounds() {
-  return {pos.x, pos.y, pos.x + width, pos.y + width};
-}
+Rectangle Squircle::getBounds() { return {pos.x, pos.y, width, width}; }

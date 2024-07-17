@@ -19,4 +19,9 @@ void drawTexture(TextureP texture, Vector2 pos, Color color) {
   DrawTexture(*texture, pos.x, pos.y, color);
 }
 
+Vector2 toGameUnits(Vector2 vec) {
+  vec.y = -vec.y + constants::window_width;
+  return vec;
+}
+
 } // namespace win

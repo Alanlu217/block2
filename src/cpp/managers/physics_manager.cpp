@@ -1,8 +1,13 @@
 #include "managers/physics_manager.hpp"
 
 #include "constants.hpp"
+#include "entities/basic_platform.hpp"
 #include "entities/squircle.hpp"
 #include "game_state.hpp"
+#include "raylib.h"
+
+#include "algorithm"
+#include "window.hpp"
 #include <iostream>
 
 namespace physics {
@@ -32,13 +37,55 @@ void update(const double delta_time, GameStateP game_state) {
       static_cast<float>(delta_time * squircle.vel.y + squircle.pos.y)};
 
   // Check for side wall collisions
-  if (squircle.pos.x <= 0 + float(squircle.width) / 2) {
-    squircle.pos.x = float(squircle.width) / 2;
+  if (squircle.pos.x <= 0) {
+    squircle.pos.x = 0;
     squircle.vel.x *= -1;
   }
-  if (squircle.pos.x >= constants::window_width - squircle.width / 2) {
+  if (squircle.pos.x >= constants::window_width - squircle.width) {
     squircle.pos.x = constants::window_width - squircle.width;
     squircle.vel.x *= -1;
+  }
+
+  // Check for platform collisions
+  for (BasicPlatform &platform : game_state->entities.platforms) {
+    Rectangle &bounds = platform.rect;
+
+    // Collision detected
+    if (CheckCollisionRecs(bounds, squircle.getBounds())) {
+      int leftOverlap = squircle.pos.x + squircle.width - bounds.x;
+      int rightOverlap = bounds.x + bounds.width - squircle.pos.x;
+      int topOverlap = bounds.y + bounds.height - squircle.pos.y;
+      int bottomOverlap = squircle.pos.y + squircle.width - bounds.y;
+
+      std::cout << "Left: " << leftOverlap << " Right: " << rightOverlap
+                << " Top: " << topOverlap << " Bot:" << bottomOverlap << "\n";
+
+      // Find the direction with minimum overlap distance
+      int minOverlap =
+          std::min({leftOverlap, rightOverlap, topOverlap, bottomOverlap});
+
+      if (minOverlap == topOverlap) {
+        squircle.pos.y = bounds.y + bounds.height;
+        squircle.vel.y = abs(squircle.vel.y *
+                             constants::squircle::bounce_velocity_reduction);
+
+        // If is idle, adjust height
+        game_state->height +=
+            std::max(400 - (squircle.pos.y + game_state->height), 0.0) *
+            delta_time * constants::game::idle_height_increase;
+      } else if (minOverlap == bottomOverlap) {
+        squircle.pos.y = bounds.y - squircle.width;
+        squircle.vel.y = -abs(squircle.vel.y);
+
+      } else if (minOverlap == leftOverlap) {
+        squircle.pos.x = bounds.x - squircle.width;
+        squircle.vel.x = -abs(squircle.vel.x);
+
+      } else if (minOverlap == rightOverlap) {
+        squircle.pos.x = bounds.x + bounds.width;
+        squircle.vel.x = abs(squircle.vel.x);
+      }
+    }
   }
 }
 

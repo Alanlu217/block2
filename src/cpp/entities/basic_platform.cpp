@@ -10,8 +10,4 @@ BasicPlatform::BasicPlatform(float x, float y, float width, float height) {
   rect = {x, y, width, height};
 }
 
-BasicPlatform::~BasicPlatform() {}
-
 void BasicPlatform::draw() { win::drawRectangle(rect, WHITE); }
-
-void BasicPlatform::checkCollision() {}

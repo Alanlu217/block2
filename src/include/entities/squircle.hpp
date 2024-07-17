@@ -10,7 +10,7 @@ private:
 public:
   Vector2 pos;
   Vector2 vel;
-  int width = 64;
+  float width = 64;
 
   Squircle();
   ~Squircle();
