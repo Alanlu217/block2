@@ -16,8 +16,8 @@
 #include <memory>
 
 App::App() {
-  InitWindow(constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT,
-             constants::WINDOW_TITLE.c_str());
+  InitWindow(constants::window_width, constants::window_height,
+             constants::window_title.c_str());
   rlImGuiSetup(true);
 
   game_state = std::make_shared<GameState>();
@@ -35,8 +35,6 @@ App::App() {
 
   sleep_time = 0;
 
-  show_debug = false;
-
   EventManager::addListener(CloseWindowEvent,
                             [](Event event) { CloseWindow(); });
 
@@ -45,9 +43,10 @@ App::App() {
     ViewManager::addView(std::get<ChangeViewEvent>(event).new_view);
   });
 
-  bool &debug = show_debug;
-  EventManager::addListener(ToggleDebugEvent,
-                            [&debug](Event event) { debug = !debug; });
+  GameStateP state = game_state;
+  EventManager::addListener(ToggleDebugEvent, [state](Event event) {
+    state->show_debug = !state->show_debug;
+  });
 }
 
 App::~App() {
@@ -90,7 +89,7 @@ void App::render(double delta_time) {
 
   ViewManager::render(delta_time);
 
-  if (show_debug) {
+  if (game_state->show_debug) {
     ImGui::Begin("Debug");
     ImGui::Text("FPS: %i", static_cast<int>(1 / delta_time));
     ImGui::Text("UPS: %i", static_cast<int>(1 / delta_update_time));

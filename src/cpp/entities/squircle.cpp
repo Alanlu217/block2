@@ -18,12 +18,6 @@ Squircle::~Squircle() {}
 
 void Squircle::draw() { win::drawTexture(squircle_texture, pos); }
 
-Vector2 Squircle::getPosition() { return pos; }
-
-int Squircle::getWidth() { return width; }
-
-void Squircle::setPosition(Vector2 pos) { this->pos = pos; }
-
 Rectangle Squircle::getBounds() {
   return {pos.x, pos.y, pos.x + width, pos.y + width};
 }

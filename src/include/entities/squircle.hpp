@@ -7,21 +7,15 @@ class Squircle {
 private:
   TextureP squircle_texture;
 
+public:
   Vector2 pos;
-
+  Vector2 vel;
   int width = 64;
 
-public:
   Squircle();
   ~Squircle();
 
   void draw();
-
-  Vector2 getPosition();
-
-  int getWidth();
-
-  void setPosition(Vector2 pos);
 
   Rectangle getBounds();
 };

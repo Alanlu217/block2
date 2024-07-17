@@ -8,8 +8,8 @@
 #include "raylib.h"
 
 StartView::StartView() {
-  start_button_rect = {float(constants::WINDOW_WIDTH) / 2 - 100,
-                       float(constants::WINDOW_HEIGHT) / 2 - 40, 200, 80};
+  start_button_rect = {float(constants::window_width) / 2 - 100,
+                       float(constants::window_height) / 2 - 40, 200, 80};
 }
 
 void StartView::init() {
@@ -39,8 +39,8 @@ void StartView::render(const double deltaTime) {
   auto size = MeasureTextEx(*start_button_font, "Start", 60, 0);
 
   DrawTextEx(*start_button_font, "Start",
-             {float(constants::WINDOW_WIDTH) / 2 - size.x / 2,
-              float(constants::WINDOW_HEIGHT) / 2 - size.y / 2 + 3},
+             {float(constants::window_width) / 2 - size.x / 2,
+              float(constants::window_height) / 2 - size.y / 2 + 3},
              60, 0, WHITE);
 }
 

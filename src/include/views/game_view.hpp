@@ -7,6 +7,8 @@
 
 class GameView : public View {
 private:
+  GameStateP game_state;
+
   std::vector<BasicPlatform> *platforms;
   Squircle *squircle;
 

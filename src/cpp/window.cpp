@@ -6,7 +6,7 @@
 namespace win {
 
 double toWindowUnits(double y, double height) {
-  return -y + constants::WINDOW_HEIGHT - height;
+  return -y + constants::window_height - height;
 }
 
 void drawRectangle(Rectangle rect, Color color) {

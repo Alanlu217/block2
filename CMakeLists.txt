@@ -35,6 +35,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/managers/resource_manager.cpp"
     "src/cpp/managers/view_manager.cpp"
     "src/cpp/managers/event_manager.cpp"
+    "src/cpp/managers/physics_manager.cpp"
 
     "src/cpp/views/start_view.cpp"
     "src/cpp/views/game_view.cpp"

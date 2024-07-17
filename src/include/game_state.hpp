@@ -9,6 +9,10 @@
 struct GameState {
   std::string name = "block";
 
+  bool show_debug = false;
+
+  double height = 0;
+
   struct {
     Squircle squircle;
 
