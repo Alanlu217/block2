@@ -10,6 +10,7 @@
 #include "managers/view_manager.hpp"
 #include "raylib.h"
 #include "rlImGui.h"
+#include "views/death_view.hpp"
 #include "views/game_view.hpp"
 #include "views/start_view.hpp"
 
@@ -27,6 +28,7 @@ App::App() {
 
   views["start"] = std::make_shared<StartView>();
   views["game"] = std::make_shared<GameView>(game_state);
+  views["death"] = std::make_shared<DeathView>();
   ViewManager::init("start", views);
 
   delta_update_time = 0;

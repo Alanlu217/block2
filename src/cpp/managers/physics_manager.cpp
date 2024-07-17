@@ -3,7 +3,9 @@
 #include "constants.hpp"
 #include "entities/basic_platform.hpp"
 #include "entities/squircle.hpp"
+#include "events/change_view_event.hpp"
 #include "game_state.hpp"
+#include "managers/event_manager.hpp"
 #include "raylib.h"
 
 #include "algorithm"
@@ -111,6 +113,14 @@ void update(const double delta_time, GameStateP game_state) {
     if (std::abs(squircle.vel.y) < constants::squircle::velocity_deadband) {
       squircle.vel.y = 0;
     }
+  }
+
+  if (squircle.pos.y + squircle.width < 0) {
+    struct ChangeViewEvent event {
+      "game", "death"
+    };
+
+    EventManager::triggerEvent(event);
   }
 }
 
