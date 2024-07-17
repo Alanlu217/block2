@@ -2,6 +2,7 @@
 #include "constants.hpp"
 #include "managers/resource_manager.hpp"
 #include "raylib.h"
+#include "window.hpp"
 
 #include <iostream>
 
@@ -16,7 +17,7 @@ Squircle::Squircle() {
 Squircle::~Squircle() {}
 
 void Squircle::draw(raylib::Window &window) {
-  squircle_texture->Draw(pos.x, -pos.y + constants::WINDOW_HEIGHT - width + 1);
+  win::drawTexture(squircle_texture, pos);
 }
 
 Vector2 Squircle::getPosition() { return pos; }

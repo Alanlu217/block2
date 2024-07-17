@@ -30,6 +30,7 @@ ENDIF()
 target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/main.cpp"
     "src/cpp/app.cpp"
+    "src/cpp/window.cpp"
 
     "src/cpp/managers/resource_manager.cpp"
     "src/cpp/managers/view_manager.cpp"
