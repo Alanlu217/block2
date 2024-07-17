@@ -95,12 +95,21 @@ void update(const double delta_time, GameStateP game_state) {
     if (horizontalOverlap &&
         squircle.pos.y <= bounds.y + bounds.height +
                               constants::squircle::ground_friction_height &&
-        squircle.pos.y + squircle.width >= bounds.y && squircle.vel.y <= 1) {
+        squircle.pos.y + squircle.width >= bounds.y &&
+        squircle.vel.y <= constants::squircle::velocity_deadband) {
       squircle.vel.x = squircle.vel.x -
                        squircle.vel.x *
                            constants::squircle::
                                squircle_ground_friction_percent_decrease_per_s *
                            delta_time;
+    }
+
+    // Velocity deadbands
+    if (std::abs(squircle.vel.x) < constants::squircle::velocity_deadband) {
+      squircle.vel.x = 0;
+    }
+    if (std::abs(squircle.vel.y) < constants::squircle::velocity_deadband) {
+      squircle.vel.y = 0;
     }
   }
 }
