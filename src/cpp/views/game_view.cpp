@@ -11,7 +11,7 @@ GameView::GameView(GameStateP state)
 
 void GameView::init() {
   squircle->pos = {300.0f - float(squircle->width) / 2, 400};
-  squircle->vel = {0, 0};
+  squircle->vel = {1000, 0};
 };
 
 void GameView::update(const double deltaTime) {
@@ -23,6 +23,9 @@ void GameView::render(const double deltaTime) {
     ImGui::Begin("GameView");
 
     ImGui::Text("Height: %f", game_state->height);
+
+    ImGui::Text("Squircle:\nPos: %f, %f\nVel: %f, %f", squircle->pos.x,
+                squircle->pos.y, squircle->vel.x, squircle->vel.y);
 
     ImGui::End();
   }

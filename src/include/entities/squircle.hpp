@@ -12,6 +12,8 @@ public:
   Vector2 vel;
   float width = 64;
 
+  bool grounded = false;
+
   Squircle();
   ~Squircle();
 

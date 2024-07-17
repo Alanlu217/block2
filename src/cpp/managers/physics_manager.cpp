@@ -57,12 +57,11 @@ void update(const double delta_time, GameStateP game_state) {
       int topOverlap = bounds.y + bounds.height - squircle.pos.y;
       int bottomOverlap = squircle.pos.y + squircle.width - bounds.y;
 
-      std::cout << "Left: " << leftOverlap << " Right: " << rightOverlap
-                << " Top: " << topOverlap << " Bot:" << bottomOverlap << "\n";
-
       // Find the direction with minimum overlap distance
       int minOverlap =
           std::min({leftOverlap, rightOverlap, topOverlap, bottomOverlap});
+
+      squircle.grounded = false;
 
       if (minOverlap == topOverlap) {
         squircle.pos.y = bounds.y + bounds.height;
@@ -73,6 +72,9 @@ void update(const double delta_time, GameStateP game_state) {
         game_state->height +=
             std::max(400 - (squircle.pos.y + game_state->height), 0.0) *
             delta_time * constants::game::idle_height_increase;
+
+        squircle.grounded = true;
+
       } else if (minOverlap == bottomOverlap) {
         squircle.pos.y = bounds.y - squircle.width;
         squircle.vel.y = -abs(squircle.vel.y);
@@ -85,6 +87,20 @@ void update(const double delta_time, GameStateP game_state) {
         squircle.pos.x = bounds.x + bounds.width;
         squircle.vel.x = abs(squircle.vel.x);
       }
+    }
+
+    // If sufficiently close to ground, apply ground friction
+    bool horizontalOverlap = squircle.pos.x < bounds.x + bounds.width &&
+                             bounds.x < squircle.pos.x + squircle.width;
+    if (horizontalOverlap &&
+        squircle.pos.y <= bounds.y + bounds.height +
+                              constants::squircle::ground_friction_height &&
+        squircle.pos.y + squircle.width >= bounds.y && squircle.vel.y <= 1) {
+      squircle.vel.x = squircle.vel.x -
+                       squircle.vel.x *
+                           constants::squircle::
+                               squircle_ground_friction_percent_decrease_per_s *
+                           delta_time;
     }
   }
 }
