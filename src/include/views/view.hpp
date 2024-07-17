@@ -2,6 +2,8 @@
 
 #include "raylib-cpp.hpp"
 
+#include <memory>
+
 class View {
 protected:
   ~View() = default;
