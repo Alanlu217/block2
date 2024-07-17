@@ -1,8 +1,15 @@
 #pragma once
+
+#include "managers/resource_manager.hpp"
+#include "raylib.h"
 #include "view.hpp"
 
 class StartView : public View {
 private:
+  Rectangle start_button_rect;
+
+  FontP start_button_font;
+
 public:
   StartView();
 

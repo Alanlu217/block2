@@ -1,8 +1,6 @@
 #include "app.hpp"
 
 #include "entities/basic_platform.hpp"
-#include "entities/squircle.hpp"
-#include "events/close_window_event.hpp"
 #include "events/event.hpp"
 #include "events/toggle_debug_event.hpp"
 #include "game_state.hpp"
@@ -15,7 +13,6 @@
 #include "views/game_view.hpp"
 #include "views/start_view.hpp"
 
-#include <iostream>
 #include <memory>
 
 App::App() {
@@ -30,7 +27,7 @@ App::App() {
 
   views["start"] = std::make_shared<StartView>();
   views["game"] = std::make_shared<GameView>(game_state);
-  ViewManager::init("game", views);
+  ViewManager::init("start", views);
 
   delta_update_time = 0;
   last_update_time = GetTime();
