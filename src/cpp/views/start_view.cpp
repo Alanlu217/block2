@@ -13,11 +13,8 @@ StartView::StartView() {
 }
 
 void StartView::init() {
-  TraceLog(4, "Start Load");
   start_button_font = ResourceManager::getFont("comfortaa.ttf");
-
   SetTextureFilter(start_button_font->texture, TEXTURE_FILTER_TRILINEAR);
-  TraceLog(4, "Loaded");
 };
 
 void StartView::update(const double deltaTime) {}
@@ -37,6 +34,7 @@ void StartView::render(const double deltaTime) {
   } else {
     DrawRectangleRec(start_button_rect, Color{255, 255, 255, 30});
   }
+  DrawRectangleLinesEx(start_button_rect, 2, Color{255, 255, 255, 50});
 
   auto size = MeasureTextEx(*start_button_font, "Start", 60, 0);
 
