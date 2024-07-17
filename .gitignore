@@ -5,6 +5,7 @@ third_party/
 
 .idea/
 .vscode/
+.zed/
 
 .clangd
 CMakePresets.json
