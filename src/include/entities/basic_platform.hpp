@@ -1,6 +1,5 @@
 #pragma once
 
-#include "raylib-cpp.hpp"
 #include "raylib.h"
 
 class BasicPlatform {
@@ -13,7 +12,7 @@ public:
 
   virtual ~BasicPlatform();
 
-  virtual void draw(raylib::Window &window);
+  virtual void draw();
 
   virtual void checkCollision();
 };

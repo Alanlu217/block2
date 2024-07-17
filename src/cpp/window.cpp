@@ -16,7 +16,7 @@ void drawRectangle(Rectangle rect, Color color) {
 
 void drawTexture(TextureP texture, Vector2 pos, Color color) {
   pos.y = toWindowUnits(pos.y, texture->height);
-  texture->Draw(pos.x, pos.y, color);
+  DrawTexture(*texture, pos.x, pos.y, color);
 }
 
 } // namespace win

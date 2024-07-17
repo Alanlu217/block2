@@ -6,8 +6,8 @@ StartView::StartView() {}
 
 void StartView::init() {};
 
-void StartView::update(raylib::Window &window, const double deltaTime) {}
+void StartView::update(const double deltaTime) {}
 
-void StartView::render(raylib::Window &window, const double deltaTime) {}
+void StartView::render(const double deltaTime) {}
 
 void StartView::close() {}

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "raylib-cpp.hpp"
+#include "raylib.h"
 
 #include <map>
 #include <memory>
 
-typedef std::shared_ptr<raylib::Font> FontP;
-typedef std::shared_ptr<raylib::Texture> TextureP;
+typedef std::shared_ptr<Font> FontP;
+typedef std::shared_ptr<Texture> TextureP;
 
 class ResourceManager {
 private:

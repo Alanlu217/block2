@@ -44,7 +44,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 target_include_directories(${PROJECT_NAME}
-    PRIVATE "src/include" "third_party/raylib-cpp/include"
+    PRIVATE "src/include"
 )
 
 target_link_libraries(${PROJECT_NAME}

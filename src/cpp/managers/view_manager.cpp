@@ -12,15 +12,15 @@ void ViewManager::init(const std::string &start_view, ViewMap views) {
   active_views.push_back(views[start_view]);
 }
 
-void ViewManager::update(raylib::Window &window, const double delta_time) {
+void ViewManager::update(const double delta_time) {
   for (auto &view : active_views) {
-    view->update(window, delta_time);
+    view->update(delta_time);
   }
 }
 
-void ViewManager::render(raylib::Window &window, const double delta_time) {
+void ViewManager::render(const double delta_time) {
   for (auto &view : active_views) {
-    view->render(window, delta_time);
+    view->render(delta_time);
   }
 }
 

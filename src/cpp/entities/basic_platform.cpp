@@ -12,8 +12,6 @@ BasicPlatform::BasicPlatform(float x, float y, float width, float height) {
 
 BasicPlatform::~BasicPlatform() {}
 
-void BasicPlatform::draw(raylib::Window &window) {
-  win::drawRectangle(rect, WHITE);
-}
+void BasicPlatform::draw() { win::drawRectangle(rect, WHITE); }
 
 void BasicPlatform::checkCollision() {}

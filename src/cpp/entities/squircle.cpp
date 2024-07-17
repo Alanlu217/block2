@@ -8,17 +8,15 @@
 
 Squircle::Squircle() {
   squircle_texture = ResourceManager::getTexture("squircle.png");
-  squircle_texture->GenMipmaps();
-  squircle_texture->SetFilter(TextureFilter::TEXTURE_FILTER_TRILINEAR);
+  GenTextureMipmaps(squircle_texture.get());
+  SetTextureFilter(*squircle_texture, TEXTURE_FILTER_TRILINEAR);
 
   pos = {0, 0};
 }
 
 Squircle::~Squircle() {}
 
-void Squircle::draw(raylib::Window &window) {
-  win::drawTexture(squircle_texture, pos);
-}
+void Squircle::draw() { win::drawTexture(squircle_texture, pos); }
 
 Vector2 Squircle::getPosition() { return pos; }
 

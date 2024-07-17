@@ -1,6 +1,5 @@
 #include "managers/resource_manager.hpp"
-#include "RenderTexture.hpp"
-
+#include "raylib.h"
 #include <sstream>
 
 std::map<std::string, TextureP> ResourceManager::textures;
@@ -10,8 +9,8 @@ TextureP ResourceManager::getTexture(const std::string &filepath) {
   const auto texture = textures.find(filepath);
 
   if (texture == textures.end()) {
-    auto temp = std::make_shared<raylib::Texture>();
-    temp->Load(ASSETS_DIR + filepath);
+    auto temp = std::make_shared<Texture>();
+    *temp = LoadTexture((ASSETS_DIR + filepath).c_str());
     textures[filepath] = temp;
 
     return temp;
@@ -24,8 +23,8 @@ FontP ResourceManager::getFont(const std::string &filepath) {
   const auto font = fonts.find(filepath);
 
   if (font == fonts.end()) {
-    auto temp = std::shared_ptr<raylib::Font>();
-    temp->Load(ASSETS_DIR + filepath);
+    auto temp = std::shared_ptr<Font>();
+    *temp = LoadFont((ASSETS_DIR + filepath).c_str());
     fonts[filepath] = temp;
 
     return temp;

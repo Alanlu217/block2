@@ -10,7 +10,6 @@
 #include "managers/event_manager.hpp"
 #include "managers/resource_manager.hpp"
 #include "managers/view_manager.hpp"
-#include "raylib-cpp.hpp"
 #include "raylib.h"
 #include "rlImGui.h"
 #include "views/game_view.hpp"
@@ -20,9 +19,13 @@
 #include <memory>
 
 App::App() {
+  InitWindow(constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT,
+             constants::WINDOW_TITLE.c_str());
   rlImGuiSetup(true);
 
-  std::vector<BasicPlatform> &platforms = game_state.entities.platforms;
+  game_state = std::make_shared<GameState>();
+
+  std::vector<BasicPlatform> &platforms = game_state->entities.platforms;
   platforms.push_back({0, 0, 600, 10});
 
   views["start"] = std::make_shared<StartView>();
@@ -30,8 +33,8 @@ App::App() {
   ViewManager::init("game", views);
 
   delta_update_time = 0;
-  last_update_time = window.GetTime();
-  last_render_time = window.GetTime();
+  last_update_time = GetTime();
+  last_render_time = GetTime();
 
   sleep_time = 0;
 
@@ -52,15 +55,13 @@ App::App() {
 
 App::~App() {
   rlImGuiShutdown();
-  window.Close();
+  CloseWindow();
 }
 
-bool App::isOpen() { return !window.ShouldClose(); }
-
-raylib::Window *App::getWindow() { return &window; }
+bool App::isOpen() { return !WindowShouldClose(); }
 
 void App::run() {
-  double current_time = window.GetTime();
+  double current_time = GetTime();
 
   double update_time_left =
       1.0 / target_ups - (current_time - last_update_time);
@@ -85,12 +86,12 @@ void App::run() {
 }
 
 void App::render(double delta_time) {
-  window.BeginDrawing();
+  BeginDrawing();
   rlImGuiBegin();
 
-  window.ClearBackground();
+  ClearBackground(BLACK);
 
-  ViewManager::render(window, delta_time);
+  ViewManager::render(delta_time);
 
   if (show_debug) {
     ImGui::Begin("Debug");
@@ -118,7 +119,7 @@ void App::render(double delta_time) {
   }
 
   rlImGuiEnd();
-  window.EndDrawing();
+  EndDrawing();
 
   ResourceManager::clearUnused();
 }
@@ -130,5 +131,5 @@ void App::update(double delta_time) {
   }
 
   EventManager::update();
-  ViewManager::update(window, delta_time);
+  ViewManager::update(delta_time);
 }

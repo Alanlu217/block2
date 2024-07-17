@@ -20,9 +20,9 @@ public:
 
   static void init(const std::string &start_view, ViewMap views);
 
-  static void update(raylib::Window &window, const double delta_time);
+  static void update(const double delta_time);
 
-  static void render(raylib::Window &window, const double delta_time);
+  static void render(const double delta_time);
 
   static void setView(const std::string &view);
 

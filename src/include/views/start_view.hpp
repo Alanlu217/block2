@@ -10,9 +10,9 @@ public:
 
   virtual void init() override;
 
-  virtual void update(raylib::Window &window, const double deltaTime) override;
+  virtual void update(const double deltaTime) override;
 
-  virtual void render(raylib::Window &window, const double deltaTime) override;
+  virtual void render(const double deltaTime) override;
 
   virtual void close() override;
 };

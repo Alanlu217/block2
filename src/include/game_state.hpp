@@ -16,3 +16,5 @@ struct GameState {
 
   } entities;
 };
+
+typedef std::shared_ptr<GameState> GameStateP;

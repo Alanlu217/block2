@@ -1,7 +1,5 @@
 #pragma once
 
-#include "raylib-cpp.hpp"
-
 #include <memory>
 
 class View {
@@ -11,9 +9,9 @@ protected:
 public:
   virtual void init() = 0;
 
-  virtual void update(raylib::Window &window, const double deltaTime) = 0;
+  virtual void update(const double deltaTime) = 0;
 
-  virtual void render(raylib::Window &window, const double deltaTime) = 0;
+  virtual void render(const double deltaTime) = 0;
 
   virtual void close() = 0;
 };

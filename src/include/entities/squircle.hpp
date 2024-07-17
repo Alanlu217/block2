@@ -15,7 +15,7 @@ public:
   Squircle();
   ~Squircle();
 
-  void draw(raylib::Window &window);
+  void draw();
 
   Vector2 getPosition();
 
