@@ -42,7 +42,7 @@ std::string ResourceManager::listLoadedResources() {
     ss << font.first << " ";
   }
 
-  ss << " }\n Textures: { ";
+  ss << " }\nTextures: { ";
 
   for (const auto &texture : textures) {
     ss << texture.first << " ";

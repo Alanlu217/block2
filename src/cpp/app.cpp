@@ -111,6 +111,9 @@ void App::render(double delta_time) {
       ImGui::EndListBox();
     }
 
+    ImGui::Text("Loaded Resources:\n%s",
+                ResourceManager::listLoadedResources().c_str());
+
     ImGui::End();
   }
 
