@@ -8,3 +8,5 @@ third_party/
 
 .clangd
 CMakePresets.json
+
+**/imgui.ini
