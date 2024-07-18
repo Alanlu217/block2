@@ -16,6 +16,11 @@ void GameView::init() {
 };
 
 void GameView::update(const double deltaTime) {
+  if (auto drag = dragger->update(); drag.has_value()) {
+    TraceLog(LOG_INFO, "Drag at: X: %f, Y: %f", drag->x, drag->y);
+    squircle->vel = *drag;
+  }
+
   physics::update(deltaTime, game_state);
 }
 
@@ -25,8 +30,9 @@ void GameView::render(const double deltaTime) {
 
     ImGui::Text("Height: %f", game_state->height);
 
-    ImGui::Text("Squircle:\nPos: %f, %f\nVel: %f, %f", squircle->pos.x,
-                squircle->pos.y, squircle->vel.x, squircle->vel.y);
+    ImGui::Text("Squircle:\nPos: %f, %f\nVel: %f, %f\nGrounded: %d",
+                squircle->pos.x, squircle->pos.y, squircle->vel.x,
+                squircle->vel.y, squircle->grounded);
 
     ImGui::End();
   }

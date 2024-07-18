@@ -4,8 +4,8 @@
 #include "game_state.hpp"
 #include "managers/view_manager.hpp"
 
-const int target_ups = 1000;
-const int target_fps = 120;
+const int target_ups = 1200;
+const int target_fps = 240;
 
 class App {
 private:

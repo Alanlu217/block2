@@ -37,7 +37,9 @@ Vector2 toGameUnits(Vector2 vec) {
   return vec;
 }
 
-Vector2 getMousePos() { return toGameUnits(GetMousePosition()); }
+Vector2 getMousePos() {
+  return {static_cast<float>(getMouseX()), static_cast<float>(getMouseY())};
+}
 
 int getMouseX() { return GetMouseX(); }
 
