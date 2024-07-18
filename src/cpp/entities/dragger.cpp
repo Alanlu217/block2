@@ -39,16 +39,16 @@ void Dragger::draw(const Squircle &squircle) {
 
   ImGui::End();
 
-  win::drawTexturePro(
-      direction_arrow_texture,
-      {0, 0, static_cast<float>(direction_arrow_texture->width),
-       static_cast<float>(direction_arrow_texture->height)},
-      {pos.x + squircle.width / 2,
-       pos.y + squircle.width / 2 -
-           static_cast<float>(direction_arrow_texture->height) / 2,
-       static_cast<float>(direction_arrow_texture->width),
-       static_cast<float>(direction_arrow_texture->height)},
-      {-constants::dragger::arrow_offset,
-       static_cast<float>(direction_arrow_texture->height) / 2},
-      temp_angle);
+  Rectangle source = {0, 0, float(direction_arrow_texture->width),
+                      float(direction_arrow_texture->height)};
+
+  Rectangle dest = {pos.x + squircle.width / 2, pos.y + squircle.width / 2,
+                    float(direction_arrow_texture->width),
+                    float(direction_arrow_texture->height)};
+
+  Vector2 origin = {-constants::dragger::arrow_offset,
+                    float(direction_arrow_texture->height) / 2};
+
+  win::drawTexturePro(direction_arrow_texture, source, dest, origin,
+                      temp_angle);
 }

@@ -26,10 +26,9 @@ void drawTexture(TextureP texture, Vector2 pos, float rotation, float scale,
 
 void drawTexturePro(TextureP texture, Rectangle source, Rectangle dest,
                     Vector2 origin, float rotation, Color color) {
+  dest.y = toWindowUnits(dest.y, dest.height) + 2 * origin.y;
   origin.y = dest.height - origin.y;
-  dest.y = toWindowUnits(dest.y, dest.height) + origin.y;
 
-  // Still buggy atm, origin is moving image position
   DrawTexturePro(*texture, source, dest, origin, rotation, color);
 }
 
