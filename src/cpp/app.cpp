@@ -13,6 +13,7 @@
 #include "views/death_view.hpp"
 #include "views/game_view.hpp"
 #include "views/start_view.hpp"
+#include "window.hpp"
 
 #include <memory>
 
@@ -87,7 +88,7 @@ void App::render(double delta_time) {
   BeginDrawing();
   rlImGuiBegin();
 
-  ClearBackground(BLACK);
+  ClearBackground(Color{46, 46, 46, 1});
 
   ViewManager::render(delta_time);
 
@@ -112,6 +113,10 @@ void App::render(double delta_time) {
 
     ImGui::Text("Loaded Resources:\n%s",
                 ResourceManager::listLoadedResources().c_str());
+
+    ImGui::Text("Mouse Pos Window : %d, %d", GetMouseX(), GetMouseY());
+    ImGui::Text("Mouse Pos Game   : %d, %d", win::getMouseX(),
+                win::getMouseY());
 
     ImGui::End();
   }

@@ -43,6 +43,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 
     "src/cpp/entities/basic_platform.cpp"
     "src/cpp/entities/squircle.cpp"
+    "src/cpp/entities/dragger.cpp"
 )
 
 target_include_directories(${PROJECT_NAME}

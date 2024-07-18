@@ -9,8 +9,9 @@ class GameView : public View {
 private:
   GameStateP game_state;
 
-  std::vector<BasicPlatform> *platforms;
   Squircle *squircle;
+  Dragger *dragger;
+  std::vector<BasicPlatform> *platforms;
 
 public:
   GameView(GameStateP state);

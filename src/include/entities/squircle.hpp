@@ -15,7 +15,6 @@ public:
   bool grounded = false;
 
   Squircle();
-  ~Squircle();
 
   void draw();
 

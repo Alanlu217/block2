@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entities/basic_platform.hpp"
+#include "entities/dragger.hpp"
 #include "entities/squircle.hpp"
 
 #include <memory>
@@ -15,6 +16,8 @@ struct GameState {
 
   struct {
     Squircle squircle;
+
+    Dragger dragger;
 
     std::vector<BasicPlatform> platforms;
 

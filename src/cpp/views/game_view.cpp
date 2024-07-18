@@ -4,10 +4,11 @@
 #include "imgui.h"
 #include "managers/physics_manager.hpp"
 #include "raylib.h"
+#include "window.hpp"
 
 GameView::GameView(GameStateP state)
     : game_state(state), platforms(&state->entities.platforms),
-      squircle(&state->entities.squircle) {}
+      squircle(&state->entities.squircle), dragger(&state->entities.dragger) {}
 
 void GameView::init() {
   squircle->pos = {300.0f - float(squircle->width) / 2, 400};
@@ -35,6 +36,7 @@ void GameView::render(const double deltaTime) {
   }
 
   squircle->draw();
+  dragger->draw(*squircle);
 }
 
 void GameView::close() {}
