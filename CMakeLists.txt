@@ -39,6 +39,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 
     "src/cpp/views/start_view.cpp"
     "src/cpp/views/game_view.cpp"
+    "src/cpp/views/editor_view.cpp"
     "src/cpp/views/death_view.cpp"
 
     "src/cpp/entities/basic_platform.cpp"
