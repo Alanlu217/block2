@@ -39,12 +39,10 @@ std::optional<Vector2> Dragger::update() {
   return {};
 }
 
-void Dragger::draw(const Squircle &squircle) {
+void Dragger::drawArrow(const Squircle &squircle) {
   Vector2 pos = squircle.pos;
 
   if (drag_init_pos.has_value()) {
-    win::drawCircle(*drag_init_pos, 10, GREEN);
-
     float x_diff = win::getMouseX() - drag_init_pos->x;
     float y_diff = win::getMouseY() - drag_init_pos->y;
 
@@ -73,5 +71,11 @@ void Dragger::draw(const Squircle &squircle) {
 
     win::drawTexturePro(direction_arrow_texture, source, dest, origin,
                         temp_angle);
+  }
+}
+
+void Dragger::drawCircle() {
+  if (drag_init_pos.has_value()) {
+    win::drawCircle(*drag_init_pos, 10, GREEN);
   }
 }

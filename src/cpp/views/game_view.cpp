@@ -8,11 +8,20 @@
 
 GameView::GameView(GameStateP state)
     : game_state(state), platforms(&state->entities.platforms),
-      squircle(&state->entities.squircle), dragger(&state->entities.dragger) {}
+      squircle(&state->entities.squircle), dragger(&state->entities.dragger),
+      camera(&state->game_camera), back_ground(&state->entities.back_ground) {}
 
 void GameView::init() {
   squircle->pos = {300.0f - float(squircle->width) / 2, 400};
-  squircle->vel = {1000, 0};
+  squircle->vel = {0, 0};
+
+  *camera = Camera2D{};
+  camera->target = {0, 0};
+  camera->offset = {0, 0};
+  camera->rotation = 0;
+  camera->zoom = 1;
+
+  game_state->height = 0;
 };
 
 void GameView::update(const double deltaTime) {
@@ -28,7 +37,7 @@ void GameView::render(const double deltaTime) {
   if (game_state->show_debug) {
     ImGui::Begin("GameView");
 
-    ImGui::Text("Height: %f", game_state->height);
+    ImGui::DragFloat("Height:", &game_state->height);
 
     ImGui::Text("Squircle:\nPos: %f, %f\nVel: %f, %f\nGrounded: %d",
                 squircle->pos.x, squircle->pos.y, squircle->vel.x,
@@ -37,12 +46,22 @@ void GameView::render(const double deltaTime) {
     ImGui::End();
   }
 
+  camera->target = {0, -static_cast<float>(game_state->height)};
+
+  BeginMode2D(*camera);
+
+  back_ground->update(game_state->height);
+  back_ground->draw();
+
   for (auto &platform : *platforms) {
     platform.draw();
   }
 
   squircle->draw();
-  dragger->draw(*squircle);
+  dragger->drawArrow(*squircle);
+  EndMode2D();
+
+  dragger->drawCircle();
 }
 
 void GameView::close() {}

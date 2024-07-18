@@ -26,6 +26,8 @@ App::App() {
 
   std::vector<BasicPlatform> &platforms = game_state->entities.platforms;
   platforms.push_back({0, 0, 600, 10});
+  platforms.push_back({40, 200, 200, 10});
+  platforms.push_back({300, 600, 200, 10});
 
   views["start"] = std::make_shared<StartView>();
   views["game"] = std::make_shared<GameView>(game_state);

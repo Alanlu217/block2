@@ -12,6 +12,9 @@ private:
   Squircle *squircle;
   Dragger *dragger;
   std::vector<BasicPlatform> *platforms;
+  Background *back_ground;
+
+  Camera2D *camera;
 
 public:
   GameView(GameStateP state);

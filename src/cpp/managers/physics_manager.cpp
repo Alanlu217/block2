@@ -72,7 +72,7 @@ void update(const double delta_time, GameStateP game_state) {
 
         // If is idle, adjust height
         game_state->height +=
-            std::max(400 - (squircle.pos.y + game_state->height), 0.0) *
+            std::max((squircle.pos.y - game_state->height) - 400, 0.0f) *
             delta_time * constants::game::idle_height_increase;
 
         squircle.grounded = true;
