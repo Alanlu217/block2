@@ -115,7 +115,7 @@ void update(const double delta_time, GameStateP game_state) {
     }
   }
 
-  if (squircle.pos.y + squircle.width < 0) {
+  if (squircle.pos.y + squircle.width < game_state->height) {
     struct ChangeViewEvent event {
       "game", "death"
     };
