@@ -1,5 +1,6 @@
 #include "views/editor_view.hpp"
 
+#include "constants.hpp"
 #include "entities/basic_platform.hpp"
 #include "game_state.hpp"
 #include "imgui.h"
@@ -59,6 +60,11 @@ void EditorView::update_selection() {
   if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
     bool selected_nothing = true;
 
+    if (selected_platforms.size() == 1 &&
+        CheckCollisionPointRec(GetMousePosition(), Rectangle{0, 0, 320, 55})) {
+      return;
+    }
+
     for (auto &platform : *platforms) {
       if (CheckCollisionPointRec(mouse_pos, platform.rect)) {
         selected_nothing = false;
@@ -92,7 +98,14 @@ void EditorView::update_selection() {
             selected_platforms.clear();
             selected_platforms.push_back(&platform);
 
-            state = Idle;
+            gui_rect[0] = platform.rect.x;
+            gui_rect[1] = platform.rect.y;
+            gui_rect[2] = platform.rect.width;
+            gui_rect[3] = platform.rect.height;
+
+            mouse_drag_init = mouse_pos;
+
+            state = Dragging;
 
             return;
           }
@@ -146,6 +159,15 @@ void EditorView::update_selection() {
           } else {
             selected_platforms.push_back(&platform);
 
+            if (selected_platforms.size() == 1) {
+              auto &platform = selected_platforms[0];
+
+              gui_rect[0] = platform->rect.x;
+              gui_rect[1] = platform->rect.y;
+              gui_rect[2] = platform->rect.width;
+              gui_rect[3] = platform->rect.height;
+            }
+
             TraceLog(LOG_INFO, "Add Platform by Selection");
           }
         }
@@ -164,6 +186,15 @@ void EditorView::update_selection() {
       platform->rect.x += delta.x;
       platform->rect.y += delta.y;
     }
+
+    if (selected_platforms.size() == 1) {
+      auto &platform = selected_platforms[0];
+
+      gui_rect[0] = platform->rect.x;
+      gui_rect[1] = platform->rect.y;
+      gui_rect[2] = platform->rect.width;
+      gui_rect[3] = platform->rect.height;
+    }
   }
 
   if (IsKeyPressed(KEY_BACKSPACE) || IsKeyPressed(KEY_DELETE)) {
@@ -180,6 +211,11 @@ void EditorView::update_selection() {
   if (IsKeyPressed(KEY_A)) {
     platforms->push_back({mouse_pos.x, mouse_pos.y, 100, 10});
   }
+
+  if (selected_platforms.size() == 1 && IsKeyPressed(KEY_D)) {
+    Rectangle rect = selected_platforms[0]->rect;
+    platforms->push_back({rect.x, rect.y, rect.width, rect.height});
+  }
 }
 
 void EditorView::render(const double deltaTime) {
@@ -194,6 +230,31 @@ void EditorView::render(const double deltaTime) {
     ImGui::Text("State: %d", state);
 
     ImGui::Text("Num Selected: %zu", selected_platforms.size());
+
+    ImGui::End();
+  }
+
+  if (selected_platforms.size() == 1) {
+
+    ImGui::SetNextWindowPos(ImVec2{0, 0});
+    ImGui::SetNextWindowSize(ImVec2{320, 55});
+
+    auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+
+    ImGui::Begin("Platform Editor", NULL, flags);
+
+    ImGui::DragFloat4("X, Y, W, H", gui_rect);
+
+    gui_rect[2] = std::max(0.0f, gui_rect[2]);
+
+    gui_rect[0] = std::max(0.0f, gui_rect[0]);
+    gui_rect[0] =
+        std::min(float(constants::window_width - gui_rect[2]), gui_rect[0]);
+
+    selected_platforms[0]->rect.x = gui_rect[0];
+    selected_platforms[0]->rect.y = gui_rect[1];
+    selected_platforms[0]->rect.width = gui_rect[2];
+    selected_platforms[0]->rect.height = gui_rect[3];
 
     ImGui::End();
   }

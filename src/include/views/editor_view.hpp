@@ -24,6 +24,8 @@ private:
 
   std::optional<Vector2> mouse_drag_init;
 
+  float gui_rect[4] = {0, 0, 0, 0};
+
   void update_selection();
 
 public:
