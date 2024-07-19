@@ -57,11 +57,12 @@ void EditorView::update_selection() {
     bool selected_nothing = true;
 
     for (auto &platform : *platforms) {
-      TraceLog(5, "Mouse: X: %f Y: %f\n     Rect: X: %f Y: %f W: %f H: %f",
+      TraceLog(LOG_INFO,
+               "Mouse: X: %f Y: %f\n      Rect: X: %f Y: %f W: %f H: %f",
                mouse_pos.x, mouse_pos.y, platform.rect.x, platform.rect.y,
                platform.rect.width, platform.rect.height);
       if (CheckCollisionPointRec(mouse_pos, platform.rect)) {
-        TraceLog(5, "Collide");
+        TraceLog(LOG_INFO, "Collide");
         selected_nothing = false;
 
         if (std::ranges::find(selected_platforms, &platform) !=
@@ -74,14 +75,14 @@ void EditorView::update_selection() {
 
             state = Idle;
 
-            TraceLog(5, "Removed Platform");
+            TraceLog(LOG_INFO, "Removed Platform");
 
             return;
           } else { // Start Drag
             state = Dragging;
             mouse_drag_init = mouse_pos;
 
-            TraceLog(5, "Start Movement Drag");
+            TraceLog(LOG_INFO, "Start Movement Drag");
             return;
           }
         } else // Platform not selected
@@ -91,7 +92,7 @@ void EditorView::update_selection() {
 
             state = Idle;
 
-            TraceLog(5, "Add Platform");
+            TraceLog(LOG_INFO, "Add Platform");
 
             return;
           } else { // Set selection to platform
@@ -100,7 +101,7 @@ void EditorView::update_selection() {
 
             state = Idle;
 
-            TraceLog(5, "Clear and Set Platform");
+            TraceLog(LOG_INFO, "Clear and Set Platform");
 
             return;
           }
@@ -111,7 +112,7 @@ void EditorView::update_selection() {
       state = Selecting;
       mouse_drag_init = mouse_pos;
 
-      TraceLog(5, "Start Selection Drag");
+      TraceLog(LOG_INFO, "Start Selection Drag");
 
       return;
     }
@@ -124,7 +125,7 @@ void EditorView::update_selection() {
       state = Idle;
       mouse_drag_init = {};
 
-      TraceLog(5, "Deselect All");
+      TraceLog(LOG_INFO, "Deselect All");
 
       return;
     }
@@ -149,12 +150,12 @@ void EditorView::update_selection() {
                                                    selected_platforms.end(),
                                                    &platform),
                                        selected_platforms.end());
-              TraceLog(5, "Remove Platform by Selection");
+              TraceLog(LOG_INFO, "Remove Platform by Selection");
             }
           } else {
             selected_platforms.push_back(&platform);
 
-            TraceLog(5, "Add Platform by Selection");
+            TraceLog(LOG_INFO, "Add Platform by Selection");
           }
         }
       }
