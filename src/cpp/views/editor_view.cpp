@@ -2,8 +2,10 @@
 
 #include "constants.hpp"
 #include "entities/basic_platform.hpp"
+#include "events/change_view_event.hpp"
 #include "game_state.hpp"
 #include "imgui.h"
+#include "managers/event_manager.hpp"
 #include "managers/physics_manager.hpp"
 #include "raylib.h"
 #include "raymath.h"
@@ -264,7 +266,13 @@ void EditorView::render(const double deltaTime) {
   auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
   ImGui::Begin("Editor", NULL, flags);
 
-  ImGui::Button("Play");
+  if (ImGui::Button("Play")) {
+    struct ChangeViewEvent event;
+    event.new_view = "game";
+    event.old_view = "editor";
+
+    EventManager::triggerEvent(event);
+  }
   ImGui::SameLine();
   ImGui::Button("Load");
   ImGui::SameLine();
