@@ -60,12 +60,7 @@ void EditorView::update_selection() {
     bool selected_nothing = true;
 
     for (auto &platform : *platforms) {
-      TraceLog(LOG_INFO,
-               "Mouse: X: %f Y: %f\n      Rect: X: %f Y: %f W: %f H: %f",
-               mouse_pos.x, mouse_pos.y, platform.rect.x, platform.rect.y,
-               platform.rect.width, platform.rect.height);
       if (CheckCollisionPointRec(mouse_pos, platform.rect)) {
-        TraceLog(LOG_INFO, "Collide");
         selected_nothing = false;
 
         if (std::ranges::find(selected_platforms, &platform) !=
@@ -78,14 +73,11 @@ void EditorView::update_selection() {
 
             state = Idle;
 
-            TraceLog(LOG_INFO, "Removed Platform");
-
             return;
           } else { // Start Drag
             state = Dragging;
             mouse_drag_init = mouse_pos;
 
-            TraceLog(LOG_INFO, "Start Movement Drag");
             return;
           }
         } else // Platform not selected
@@ -95,16 +87,12 @@ void EditorView::update_selection() {
 
             state = Idle;
 
-            TraceLog(LOG_INFO, "Add Platform");
-
             return;
           } else { // Set selection to platform
             selected_platforms.clear();
             selected_platforms.push_back(&platform);
 
             state = Idle;
-
-            TraceLog(LOG_INFO, "Clear and Set Platform");
 
             return;
           }
@@ -114,8 +102,6 @@ void EditorView::update_selection() {
     if (selected_nothing) {
       state = Selecting;
       mouse_drag_init = mouse_pos;
-
-      TraceLog(LOG_INFO, "Start Selection Drag");
 
       return;
     }
@@ -132,8 +118,6 @@ void EditorView::update_selection() {
       selected_platforms.clear();
       state = Idle;
       mouse_drag_init = {};
-
-      TraceLog(LOG_INFO, "Deselect All");
 
       return;
     }
@@ -158,7 +142,6 @@ void EditorView::update_selection() {
                                                    selected_platforms.end(),
                                                    &platform),
                                        selected_platforms.end());
-              TraceLog(LOG_INFO, "Remove Platform by Selection");
             }
           } else {
             selected_platforms.push_back(&platform);
