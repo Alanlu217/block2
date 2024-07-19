@@ -19,6 +19,8 @@
 #include <memory>
 
 App::App() {
+  SetTraceLogLevel(LOG_NONE);
+
   InitWindow(constants::window_width, constants::window_height,
              constants::window_title.c_str());
 

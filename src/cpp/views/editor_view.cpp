@@ -5,9 +5,12 @@
 #include "imgui.h"
 #include "managers/physics_manager.hpp"
 #include "raylib.h"
+#include "raymath.h"
 #include "window.hpp"
+
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 
 EditorView::EditorView(GameStateP state)
     : game_state(state), platforms(&state->entities.platforms),
@@ -119,6 +122,11 @@ void EditorView::update_selection() {
 
   } else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
 
+    if (state == Dragging) {
+      state = Idle;
+      mouse_drag_init = {};
+    }
+
     if (mouse_pos.x == mouse_drag_init->x && mouse_pos.y == mouse_pos.y &&
         state == Selecting) { // Selection is a point
       selected_platforms.clear();
@@ -165,6 +173,29 @@ void EditorView::update_selection() {
       }
     }
     mouse_drag_init = {};
+  } else if (state == Dragging) {
+    auto delta = Vector2Subtract(mouse_pos, *mouse_drag_init);
+    mouse_drag_init = mouse_pos;
+
+    for (auto platform : selected_platforms) {
+      platform->rect.x += delta.x;
+      platform->rect.y += delta.y;
+    }
+  }
+
+  if (IsKeyPressed(KEY_BACKSPACE) || IsKeyPressed(KEY_DELETE)) {
+    for (auto plat : selected_platforms) {
+      auto pos =
+          std::find_if(platforms->begin(), platforms->end(),
+                       [plat](auto &platform) { return plat == &platform; });
+      if (pos != platforms->end())
+        platforms->erase(pos, platforms->end());
+    }
+    selected_platforms = {};
+  }
+
+  if (IsKeyPressed(KEY_A)) {
+    platforms->push_back({mouse_pos.x, mouse_pos.y, 100, 10});
   }
 }
 
