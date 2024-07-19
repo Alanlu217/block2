@@ -23,6 +23,10 @@ App::App() {
              constants::window_title.c_str());
   rlImGuiSetup(true);
 
+  auto &io = ImGui::GetIO();
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+  io.ConfigDockingWithShift = true;
+
   game_state = std::make_shared<GameState>();
 
   std::vector<BasicPlatform> &platforms = game_state->entities.platforms;
