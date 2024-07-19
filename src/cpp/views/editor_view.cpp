@@ -22,7 +22,9 @@ void EditorView::init() {
 
   game_state->height = 0;
 
+  state = Idle;
   selected_platforms = {};
+  mouse_drag_init = {};
 };
 
 void EditorView::update(const double deltaTime) {
@@ -46,85 +48,135 @@ void EditorView::update(const double deltaTime) {
   }
 }
 
-void EditorView::render(const double deltaTime) {
+void EditorView::update_selection() {
+  auto mouse_pos = win::getMousePos();
+  mouse_pos.y += game_state->height;
+
   // Check for selection
   if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-    auto mouse_pos = win::getMousePos();
-    mouse_drag_init = mouse_pos;
-
-    mouse_pos.y += game_state->height;
-
     bool selected_nothing = true;
 
     for (auto &platform : *platforms) {
+      TraceLog(5, "Mouse: X: %f Y: %f\n     Rect: X: %f Y: %f W: %f H: %f",
+               mouse_pos.x, mouse_pos.y, platform.rect.x, platform.rect.y,
+               platform.rect.width, platform.rect.height);
       if (CheckCollisionPointRec(mouse_pos, platform.rect)) {
+        TraceLog(5, "Collide");
         selected_nothing = false;
 
         if (std::ranges::find(selected_platforms, &platform) !=
-                selected_platforms.end() &&
-            IsKeyDown(KEY_LEFT_SHIFT)) {
-          selected_platforms.erase(std::remove(selected_platforms.begin(),
-                                               selected_platforms.end(),
-                                               &platform),
-                                   selected_platforms.end());
-        } else if (selected_platforms.size() != 0 &&
-                   IsKeyDown(KEY_LEFT_SHIFT)) {
-          selected_platforms.push_back(&platform);
-        } else {
-          selected_platforms.clear();
-          selected_platforms.push_back(&platform);
-        }
-      }
-    }
+            selected_platforms.end()) {    // Platform already selected
+          if (IsKeyDown(KEY_LEFT_SHIFT)) { // Remove platform
+            selected_platforms.erase(std::remove(selected_platforms.begin(),
+                                                 selected_platforms.end(),
+                                                 &platform),
+                                     selected_platforms.end());
 
-    if (selected_nothing && IsKeyUp(KEY_LEFT_SHIFT)) {
-      selected_platforms = {};
-    }
-  } else if (auto mouse_pos = win::getMousePos();
-             IsMouseButtonReleased(MOUSE_BUTTON_LEFT) &&
-             mouse_drag_init.has_value() && mouse_pos.x != mouse_drag_init->x &&
-             mouse_pos.y != mouse_drag_init->y) {
-    mouse_pos.y += game_state->height;
+            state = Idle;
 
-    mouse_drag_init->y += game_state->height;
+            TraceLog(5, "Removed Platform");
 
-    const Rectangle selection_rect = {
-        std::min(mouse_pos.x, mouse_drag_init->x),
-        std::min(mouse_pos.y, mouse_drag_init->y),
-        std::abs(mouse_pos.x - mouse_drag_init->x),
-        std::abs(mouse_pos.y - mouse_drag_init->y)};
+            return;
+          } else { // Start Drag
+            state = Dragging;
+            mouse_drag_init = mouse_pos;
 
-    bool selected_nothing = true;
+            TraceLog(5, "Start Movement Drag");
+            return;
+          }
+        } else // Platform not selected
 
-    for (auto &platform : *platforms) {
-      if (CheckCollisionRecs(selection_rect, platform.rect)) {
-        selected_nothing = false;
+          if (IsKeyDown(KEY_LEFT_SHIFT)) { // Add platform to selection
+            selected_platforms.push_back(&platform);
 
-        if (std::ranges::find(selected_platforms, &platform) !=
-            selected_platforms.end()) {
-          selected_platforms.erase(std::remove(selected_platforms.begin(),
-                                               selected_platforms.end(),
-                                               &platform),
-                                   selected_platforms.end());
-        } else {
-          selected_platforms.push_back(&platform);
-        }
+            state = Idle;
+
+            TraceLog(5, "Add Platform");
+
+            return;
+          } else { // Set selection to platform
+            selected_platforms.clear();
+            selected_platforms.push_back(&platform);
+
+            state = Idle;
+
+            TraceLog(5, "Clear and Set Platform");
+
+            return;
+          }
       }
     }
 
     if (selected_nothing) {
-      selected_platforms = {};
-    }
-  }
+      state = Selecting;
+      mouse_drag_init = mouse_pos;
 
-  if (IsMouseButtonUp(MOUSE_BUTTON_LEFT)) {
+      TraceLog(5, "Start Selection Drag");
+
+      return;
+    }
+
+  } else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+
+    if (mouse_pos.x == mouse_drag_init->x && mouse_pos.y == mouse_pos.y &&
+        state == Selecting) { // Selection is a point
+      selected_platforms.clear();
+      state = Idle;
+      mouse_drag_init = {};
+
+      TraceLog(5, "Deselect All");
+
+      return;
+    }
+
+    if (state == Selecting) {
+      const Rectangle selection_rect = {
+          std::min(mouse_pos.x, mouse_drag_init->x),
+          std::min(mouse_pos.y, mouse_drag_init->y),
+          std::abs(mouse_pos.x - mouse_drag_init->x),
+          std::abs(mouse_pos.y - mouse_drag_init->y)};
+
+      bool selected_nothing = true;
+
+      for (auto &platform : *platforms) {
+        if (CheckCollisionRecs(selection_rect, platform.rect)) {
+          selected_nothing = false;
+
+          if (std::ranges::find(selected_platforms, &platform) !=
+              selected_platforms.end()) {
+            if (IsKeyDown(KEY_LEFT_SHIFT)) {
+              selected_platforms.erase(std::remove(selected_platforms.begin(),
+                                                   selected_platforms.end(),
+                                                   &platform),
+                                       selected_platforms.end());
+              TraceLog(5, "Remove Platform by Selection");
+            }
+          } else {
+            selected_platforms.push_back(&platform);
+
+            TraceLog(5, "Add Platform by Selection");
+          }
+        }
+      }
+
+      if (selected_nothing) {
+        selected_platforms = {};
+      }
+    }
     mouse_drag_init = {};
   }
+}
+
+void EditorView::render(const double deltaTime) {
+
+  update_selection();
 
   if (game_state->show_debug) {
     ImGui::Begin("EditorView");
 
     ImGui::DragFloat("Height:", &game_state->height);
+
+    ImGui::Text("State: %d", state);
 
     ImGui::Text("Num Selected: %zu", selected_platforms.size());
 
@@ -146,16 +198,18 @@ void EditorView::render(const double deltaTime) {
     win::drawRectangleLines(platform->rect, 2, GREEN);
   }
 
-  EndMode2D();
-
   if (mouse_drag_init.has_value()) {
     win::drawRectangleLines(
         Rectangle{std::min(mouse_drag_init->x, float(win::getMouseX())),
-                  std::min(mouse_drag_init->y, float(win::getMouseY())),
+                  std::min(mouse_drag_init->y,
+                           float(win::getMouseY() + game_state->height)),
                   std::abs(win::getMouseX() - mouse_drag_init->x),
-                  std::abs(win::getMouseY() - mouse_drag_init->y)},
+                  std::abs(win::getMouseY() + game_state->height -
+                           mouse_drag_init->y)},
         2, Color{255, 255, 255, 100});
   }
+
+  EndMode2D();
 }
 
 void EditorView::close() {}

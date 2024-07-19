@@ -22,8 +22,6 @@ App::App() {
   InitWindow(constants::window_width, constants::window_height,
              constants::window_title.c_str());
 
-  SetExitKey(KEY_Q);
-
   rlImGuiSetup(true);
 
   auto &io = ImGui::GetIO();

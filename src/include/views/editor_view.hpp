@@ -7,6 +7,8 @@
 
 #include <vector>
 
+enum EditorState { Idle, Selecting, Dragging };
+
 class EditorView : public View {
 private:
   GameStateP game_state;
@@ -18,7 +20,11 @@ private:
 
   std::vector<BasicPlatform *> selected_platforms;
 
+  EditorState state;
+
   std::optional<Vector2> mouse_drag_init;
+
+  void update_selection();
 
 public:
   EditorView(GameStateP state);
