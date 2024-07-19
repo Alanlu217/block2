@@ -9,6 +9,8 @@ double toWindowUnits(double y, double height);
 
 void drawRectangle(Rectangle rect, Color color);
 
+void drawRectangleLines(Rectangle rect, float width, Color color);
+
 void drawCircle(Vector2 pos, float radius, Color color);
 
 void drawTexture(TextureP texture, Vector2 pos, float rotation = 0,

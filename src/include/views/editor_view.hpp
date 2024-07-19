@@ -5,6 +5,8 @@
 #include "game_state.hpp"
 #include "view.hpp"
 
+#include <vector>
+
 class EditorView : public View {
 private:
   GameStateP game_state;
@@ -13,6 +15,10 @@ private:
   Background *back_ground;
 
   Camera2D *camera;
+
+  std::vector<BasicPlatform *> selected_platforms;
+
+  std::optional<Vector2> mouse_drag_init;
 
 public:
   EditorView(GameStateP state);

@@ -14,6 +14,11 @@ void drawRectangle(Rectangle rect, Color color) {
   DrawRectangleRec(rect, color);
 }
 
+void drawRectangleLines(Rectangle rect, float width, Color color) {
+  rect.y = toWindowUnits(rect.y, rect.height);
+  DrawRectangleLinesEx(rect, width, color);
+}
+
 void drawCircle(Vector2 pos, float radius, Color color) {
   DrawCircle(pos.x, toWindowUnits(pos.y, 0), radius, color);
 }
