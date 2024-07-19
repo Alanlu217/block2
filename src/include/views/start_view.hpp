@@ -7,8 +7,9 @@
 class StartView : public View {
 private:
   Rectangle start_button_rect;
+  Rectangle editor_button_rect;
 
-  FontP start_button_font;
+  FontP button_font;
 
 public:
   StartView();

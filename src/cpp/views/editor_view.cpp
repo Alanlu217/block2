@@ -61,7 +61,7 @@ void EditorView::update_selection() {
     bool selected_nothing = true;
 
     if (selected_platforms.size() == 1 &&
-        CheckCollisionPointRec(GetMousePosition(), Rectangle{0, 0, 320, 55})) {
+        CheckCollisionPointRec(GetMousePosition(), Rectangle{0, 0, 600, 55})) {
       return;
     }
 
@@ -258,6 +258,22 @@ void EditorView::render(const double deltaTime) {
 
     ImGui::End();
   }
+
+  ImGui::SetNextWindowPos(ImVec2{320, 0});
+  ImGui::SetNextWindowSize(ImVec2{280, 55});
+  auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+  ImGui::Begin("Editor", NULL, flags);
+
+  ImGui::Button("Play");
+  ImGui::SameLine();
+  ImGui::Button("Load");
+  ImGui::SameLine();
+  ImGui::Button("Save");
+  ImGui::SameLine();
+  ImGui::InputText("File", file_name, 50);
+  ImGui::SameLine();
+
+  ImGui::End();
 
   camera->target = {0, -static_cast<float>(game_state->height)};
 
