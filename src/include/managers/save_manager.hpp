@@ -9,4 +9,6 @@ std::string saveToFile(std::string file_name, GameStateP state);
 
 std::string loadFromFile(std::string file_name, GameStateP state);
 
+void loadDefault(GameStateP state);
+
 } // namespace SaveManager

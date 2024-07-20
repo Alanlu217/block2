@@ -1,6 +1,7 @@
 #include "managers/save_manager.hpp"
 #include "entities/basic_platform.hpp"
 
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 
@@ -15,7 +16,8 @@ std::string toString(const BasicPlatform &platform) {
 }
 
 std::string saveToFile(std::string save_name, GameStateP state) {
-  std::ofstream file(save_name + ".block", std::ios::trunc);
+  std::filesystem::create_directory("saves");
+  std::ofstream file("saves/" + save_name + ".block", std::ios::trunc);
 
   for (const auto &platform : state->entities.platforms) {
     file << "Platform " << toString(platform) << "\n";
@@ -27,7 +29,8 @@ std::string saveToFile(std::string save_name, GameStateP state) {
 }
 
 std::string loadFromFile(std::string save_name, GameStateP state) {
-  std::ifstream file(save_name + ".block", std::ios::in);
+  std::filesystem::create_directory("saves");
+  std::ifstream file("saves/" + save_name + ".block", std::ios::in);
 
   if (!file.good()) {
     return "File Not Found";
@@ -51,6 +54,17 @@ std::string loadFromFile(std::string save_name, GameStateP state) {
   }
 
   return save_name;
+}
+
+void loadDefault(GameStateP state) {
+  auto value = loadFromFile("default", state);
+
+  if (value == "File Not Found") {
+    std::vector<BasicPlatform> &platforms = state->entities.platforms;
+    platforms.push_back({0, 0, 600, 10});
+    platforms.push_back({40, 200, 200, 10});
+    platforms.push_back({300, 600, 200, 10});
+  }
 }
 
 } // namespace SaveManager

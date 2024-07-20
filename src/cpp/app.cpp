@@ -4,18 +4,19 @@
 #include "events/event.hpp"
 #include "events/toggle_debug_event.hpp"
 #include "game_state.hpp"
-#include "imgui.h"
 #include "managers/event_manager.hpp"
 #include "managers/resource_manager.hpp"
+#include "managers/save_manager.hpp"
 #include "managers/view_manager.hpp"
-#include "raylib.h"
-#include "rlImGui.h"
 #include "views/death_view.hpp"
 #include "views/editor_view.hpp"
 #include "views/game_view.hpp"
 #include "views/start_view.hpp"
 #include "window.hpp"
 
+#include "imgui.h"
+#include "raylib.h"
+#include "rlImGui.h"
 #include <memory>
 
 App::App() {
@@ -32,10 +33,7 @@ App::App() {
 
   game_state = std::make_shared<GameState>();
 
-  std::vector<BasicPlatform> &platforms = game_state->entities.platforms;
-  platforms.push_back({0, 0, 600, 10});
-  platforms.push_back({40, 200, 200, 10});
-  platforms.push_back({300, 600, 200, 10});
+  SaveManager::loadDefault(game_state);
 
   views["start"] = std::make_shared<StartView>();
   views["game"] = std::make_shared<GameView>(game_state);

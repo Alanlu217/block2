@@ -257,7 +257,10 @@ void EditorView::render(const double deltaTime) {
   ImGui::SetNextWindowPos(ImVec2{0, 0});
   ImGui::SetNextWindowSize(ImVec2{600, 55});
   auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-               ImGuiWindowFlags_AlwaysAutoResize;
+               ImGuiWindowFlags_AlwaysAutoResize |
+               ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking |
+               ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav |
+               ImGuiWindowFlags_NoFocusOnAppearing;
 
   if (selected_platforms.size() == 1) {
     ImGui::Begin("Platform Editor", NULL, flags);
