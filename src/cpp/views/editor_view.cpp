@@ -168,14 +168,14 @@ void EditorView::update_selection() {
               gui_rect[2] = platform->rect.width;
               gui_rect[3] = platform->rect.height;
             }
-
-            TraceLog(LOG_INFO, "Add Platform by Selection");
           }
         }
       }
 
       if (selected_nothing) {
         selected_platforms = {};
+      } else {
+        state = Idle;
       }
     }
     mouse_drag_init = {};
@@ -252,13 +252,12 @@ void EditorView::render(const double deltaTime) {
     ImGui::End();
   }
 
+  ImGui::SetNextWindowPos(ImVec2{0, 0});
+  ImGui::SetNextWindowSize(ImVec2{600, 55});
+  auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+               ImGuiWindowFlags_AlwaysAutoResize;
+
   if (selected_platforms.size() == 1) {
-
-    ImGui::SetNextWindowPos(ImVec2{0, 0});
-    ImGui::SetNextWindowSize(ImVec2{600, 55});
-
-    auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-
     ImGui::Begin("Platform Editor", NULL, flags);
 
     ImGui::DragFloat4("X, Y, W, H", gui_rect);
@@ -275,11 +274,41 @@ void EditorView::render(const double deltaTime) {
     selected_platforms[0]->rect.height = gui_rect[3];
 
     ImGui::End();
-  } else {
+  } else if (selected_platforms.size() > 1) {
+    ImGui::Begin("Multi Platform Editor", NULL, flags);
 
-    ImGui::SetNextWindowPos(ImVec2{0, 0});
-    ImGui::SetNextWindowSize(ImVec2{600, 55});
-    auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+    ImGui::DragFloat4("X, Y, W, H", gui_rect);
+
+    ImGui::SameLine();
+    ImGui::Text("Set All: ");
+    ImGui::SameLine();
+
+    if (ImGui::Button("X")) {
+      for (auto platform : selected_platforms) {
+        platform->rect.x = gui_rect[0];
+      }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Y")) {
+      for (auto platform : selected_platforms) {
+        platform->rect.y = gui_rect[1];
+      }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Width")) {
+      for (auto platform : selected_platforms) {
+        platform->rect.width = gui_rect[2];
+      }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Height")) {
+      for (auto platform : selected_platforms) {
+        platform->rect.height = gui_rect[3];
+      }
+    }
+
+    ImGui::End();
+  } else {
     ImGui::Begin("Editor", NULL, flags);
 
     if (ImGui::Button("Play")) {
