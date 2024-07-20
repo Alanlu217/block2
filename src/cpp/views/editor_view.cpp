@@ -62,9 +62,8 @@ void EditorView::update_selection() {
   if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
     bool selected_nothing = true;
 
-    if (selected_platforms.size() == 1 &&
-        CheckCollisionPointRec(GetMousePosition(), Rectangle{0, 0, 600, 55})) {
-      return;
+    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{0, 0, 600, 55})) {
+      return; // Mouse is in menu
     }
 
     for (auto &platform : *platforms) {
@@ -256,7 +255,7 @@ void EditorView::render(const double deltaTime) {
   if (selected_platforms.size() == 1) {
 
     ImGui::SetNextWindowPos(ImVec2{0, 0});
-    ImGui::SetNextWindowSize(ImVec2{320, 55});
+    ImGui::SetNextWindowSize(ImVec2{600, 55});
 
     auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 
@@ -276,29 +275,30 @@ void EditorView::render(const double deltaTime) {
     selected_platforms[0]->rect.height = gui_rect[3];
 
     ImGui::End();
+  } else {
+
+    ImGui::SetNextWindowPos(ImVec2{0, 0});
+    ImGui::SetNextWindowSize(ImVec2{600, 55});
+    auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+    ImGui::Begin("Editor", NULL, flags);
+
+    if (ImGui::Button("Play")) {
+      struct ChangeViewEvent event;
+      event.new_view = "game";
+      event.old_view = "editor";
+
+      EventManager::triggerEvent(event);
+    }
+    ImGui::SameLine();
+    ImGui::Button("Load");
+    ImGui::SameLine();
+    ImGui::Button("Save");
+    ImGui::SameLine();
+    ImGui::InputText("File", file_name, 50);
+    ImGui::SameLine();
+
+    ImGui::End();
   }
-
-  ImGui::SetNextWindowPos(ImVec2{320, 0});
-  ImGui::SetNextWindowSize(ImVec2{280, 55});
-  auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-  ImGui::Begin("Editor", NULL, flags);
-
-  if (ImGui::Button("Play")) {
-    struct ChangeViewEvent event;
-    event.new_view = "game";
-    event.old_view = "editor";
-
-    EventManager::triggerEvent(event);
-  }
-  ImGui::SameLine();
-  ImGui::Button("Load");
-  ImGui::SameLine();
-  ImGui::Button("Save");
-  ImGui::SameLine();
-  ImGui::InputText("File", file_name, 50);
-  ImGui::SameLine();
-
-  ImGui::End();
 
   camera->target = {0, -static_cast<float>(game_state->height)};
 
