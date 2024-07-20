@@ -199,25 +199,42 @@ void EditorView::update_selection() {
     }
   }
 
-  if (IsKeyPressed(KEY_BACKSPACE) || IsKeyPressed(KEY_DELETE)) {
-    for (auto plat : selected_platforms) {
-      auto pos =
-          std::find_if(platforms->begin(), platforms->end(),
-                       [plat](auto &platform) { return plat == &platform; });
-      if (pos != platforms->end())
-        platforms->erase(pos, platforms->end());
-    }
-    selected_platforms = {};
+  // Delete Platform
+  if (IsKeyPressed(KEY_D)) {
+    delete_selected_platforms();
   }
 
+  // Add new platform
   if (IsKeyPressed(KEY_A)) {
     platforms->push_back({mouse_pos.x, mouse_pos.y, 100, 10});
   }
 
-  if (selected_platforms.size() == 1 && IsKeyPressed(KEY_D)) {
+  // Copy platform dimensions
+  if (IsKeyPressed(KEY_C)) {
     Rectangle rect = selected_platforms[0]->rect;
-    platforms->push_back({rect.x, rect.y, rect.width, rect.height});
+    copied_platform = rect;
   }
+
+  // Pasts platform
+  if (IsKeyPressed(KEY_V)) {
+    selected_platforms.clear();
+
+    if (copied_platform.has_value()) {
+      platforms->emplace_back(mouse_pos.x, mouse_pos.y, copied_platform->width,
+                              copied_platform->height);
+    }
+  }
+}
+
+void EditorView::delete_selected_platforms() {
+  for (auto plat : selected_platforms) {
+    auto pos =
+        std::find_if(platforms->begin(), platforms->end(),
+                     [plat](auto &platform) { return plat == &platform; });
+    if (pos != platforms->end())
+      platforms->erase(pos, platforms->end());
+  }
+  selected_platforms = {};
 }
 
 void EditorView::render(const double deltaTime) {

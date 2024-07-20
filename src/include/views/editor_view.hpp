@@ -19,6 +19,7 @@ private:
   Camera2D *camera;
 
   std::vector<BasicPlatform *> selected_platforms;
+  std::optional<Rectangle> copied_platform;
 
   EditorState state;
 
@@ -28,6 +29,8 @@ private:
   char file_name[50] = "default";
 
   void update_selection();
+
+  void delete_selected_platforms();
 
 public:
   EditorView(GameStateP state);
