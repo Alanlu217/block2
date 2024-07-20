@@ -7,8 +7,9 @@
 class DeathView : public View {
 private:
   Rectangle restart_button_rect;
+  Rectangle exit_button_rect;
 
-  FontP restart_button_font;
+  FontP button_font;
 
 public:
   DeathView();

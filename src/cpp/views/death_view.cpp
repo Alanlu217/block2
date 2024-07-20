@@ -8,13 +8,16 @@
 #include "raylib.h"
 
 DeathView::DeathView() {
+  exit_button_rect = {float(constants::window_width) / 2 - 120,
+                      float(constants::window_height) / 2 - 120, 240, 80};
+
   restart_button_rect = {float(constants::window_width) / 2 - 120,
-                         float(constants::window_height) / 2 - 40, 240, 80};
+                         float(constants::window_height) / 2 + 40, 240, 80};
 }
 
 void DeathView::init() {
-  restart_button_font = ResourceManager::getFont("comfortaa.ttf");
-  SetTextureFilter(restart_button_font->texture, TEXTURE_FILTER_TRILINEAR);
+  button_font = ResourceManager::getFont("comfortaa.ttf");
+  SetTextureFilter(button_font->texture, TEXTURE_FILTER_TRILINEAR);
 };
 
 void DeathView::update(const double deltaTime) {}
@@ -22,6 +25,29 @@ void DeathView::update(const double deltaTime) {}
 void DeathView::render(const double deltaTime) {
   auto mouse_pos = GetMousePosition();
 
+  // Start Button
+  if (CheckCollisionPointRec(mouse_pos, exit_button_rect)) {
+    DrawRectangleRec(exit_button_rect, Color{255, 255, 255, 50});
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+      struct ChangeViewEvent event {
+        "death", "start"
+      };
+      EventManager::triggerEvent(event);
+    }
+  } else {
+    DrawRectangleRec(exit_button_rect, Color{255, 255, 255, 30});
+  }
+  DrawRectangleLinesEx(exit_button_rect, 2, Color{255, 255, 255, 50});
+
+  auto size = MeasureTextEx(*button_font, "Exit", 60, 0);
+
+  DrawTextEx(*button_font, "Exit",
+             {float(constants::window_width) / 2 - size.x / 2,
+              float(constants::window_height) / 2 - size.y / 2 - 77},
+             60, 0, WHITE);
+
+  // Editor Button
   if (CheckCollisionPointRec(mouse_pos, restart_button_rect)) {
     DrawRectangleRec(restart_button_rect, Color{255, 255, 255, 50});
 
@@ -36,12 +62,11 @@ void DeathView::render(const double deltaTime) {
   }
   DrawRectangleLinesEx(restart_button_rect, 2, Color{255, 255, 255, 50});
 
-  auto size = MeasureTextEx(*restart_button_font, "Restart", 60, 0);
-
-  DrawTextEx(*restart_button_font, "Restart",
+  size = MeasureTextEx(*button_font, "Restart", 60, 0);
+  DrawTextEx(*button_font, "Restart",
              {float(constants::window_width) / 2 - size.x / 2,
-              float(constants::window_height) / 2 - size.y / 2 + 3},
+              float(constants::window_height) / 2 - size.y / 2 + 83},
              60, 0, WHITE);
 }
 
-void DeathView::close() { restart_button_font = nullptr; }
+void DeathView::close() { button_font = nullptr; }

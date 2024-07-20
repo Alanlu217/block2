@@ -7,12 +7,14 @@
 #include "imgui.h"
 #include "managers/event_manager.hpp"
 #include "managers/physics_manager.hpp"
+#include "managers/save_manager.hpp"
 #include "raylib.h"
 #include "raymath.h"
 #include "window.hpp"
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <iostream>
 
 EditorView::EditorView(GameStateP state)
@@ -319,11 +321,18 @@ void EditorView::render(const double deltaTime) {
       EventManager::triggerEvent(event);
     }
     ImGui::SameLine();
-    ImGui::Button("Load");
+    if (ImGui::Button("Load")) {
+      std::strncpy(file_name,
+                   SaveManager::loadFromFile(file_name, game_state).c_str(),
+                   50);
+    }
     ImGui::SameLine();
-    ImGui::Button("Save");
+    if (ImGui::Button("Save")) {
+      std::strncpy(file_name,
+                   SaveManager::saveToFile(file_name, game_state).c_str(), 50);
+    }
     ImGui::SameLine();
-    ImGui::InputText("File", file_name, 50);
+    ImGui::InputText("Save Name", file_name, 50);
     ImGui::SameLine();
 
     ImGui::End();

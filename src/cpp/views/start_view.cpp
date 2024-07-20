@@ -8,11 +8,11 @@
 #include "raylib.h"
 
 StartView::StartView() {
-  start_button_rect = {float(constants::window_width) / 2 - 100,
-                       float(constants::window_height) / 2 - 120, 200, 80};
+  start_button_rect = {float(constants::window_width) / 2 - 120,
+                       float(constants::window_height) / 2 - 120, 240, 80};
 
-  editor_button_rect = {float(constants::window_width) / 2 - 100,
-                        float(constants::window_height) / 2 + 40, 200, 80};
+  editor_button_rect = {float(constants::window_width) / 2 - 120,
+                        float(constants::window_height) / 2 + 40, 240, 80};
 }
 
 void StartView::init() {
