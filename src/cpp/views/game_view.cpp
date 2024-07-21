@@ -12,7 +12,7 @@ GameView::GameView(GameStateP state)
       camera(&state->game_camera), back_ground(&state->entities.back_ground) {}
 
 void GameView::init() {
-  squircle->pos = {300.0f - float(squircle->width) / 2, 400};
+  squircle->pos = {300.0f - float(squircle->width) / 2, 100};
   squircle->vel = {0, 0};
 
   *camera = Camera2D{};

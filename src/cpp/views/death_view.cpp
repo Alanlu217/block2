@@ -9,10 +9,10 @@
 
 DeathView::DeathView() {
   exit_button_rect = {float(constants::window_width) / 2 - 120,
-                      float(constants::window_height) / 2 - 120, 240, 80};
+                      float(constants::window_height) / 2 + 40, 240, 80};
 
   restart_button_rect = {float(constants::window_width) / 2 - 120,
-                         float(constants::window_height) / 2 + 40, 240, 80};
+                         float(constants::window_height) / 2 - 120, 240, 80};
 }
 
 void DeathView::init() {
@@ -44,7 +44,7 @@ void DeathView::render(const double deltaTime) {
 
   DrawTextEx(*button_font, "Exit",
              {float(constants::window_width) / 2 - size.x / 2,
-              float(constants::window_height) / 2 - size.y / 2 - 77},
+              float(constants::window_height) / 2 - size.y / 2 + 83},
              60, 0, WHITE);
 
   // Editor Button
@@ -65,7 +65,7 @@ void DeathView::render(const double deltaTime) {
   size = MeasureTextEx(*button_font, "Restart", 60, 0);
   DrawTextEx(*button_font, "Restart",
              {float(constants::window_width) / 2 - size.x / 2,
-              float(constants::window_height) / 2 - size.y / 2 + 83},
+              float(constants::window_height) / 2 - size.y / 2 - 77},
              60, 0, WHITE);
 }
 
