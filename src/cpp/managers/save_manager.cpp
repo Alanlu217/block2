@@ -2,6 +2,7 @@
 
 #include "entities/objects/basic_platform.hpp"
 #include "entities/objects/object.hpp"
+#include "game_state.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -20,7 +21,7 @@ ObjectP toObject(std::string_view object) {
   return nullptr;
 }
 
-std::string saveToFile(std::string save_name, GameStateP state) {
+std::string saveObjectsToFile(std::string save_name, GameStateP state) {
   std::filesystem::create_directory("saves");
   std::ofstream file("saves/" + save_name + ".block", std::ios::trunc);
 
@@ -33,8 +34,7 @@ std::string saveToFile(std::string save_name, GameStateP state) {
   return save_name;
 }
 
-std::string loadFromFile(std::string save_name, GameStateP state) {
-  std::filesystem::create_directory("saves");
+std::string loadObjectsFromFile(std::string save_name, GameStateP state) {
   std::ifstream file("saves/" + save_name + ".block", std::ios::in);
 
   if (!file.good()) {
@@ -60,15 +60,65 @@ std::string loadFromFile(std::string save_name, GameStateP state) {
   return save_name;
 }
 
+std::string saveScoreToFile(std::string save_name, GameStateP state) {
+  std::filesystem::create_directory("scores");
+  std::ofstream file("scores/" + save_name + ".score", std::ios::trunc);
+
+  file << "MaxHeight " << state->max_height << "\n";
+
+  return save_name;
+}
+
+std::string loadScoreFromFile(std::string save_name, GameStateP state) {
+  std::ifstream file("scores/" + save_name + ".score", std::ios::in);
+
+  if (!file.good()) {
+    return "File Not Found";
+  }
+  std::string type;
+  file >> type;
+
+  float max_height;
+
+  file >> max_height;
+
+  state->max_height = max_height;
+
+  return save_name;
+}
+
+std::string saveToFile(std::string save_name, GameStateP state) {
+  if (std::string val = saveObjectsToFile(save_name, state); val != save_name) {
+    return val;
+  }
+
+  return saveScoreToFile(save_name, state);
+}
+
+std::string loadFromFile(std::string save_name, GameStateP state) {
+  if (std::string val = loadObjectsFromFile(save_name, state);
+      val != save_name) {
+    return val;
+  }
+
+  state->name = save_name;
+
+  return loadObjectsFromFile(save_name, state);
+}
+
 void loadDefault(GameStateP state) {
-  auto value = loadFromFile("default", state);
+  auto value = loadFromFile(state->name, state);
 
   if (value == "File Not Found") {
     std::vector<ObjectP> &platforms = state->objects;
     platforms.push_back(std::make_unique<BasicPlatform>(0, 0, 600, 10));
     platforms.push_back(std::make_unique<BasicPlatform>(40, 200, 200, 10));
     platforms.push_back(std::make_unique<BasicPlatform>(300, 600, 200, 10));
+
+    state->max_height = 0;
   }
+
+  loadScoreFromFile(state->name, state);
 }
 
 } // namespace SaveManager

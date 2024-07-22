@@ -41,6 +41,7 @@ void GameView::render(const double deltaTime) {
     ImGui::Begin("GameView");
 
     ImGui::DragFloat("Height:", &game_state->height);
+    ImGui::DragFloat("Max Height:", &game_state->max_height);
 
     ImGui::Text("Squircle:\nPos: %f, %f\nVel: %f, %f\nGrounded: %d",
                 squircle->pos.x, squircle->pos.y, squircle->vel.x,

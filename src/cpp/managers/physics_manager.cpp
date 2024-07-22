@@ -7,6 +7,7 @@
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
+#include "managers/save_manager.hpp"
 #include "window.hpp"
 
 #include <algorithm>
@@ -20,6 +21,8 @@ void update(const double delta_time, GameStateP game_state) {
   // Update height
   // Currently linear, could be logarithmic later
   game_state->height += delta_time * constants::game::height_increase_per_s;
+
+  game_state->max_height = std::max(game_state->max_height, game_state->height);
 
   // Make QOL reference to squircle
   Squircle &squircle = game_state->entities.squircle;
@@ -118,6 +121,8 @@ void update(const double delta_time, GameStateP game_state) {
   }
 
   if (squircle.pos.y + squircle.width < game_state->height) {
+    SaveManager::saveScoreToFile(game_state->name, game_state);
+
     struct ChangeViewEvent event {
       "game", "death"
     };

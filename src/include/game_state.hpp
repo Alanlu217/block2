@@ -11,11 +11,12 @@
 #include <vector>
 
 struct GameState {
-  std::string name = "block";
+  std::string name = "default";
 
   bool show_debug = false;
 
   float height = 0;
+  float max_height = 0;
 
   Camera2D game_camera;
 
