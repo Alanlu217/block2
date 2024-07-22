@@ -1,13 +1,13 @@
 #include "entities/dragger.hpp"
 
 #include "constants.hpp"
-#include "imgui.h"
 #include "managers/resource_manager.hpp"
-#include "raylib.h"
 #include "window.hpp"
 
 #include <cmath>
+#include <imgui.h>
 #include <iostream>
+#include <raylib.h>
 
 Dragger::Dragger() {
   direction_arrow_texture = ResourceManager::getTexture("direction_arrow.png");

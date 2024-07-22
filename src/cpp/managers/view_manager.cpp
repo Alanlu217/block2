@@ -1,5 +1,7 @@
 #include "managers/view_manager.hpp"
+
 #include "views/view.hpp"
+
 #include <algorithm>
 
 std::vector<ViewP> ViewManager::active_views;

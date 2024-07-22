@@ -1,10 +1,11 @@
 #include "entities/squircle.hpp"
+
 #include "constants.hpp"
 #include "managers/resource_manager.hpp"
-#include "raylib.h"
 #include "window.hpp"
 
 #include <iostream>
+#include <raylib.h>
 
 Squircle::Squircle() {
   squircle_texture = ResourceManager::getTexture("squircle.png");

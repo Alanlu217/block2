@@ -1,7 +1,8 @@
 #pragma once
 
 #include "managers/resource_manager.hpp"
-#include "raylib.h"
+
+#include <raylib.h>
 
 class Squircle {
 private:

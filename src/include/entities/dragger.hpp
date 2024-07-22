@@ -2,8 +2,9 @@
 
 #include "entities/squircle.hpp"
 #include "managers/resource_manager.hpp"
-#include "raylib.h"
+
 #include <optional>
+#include <raylib.h>
 
 class Dragger {
 private:

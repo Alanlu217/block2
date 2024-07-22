@@ -1,10 +1,11 @@
 #include "views/game_view.hpp"
 
 #include "game_state.hpp"
-#include "imgui.h"
 #include "managers/physics_manager.hpp"
-#include "raylib.h"
 #include "window.hpp"
+
+#include <imgui.h>
+#include <raylib.h>
 
 GameView::GameView(GameStateP state)
     : game_state(state), platforms(&state->entities.platforms),

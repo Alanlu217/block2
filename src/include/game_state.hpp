@@ -4,9 +4,9 @@
 #include "entities/basic_platform.hpp"
 #include "entities/dragger.hpp"
 #include "entities/squircle.hpp"
-#include "raylib.h"
 
 #include <memory>
+#include <raylib.h>
 #include <string>
 #include <vector>
 

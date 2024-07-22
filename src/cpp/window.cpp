@@ -1,7 +1,8 @@
 #include "window.hpp"
+
 #include "constants.hpp"
 
-#include "raylib.h"
+#include <raylib.h>
 
 namespace win {
 

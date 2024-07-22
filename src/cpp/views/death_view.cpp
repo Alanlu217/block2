@@ -1,11 +1,11 @@
 #include "views/death_view.hpp"
 
 #include "constants.hpp"
-
 #include "events/event.hpp"
 #include "managers/event_manager.hpp"
 #include "managers/resource_manager.hpp"
-#include "raylib.h"
+
+#include <raylib.h>
 
 DeathView::DeathView() {
   exit_button_rect = {float(constants::window_width) / 2 - 120,

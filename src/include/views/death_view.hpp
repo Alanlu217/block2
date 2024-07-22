@@ -1,7 +1,6 @@
 #pragma once
 
 #include "managers/resource_manager.hpp"
-#include "raylib.h"
 #include "view.hpp"
 
 class DeathView : public View {

@@ -1,5 +1,6 @@
 #include "managers/resource_manager.hpp"
-#include "raylib.h"
+
+#include <raylib.h>
 #include <sstream>
 
 std::map<std::string, TextureP> ResourceManager::textures;

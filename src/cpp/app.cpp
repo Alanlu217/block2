@@ -14,10 +14,10 @@
 #include "views/start_view.hpp"
 #include "window.hpp"
 
-#include "imgui.h"
-#include "raylib.h"
-#include "rlImGui.h"
+#include <imgui.h>
 #include <memory>
+#include <raylib.h>
+#include <rlImGui.h>
 
 App::App() {
   SetTraceLogLevel(LOG_NONE);

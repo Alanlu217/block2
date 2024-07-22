@@ -1,9 +1,8 @@
 #pragma once
 
-#include "raylib.h"
-
 #include <map>
 #include <memory>
+#include <raylib.h>
 
 typedef std::shared_ptr<Font> FontP;
 typedef std::shared_ptr<Texture> TextureP;

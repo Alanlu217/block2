@@ -4,18 +4,18 @@
 #include "entities/basic_platform.hpp"
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
-#include "imgui.h"
 #include "managers/event_manager.hpp"
 #include "managers/physics_manager.hpp"
 #include "managers/save_manager.hpp"
-#include "raylib.h"
-#include "raymath.h"
 #include "window.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <imgui.h>
 #include <iostream>
+#include <raylib.h>
+#include <raymath.h>
 
 EditorView::EditorView(GameStateP state)
     : game_state(state), platforms(&state->entities.platforms),

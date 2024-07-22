@@ -6,11 +6,11 @@
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
-#include "raylib.h"
-
-#include "algorithm"
 #include "window.hpp"
+
+#include <algorithm>
 #include <iostream>
+#include <raylib.h>
 
 namespace physics {
 

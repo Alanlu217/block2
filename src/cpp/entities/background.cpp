@@ -2,8 +2,9 @@
 
 #include "constants.hpp"
 #include "managers/resource_manager.hpp"
-#include "raylib.h"
 #include "window.hpp"
+
+#include <raylib.h>
 
 Background::Background() {
   background_texture = ResourceManager::getTexture("background.png");
