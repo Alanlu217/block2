@@ -1,8 +1,8 @@
 #pragma once
 
 #include "entities/background.hpp"
-#include "entities/basic_platform.hpp"
 #include "entities/dragger.hpp"
+#include "entities/objects/basic_platform.hpp"
 #include "entities/squircle.hpp"
 
 #include <memory>
@@ -25,10 +25,9 @@ struct GameState {
     Dragger dragger;
 
     Background back_ground;
-
-    std::vector<BasicPlatform> platforms;
-
   } entities;
+
+  std::vector<ObjectP> objects;
 };
 
 typedef std::shared_ptr<GameState> GameStateP;

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "entities/basic_platform.hpp"
+#include "entities/objects/basic_platform.hpp"
+#include "entities/objects/object.hpp"
 #include "entities/squircle.hpp"
 #include "game_state.hpp"
 #include "view.hpp"
@@ -11,7 +12,7 @@ private:
 
   Squircle *squircle;
   Dragger *dragger;
-  std::vector<BasicPlatform> *platforms;
+  std::vector<ObjectP> *objects;
   Background *back_ground;
 
   Camera2D *camera;

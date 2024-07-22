@@ -1,6 +1,7 @@
 #pragma once
 
-#include "entities/basic_platform.hpp"
+#include "entities/objects/basic_platform.hpp"
+#include "entities/objects/object.hpp"
 #include "entities/squircle.hpp"
 #include "game_state.hpp"
 #include "view.hpp"
@@ -13,13 +14,13 @@ class EditorView : public View {
 private:
   GameStateP game_state;
 
-  std::vector<BasicPlatform> *platforms;
+  std::vector<ObjectP> *objects;
   Background *back_ground;
 
   Camera2D *camera;
 
-  std::vector<BasicPlatform *> selected_platforms;
-  std::optional<Rectangle> copied_platform;
+  std::vector<Object *> selected_objects;
+  std::optional<ObjectP> copied_object;
 
   EditorState state;
 
@@ -30,7 +31,7 @@ private:
 
   void update_selection();
 
-  void delete_selected_platforms();
+  void delete_selected_objects();
 
 public:
   EditorView(GameStateP state);

@@ -1,6 +1,6 @@
 #include "app.hpp"
 
-#include "entities/basic_platform.hpp"
+#include "entities/objects/basic_platform.hpp"
 #include "events/event.hpp"
 #include "events/toggle_debug_event.hpp"
 #include "game_state.hpp"

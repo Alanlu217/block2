@@ -43,10 +43,11 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/views/editor_view.cpp"
     "src/cpp/views/death_view.cpp"
 
-    "src/cpp/entities/basic_platform.cpp"
     "src/cpp/entities/squircle.cpp"
     "src/cpp/entities/dragger.cpp"
     "src/cpp/entities/background.cpp"
+
+    "src/cpp/entities/objects/basic_platform.cpp"
 )
 
 target_include_directories(${PROJECT_NAME}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entities/basic_platform.hpp"
+#include "entities/objects/basic_platform.hpp"
 #include "entities/squircle.hpp"
 #include "game_state.hpp"
 

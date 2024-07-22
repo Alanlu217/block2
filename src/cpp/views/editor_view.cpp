@@ -1,7 +1,7 @@
 #include "views/editor_view.hpp"
 
 #include "constants.hpp"
-#include "entities/basic_platform.hpp"
+#include "entities/objects/basic_platform.hpp"
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
@@ -14,12 +14,13 @@
 #include <cstring>
 #include <imgui.h>
 #include <iostream>
+#include <memory>
 #include <raylib.h>
 #include <raymath.h>
 
 EditorView::EditorView(GameStateP state)
-    : game_state(state), platforms(&state->entities.platforms),
-      camera(&state->game_camera), back_ground(&state->entities.back_ground) {}
+    : game_state(state), objects(&state->objects), camera(&state->game_camera),
+      back_ground(&state->entities.back_ground) {}
 
 void EditorView::init() {
   *camera = Camera2D{};
@@ -31,7 +32,7 @@ void EditorView::init() {
   game_state->height = 0;
 
   state = Idle;
-  selected_platforms = {};
+  selected_objects = {};
   mouse_drag_init = {};
 };
 
@@ -68,17 +69,17 @@ void EditorView::update_selection() {
       return; // Mouse is in menu
     }
 
-    for (auto &platform : *platforms) {
-      if (CheckCollisionPointRec(mouse_pos, platform.rect)) {
+    for (auto &object : *objects) {
+      if (CheckCollisionPointRec(mouse_pos, *object->getBounds())) { //
         selected_nothing = false;
 
-        if (std::ranges::find(selected_platforms, &platform) !=
-            selected_platforms.end()) {    // Platform already selected
-          if (IsKeyDown(KEY_LEFT_SHIFT)) { // Remove platform
-            selected_platforms.erase(std::remove(selected_platforms.begin(),
-                                                 selected_platforms.end(),
-                                                 &platform),
-                                     selected_platforms.end());
+        if (std::ranges::find(selected_objects, object.get()) !=
+            selected_objects.end()) {      // object already selected
+          if (IsKeyDown(KEY_LEFT_SHIFT)) { // Remove object
+            selected_objects.erase(std::remove(selected_objects.begin(),
+                                               selected_objects.end(),
+                                               object.get()),
+                                   selected_objects.end());
 
             state = Idle;
 
@@ -89,22 +90,22 @@ void EditorView::update_selection() {
 
             return;
           }
-        } else // Platform not selected
+        } else // object not selected
 
-          if (IsKeyDown(KEY_LEFT_SHIFT)) { // Add platform to selection
-            selected_platforms.push_back(&platform);
+          if (IsKeyDown(KEY_LEFT_SHIFT)) { // Add object to selection
+            selected_objects.push_back(object.get());
 
             state = Idle;
 
             return;
-          } else { // Set selection to platform
-            selected_platforms.clear();
-            selected_platforms.push_back(&platform);
+          } else { // Set selection to object
+            selected_objects.clear();
+            selected_objects.push_back(object.get());
 
-            gui_rect[0] = platform.rect.x;
-            gui_rect[1] = platform.rect.y;
-            gui_rect[2] = platform.rect.width;
-            gui_rect[3] = platform.rect.height;
+            gui_rect[0] = object->getBounds()->x;
+            gui_rect[1] = object->getBounds()->y;
+            gui_rect[2] = object->getBounds()->width;
+            gui_rect[3] = object->getBounds()->height;
 
             mouse_drag_init = mouse_pos;
 
@@ -131,7 +132,7 @@ void EditorView::update_selection() {
 
     if (mouse_pos.x == mouse_drag_init->x && mouse_pos.y == mouse_pos.y &&
         state == Selecting) { // Selection is a point
-      selected_platforms.clear();
+      selected_objects.clear();
       state = Idle;
       mouse_drag_init = {};
 
@@ -147,35 +148,35 @@ void EditorView::update_selection() {
 
       bool selected_nothing = true;
 
-      for (auto &platform : *platforms) {
-        if (CheckCollisionRecs(selection_rect, platform.rect)) {
+      for (auto &object : *objects) {
+        if (CheckCollisionRecs(selection_rect, *object->getBounds())) {
           selected_nothing = false;
 
-          if (std::ranges::find(selected_platforms, &platform) !=
-              selected_platforms.end()) {
+          if (std::ranges::find(selected_objects, object.get()) !=
+              selected_objects.end()) {
             if (IsKeyDown(KEY_LEFT_SHIFT)) {
-              selected_platforms.erase(std::remove(selected_platforms.begin(),
-                                                   selected_platforms.end(),
-                                                   &platform),
-                                       selected_platforms.end());
+              selected_objects.erase(std::remove(selected_objects.begin(),
+                                                 selected_objects.end(),
+                                                 object.get()),
+                                     selected_objects.end());
             }
           } else {
-            selected_platforms.push_back(&platform);
+            selected_objects.push_back(object.get());
 
-            if (selected_platforms.size() == 1) {
-              auto &platform = selected_platforms[0];
+            if (selected_objects.size() == 1) {
+              auto &object = selected_objects[0];
 
-              gui_rect[0] = platform->rect.x;
-              gui_rect[1] = platform->rect.y;
-              gui_rect[2] = platform->rect.width;
-              gui_rect[3] = platform->rect.height;
+              gui_rect[0] = object->getBounds()->x;
+              gui_rect[1] = object->getBounds()->y;
+              gui_rect[2] = object->getBounds()->width;
+              gui_rect[3] = object->getBounds()->height;
             }
           }
         }
       }
 
       if (selected_nothing) {
-        selected_platforms = {};
+        selected_objects = {};
       } else {
         state = Idle;
       }
@@ -185,57 +186,59 @@ void EditorView::update_selection() {
     auto delta = Vector2Subtract(mouse_pos, *mouse_drag_init);
     mouse_drag_init = mouse_pos;
 
-    for (auto platform : selected_platforms) {
-      platform->rect.x += delta.x;
-      platform->rect.y += delta.y;
+    for (auto object : selected_objects) {
+      Rectangle *bounds = object->getBounds();
+
+      object->setPosition(bounds->x + delta.x, bounds->y + delta.y);
     }
 
-    if (selected_platforms.size() == 1) {
-      auto &platform = selected_platforms[0];
+    if (selected_objects.size() == 1) {
+      auto &object = selected_objects[0];
 
-      gui_rect[0] = platform->rect.x;
-      gui_rect[1] = platform->rect.y;
-      gui_rect[2] = platform->rect.width;
-      gui_rect[3] = platform->rect.height;
+      // gui_rect[0] = object->rect.x;
+      // gui_rect[1] = object->rect.y;
+      // gui_rect[2] = object->rect.width;
+      // gui_rect[3] = object->rect.height;
     }
   }
 
-  // Delete Platform
+  // Delete object
   if (IsKeyPressed(KEY_D)) {
-    delete_selected_platforms();
+    delete_selected_objects();
   }
 
-  // Add new platform
+  // Add new object
   if (IsKeyPressed(KEY_A)) {
-    platforms->push_back({mouse_pos.x, mouse_pos.y, 100, 10});
+    objects->push_back(
+        std::make_unique<BasicPlatform>(mouse_pos.x, mouse_pos.y, 100, 10));
   }
 
-  // Copy platform dimensions
+  // Copy object dimensions
   if (IsKeyPressed(KEY_C)) {
-    Rectangle rect = selected_platforms[0]->rect;
-    copied_platform = rect;
+    copied_object = std::make_unique<BasicPlatform>(
+        *dynamic_cast<BasicPlatform *>(selected_objects[0]));
   }
 
-  // Pasts platform
+  // Pasts object
   if (IsKeyPressed(KEY_V)) {
-    selected_platforms.clear();
+    selected_objects.clear();
 
-    if (copied_platform.has_value()) {
-      platforms->emplace_back(mouse_pos.x, mouse_pos.y, copied_platform->width,
-                              copied_platform->height);
+    if (copied_object.has_value()) {
+      objects->push_back(std::make_unique<BasicPlatform>(
+          *dynamic_cast<BasicPlatform *>(copied_object->get())));
     }
   }
 }
 
-void EditorView::delete_selected_platforms() {
-  for (auto plat : selected_platforms) {
+void EditorView::delete_selected_objects() {
+  for (auto plat : selected_objects) {
     auto pos =
-        std::find_if(platforms->begin(), platforms->end(),
-                     [plat](auto &platform) { return plat == &platform; });
-    if (pos != platforms->end())
-      platforms->erase(pos, platforms->end());
+        std::find_if(objects->begin(), objects->end(),
+                     [plat](auto &object) { return plat == object.get(); });
+    if (pos != objects->end())
+      objects->erase(pos, objects->end());
   }
-  selected_platforms = {};
+  selected_objects = {};
 }
 
 void EditorView::render(const double deltaTime) {
@@ -249,7 +252,7 @@ void EditorView::render(const double deltaTime) {
 
     ImGui::Text("State: %d", state);
 
-    ImGui::Text("Num Selected: %zu", selected_platforms.size());
+    ImGui::Text("Num Selected: %zu", selected_objects.size());
 
     ImGui::End();
   }
@@ -262,8 +265,8 @@ void EditorView::render(const double deltaTime) {
                ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav |
                ImGuiWindowFlags_NoFocusOnAppearing;
 
-  if (selected_platforms.size() == 1) {
-    ImGui::Begin("Platform Editor", NULL, flags);
+  if (selected_objects.size() == 1) {
+    ImGui::Begin("object Editor", NULL, flags);
 
     ImGui::DragFloat4("X, Y, W, H", gui_rect);
 
@@ -273,14 +276,14 @@ void EditorView::render(const double deltaTime) {
     gui_rect[0] =
         std::min(float(constants::window_width - gui_rect[2]), gui_rect[0]);
 
-    selected_platforms[0]->rect.x = gui_rect[0];
-    selected_platforms[0]->rect.y = gui_rect[1];
-    selected_platforms[0]->rect.width = gui_rect[2];
-    selected_platforms[0]->rect.height = gui_rect[3];
+    // selected_objects[0]->rect.x = gui_rect[0];
+    // selected_objects[0]->rect.y = gui_rect[1];
+    // selected_objects[0]->rect.width = gui_rect[2];
+    // selected_objects[0]->rect.height = gui_rect[3];
 
     ImGui::End();
-  } else if (selected_platforms.size() > 1) {
-    ImGui::Begin("Multi Platform Editor", NULL, flags);
+  } else if (selected_objects.size() > 1) {
+    ImGui::Begin("Multi object Editor", NULL, flags);
 
     ImGui::DragFloat4("X, Y, W, H", gui_rect);
 
@@ -288,29 +291,29 @@ void EditorView::render(const double deltaTime) {
     ImGui::Text("Set All: ");
     ImGui::SameLine();
 
-    if (ImGui::Button("X")) {
-      for (auto platform : selected_platforms) {
-        platform->rect.x = gui_rect[0];
-      }
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Y")) {
-      for (auto platform : selected_platforms) {
-        platform->rect.y = gui_rect[1];
-      }
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Width")) {
-      for (auto platform : selected_platforms) {
-        platform->rect.width = gui_rect[2];
-      }
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Height")) {
-      for (auto platform : selected_platforms) {
-        platform->rect.height = gui_rect[3];
-      }
-    }
+    // if (ImGui::Button("X")) {
+    //   for (auto object : selected_objects) {
+    //     object->rect.x = gui_rect[0];
+    //   }
+    // }
+    // ImGui::SameLine();
+    // if (ImGui::Button("Y")) {
+    //   for (auto object : selected_objects) {
+    //     object->rect.y = gui_rect[1];
+    //   }
+    // }
+    // ImGui::SameLine();
+    // if (ImGui::Button("Width")) {
+    //   for (auto object : selected_objects) {
+    //     object->rect.width = gui_rect[2];
+    //   }
+    // }
+    // ImGui::SameLine();
+    // if (ImGui::Button("Height")) {
+    //   for (auto object : selected_objects) {
+    //     object->rect.height = gui_rect[3];
+    //   }
+    // }
 
     ImGui::End();
   } else {
@@ -348,12 +351,12 @@ void EditorView::render(const double deltaTime) {
   back_ground->update(game_state->height);
   back_ground->draw();
 
-  for (auto &platform : *platforms) {
-    platform.draw();
+  for (auto &object : *objects) {
+    object->draw();
   }
 
-  for (auto platform : selected_platforms) {
-    win::drawRectangleLines(platform->rect, 2, GREEN);
+  for (auto object : selected_objects) {
+    win::drawRectangleLines(*object->getBounds(), 2, GREEN);
   }
 
   if (mouse_drag_init.has_value()) {

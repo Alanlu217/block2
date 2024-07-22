@@ -1,7 +1,8 @@
 #include "managers/physics_manager.hpp"
 
 #include "constants.hpp"
-#include "entities/basic_platform.hpp"
+#include "entities/objects/basic_platform.hpp"
+#include "entities/objects/object.hpp"
 #include "entities/squircle.hpp"
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
@@ -49,15 +50,15 @@ void update(const double delta_time, GameStateP game_state) {
   }
 
   // Check for platform collisions
-  for (BasicPlatform &platform : game_state->entities.platforms) {
-    Rectangle &bounds = platform.rect;
+  for (ObjectP &object : game_state->objects) {
+    Rectangle *bounds = object->getBounds();
 
     // Collision detected
-    if (CheckCollisionRecs(bounds, squircle.getBounds())) {
-      int leftOverlap = squircle.pos.x + squircle.width - bounds.x;
-      int rightOverlap = bounds.x + bounds.width - squircle.pos.x;
-      int topOverlap = bounds.y + bounds.height - squircle.pos.y;
-      int bottomOverlap = squircle.pos.y + squircle.width - bounds.y;
+    if (CheckCollisionRecs(*bounds, squircle.getBounds())) {
+      int leftOverlap = squircle.pos.x + squircle.width - bounds->x;
+      int rightOverlap = bounds->x + bounds->width - squircle.pos.x;
+      int topOverlap = bounds->y + bounds->height - squircle.pos.y;
+      int bottomOverlap = squircle.pos.y + squircle.width - bounds->y;
 
       // Find the direction with minimum overlap distance
       int minOverlap =
@@ -66,7 +67,7 @@ void update(const double delta_time, GameStateP game_state) {
       squircle.grounded = false;
 
       if (minOverlap == topOverlap) {
-        squircle.pos.y = bounds.y + bounds.height;
+        squircle.pos.y = bounds->y + bounds->height;
         squircle.vel.y = abs(squircle.vel.y *
                              constants::squircle::bounce_velocity_reduction);
 
@@ -78,26 +79,26 @@ void update(const double delta_time, GameStateP game_state) {
         squircle.grounded = true;
 
       } else if (minOverlap == bottomOverlap) {
-        squircle.pos.y = bounds.y - squircle.width;
+        squircle.pos.y = bounds->y - squircle.width;
         squircle.vel.y = -abs(squircle.vel.y);
 
       } else if (minOverlap == leftOverlap) {
-        squircle.pos.x = bounds.x - squircle.width;
+        squircle.pos.x = bounds->x - squircle.width;
         squircle.vel.x = -abs(squircle.vel.x);
 
       } else if (minOverlap == rightOverlap) {
-        squircle.pos.x = bounds.x + bounds.width;
+        squircle.pos.x = bounds->x + bounds->width;
         squircle.vel.x = abs(squircle.vel.x);
       }
     }
 
     // If sufficiently close to ground, apply ground friction
-    bool horizontalOverlap = squircle.pos.x < bounds.x + bounds.width &&
-                             bounds.x < squircle.pos.x + squircle.width;
+    bool horizontalOverlap = squircle.pos.x < bounds->x + bounds->width &&
+                             bounds->x < squircle.pos.x + squircle.width;
     if (horizontalOverlap &&
-        squircle.pos.y <= bounds.y + bounds.height +
+        squircle.pos.y <= bounds->y + bounds->height +
                               constants::squircle::ground_friction_height &&
-        squircle.pos.y + squircle.width >= bounds.y &&
+        squircle.pos.y + squircle.width >= bounds->y &&
         squircle.vel.y <= constants::squircle::velocity_deadband) {
       squircle.vel.x = squircle.vel.x -
                        squircle.vel.x *

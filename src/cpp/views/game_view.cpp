@@ -8,7 +8,7 @@
 #include <raylib.h>
 
 GameView::GameView(GameStateP state)
-    : game_state(state), platforms(&state->entities.platforms),
+    : game_state(state), objects(&state->objects),
       squircle(&state->entities.squircle), dragger(&state->entities.dragger),
       camera(&state->game_camera), back_ground(&state->entities.back_ground) {}
 
@@ -54,8 +54,8 @@ void GameView::render(const double deltaTime) {
   back_ground->update(game_state->height);
   back_ground->draw();
 
-  for (auto &platform : *platforms) {
-    platform.draw();
+  for (auto &platform : *objects) {
+    platform->draw();
   }
 
   squircle->draw();
