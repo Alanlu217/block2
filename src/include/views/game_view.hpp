@@ -17,6 +17,8 @@ private:
 
   Camera2D *camera;
 
+  bool haxs = false;
+
 public:
   GameView(GameStateP state);
 

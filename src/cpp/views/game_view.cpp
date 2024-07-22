@@ -28,7 +28,7 @@ void GameView::init() {
 void GameView::update(const double deltaTime) {
   if (auto drag = dragger->update(); drag.has_value()) {
     TraceLog(LOG_INFO, "Drag at: X: %f, Y: %f", drag->x, drag->y);
-    if (squircle->grounded) {
+    if (squircle->grounded || haxs) {
       squircle->vel = *drag;
     }
   }
@@ -45,6 +45,13 @@ void GameView::render(const double deltaTime) {
     ImGui::Text("Squircle:\nPos: %f, %f\nVel: %f, %f\nGrounded: %d",
                 squircle->pos.x, squircle->pos.y, squircle->vel.x,
                 squircle->vel.y, squircle->grounded);
+
+    if (ImGui::Button("Haxs")) {
+      haxs = !haxs;
+    }
+
+    ImGui::SameLine();
+    ImGui::Text(": %d", haxs);
 
     ImGui::End();
   }
