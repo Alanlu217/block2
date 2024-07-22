@@ -2,6 +2,7 @@
 
 #include "entities/background.hpp"
 #include "entities/dragger.hpp"
+#include "entities/height_display.hpp"
 #include "entities/objects/basic_platform.hpp"
 #include "entities/squircle.hpp"
 
@@ -24,6 +25,8 @@ struct GameState {
     Squircle squircle;
 
     Dragger dragger;
+
+    HeightDisplay height_display;
 
     Background back_ground;
   } entities;

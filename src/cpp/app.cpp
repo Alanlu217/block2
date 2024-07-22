@@ -62,6 +62,7 @@ App::App() {
 }
 
 App::~App() {
+  SaveManager::saveScoreToFile(game_state->name, game_state);
   rlImGuiShutdown();
   CloseWindow();
 }

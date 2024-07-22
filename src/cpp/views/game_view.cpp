@@ -72,6 +72,9 @@ void GameView::render(const double deltaTime) {
   dragger->drawArrow(*squircle);
   EndMode2D();
 
+  game_state->entities.height_display.draw(game_state->height,
+                                           game_state->max_height);
+
   dragger->drawCircle();
 }
 
