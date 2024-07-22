@@ -5,6 +5,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -17,14 +18,6 @@ ObjectP toObject(std::string_view object) {
   }
 
   return nullptr;
-}
-
-std::string toString(const BasicPlatform &platform) {
-  std::stringstream s;
-  s << platform.rect.x << " " << platform.rect.y << " " << platform.rect.width
-    << " " << platform.rect.height;
-
-  return s.str();
 }
 
 std::string saveToFile(std::string save_name, GameStateP state) {
@@ -50,8 +43,9 @@ std::string loadFromFile(std::string save_name, GameStateP state) {
   state->objects.clear();
 
   std::string type;
+  file >> type;
 
-  for (; type != "END"; file >> type) {
+  while (type != "END") {
     ObjectP object = toObject(type);
 
     std::string line;
@@ -59,6 +53,8 @@ std::string loadFromFile(std::string save_name, GameStateP state) {
     object->load(line);
 
     state->objects.push_back(std::move(object));
+
+    file >> type;
   }
 
   return save_name;

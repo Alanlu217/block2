@@ -39,9 +39,9 @@ void BasicPlatform::load(std::string_view object) {
   rect.height = height;
 }
 
-std::string_view BasicPlatform::save() {
+std::string BasicPlatform::save() {
   std::stringstream s;
   s << rect.x << " " << rect.y << " " << rect.width << " " << rect.height;
 
-  return s.view();
+  return s.str();
 }

@@ -6,9 +6,10 @@
 #include <string_view>
 
 class BasicPlatform : public Object {
-public:
+private:
   Rectangle rect;
 
+public:
   BasicPlatform();
   BasicPlatform(const BasicPlatform &platform);
   BasicPlatform(float x, float y, float width, float height);
@@ -27,5 +28,5 @@ public:
 
   void load(std::string_view object) override;
 
-  std::string_view save() override;
+  std::string save() override;
 };

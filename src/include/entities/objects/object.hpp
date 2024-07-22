@@ -23,7 +23,7 @@ public:
 
   virtual void load(std::string_view object) = 0;
 
-  virtual std::string_view save() = 0;
+  virtual std::string save() = 0;
 };
 
 typedef std::unique_ptr<Object> ObjectP;
