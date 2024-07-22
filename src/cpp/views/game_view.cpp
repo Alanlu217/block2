@@ -28,7 +28,9 @@ void GameView::init() {
 void GameView::update(const double deltaTime) {
   if (auto drag = dragger->update(); drag.has_value()) {
     TraceLog(LOG_INFO, "Drag at: X: %f, Y: %f", drag->x, drag->y);
-    squircle->vel = *drag;
+    if (squircle->grounded) {
+      squircle->vel = *drag;
+    }
   }
 
   physics::update(deltaTime, game_state);

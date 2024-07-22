@@ -39,6 +39,9 @@ void update(const double delta_time, GameStateP game_state) {
       static_cast<float>(delta_time * squircle.vel.x + squircle.pos.x),
       static_cast<float>(delta_time * squircle.vel.y + squircle.pos.y)};
 
+  // Reset squircle grounded
+  squircle.grounded = false;
+
   // Check for side wall collisions
   if (squircle.pos.x <= 0) {
     squircle.pos.x = 0;
@@ -63,8 +66,6 @@ void update(const double delta_time, GameStateP game_state) {
       // Find the direction with minimum overlap distance
       int minOverlap =
           std::min({leftOverlap, rightOverlap, topOverlap, bottomOverlap});
-
-      squircle.grounded = false;
 
       if (minOverlap == topOverlap) {
         squircle.pos.y = bounds->y + bounds->height;
