@@ -2,6 +2,7 @@
 
 #include "constants.hpp"
 #include "entities/objects/object.hpp"
+#include "imgui.h"
 #include "window.hpp"
 
 #include <raylib.h>
@@ -44,4 +45,17 @@ std::string BasicPlatform::save() {
   s << rect.x << " " << rect.y << " " << rect.width << " " << rect.height;
 
   return s.str();
+}
+
+void BasicPlatform::showEditorOptions() {
+  ImGui::PushItemWidth(100);
+  ImGui::DragFloat("##1", &rect.x);
+  ImGui::SameLine();
+  ImGui::DragFloat("##2", &rect.y);
+  ImGui::SameLine();
+  ImGui::DragFloat("##3", &rect.width);
+  ImGui::SameLine();
+  ImGui::DragFloat("##4", &rect.height);
+  ImGui::SameLine();
+  ImGui::Text("X Y W H");
 }

@@ -102,11 +102,6 @@ void EditorView::update_selection() {
             selected_objects.clear();
             selected_objects.push_back(object.get());
 
-            gui_rect[0] = object->getBounds()->x;
-            gui_rect[1] = object->getBounds()->y;
-            gui_rect[2] = object->getBounds()->width;
-            gui_rect[3] = object->getBounds()->height;
-
             mouse_drag_init = mouse_pos;
 
             state = Dragging;
@@ -165,11 +160,6 @@ void EditorView::update_selection() {
 
             if (selected_objects.size() == 1) {
               auto &object = selected_objects[0];
-
-              gui_rect[0] = object->getBounds()->x;
-              gui_rect[1] = object->getBounds()->y;
-              gui_rect[2] = object->getBounds()->width;
-              gui_rect[3] = object->getBounds()->height;
             }
           }
         }
@@ -268,52 +258,29 @@ void EditorView::render(const double deltaTime) {
   if (selected_objects.size() == 1) {
     ImGui::Begin("object Editor", NULL, flags);
 
-    ImGui::DragFloat4("X, Y, W, H", gui_rect);
-
-    gui_rect[2] = std::max(0.0f, gui_rect[2]);
-
-    gui_rect[0] = std::max(0.0f, gui_rect[0]);
-    gui_rect[0] =
-        std::min(float(constants::window_width - gui_rect[2]), gui_rect[0]);
-
-    // selected_objects[0]->rect.x = gui_rect[0];
-    // selected_objects[0]->rect.y = gui_rect[1];
-    // selected_objects[0]->rect.width = gui_rect[2];
-    // selected_objects[0]->rect.height = gui_rect[3];
+    selected_objects[0]->showEditorOptions();
 
     ImGui::End();
   } else if (selected_objects.size() > 1) {
     ImGui::Begin("Multi object Editor", NULL, flags);
 
-    ImGui::DragFloat4("X, Y, W, H", gui_rect);
+    ImGui::DragFloat2("X, Y", multi_object_editor_pos);
 
     ImGui::SameLine();
     ImGui::Text("Set All: ");
     ImGui::SameLine();
 
-    // if (ImGui::Button("X")) {
-    //   for (auto object : selected_objects) {
-    //     object->rect.x = gui_rect[0];
-    //   }
-    // }
-    // ImGui::SameLine();
-    // if (ImGui::Button("Y")) {
-    //   for (auto object : selected_objects) {
-    //     object->rect.y = gui_rect[1];
-    //   }
-    // }
-    // ImGui::SameLine();
-    // if (ImGui::Button("Width")) {
-    //   for (auto object : selected_objects) {
-    //     object->rect.width = gui_rect[2];
-    //   }
-    // }
-    // ImGui::SameLine();
-    // if (ImGui::Button("Height")) {
-    //   for (auto object : selected_objects) {
-    //     object->rect.height = gui_rect[3];
-    //   }
-    // }
+    if (ImGui::Button("X")) {
+      for (auto object : selected_objects) {
+        object->setPosition(multi_object_editor_pos[0], object->getBounds()->y);
+      }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Y")) {
+      for (auto object : selected_objects) {
+        object->setPosition(object->getBounds()->x, multi_object_editor_pos[1]);
+      }
+    }
 
     ImGui::End();
   } else {

@@ -26,7 +26,7 @@ private:
 
   std::optional<Vector2> mouse_drag_init;
 
-  float gui_rect[4] = {0, 0, 0, 0};
+  float multi_object_editor_pos[2] = {0, 0};
   char file_name[50] = "default";
 
   void update_selection();

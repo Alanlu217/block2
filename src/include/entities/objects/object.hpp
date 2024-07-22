@@ -24,6 +24,8 @@ public:
   virtual void load(std::string_view object) = 0;
 
   virtual std::string save() = 0;
+
+  virtual void showEditorOptions() {};
 };
 
 typedef std::unique_ptr<Object> ObjectP;

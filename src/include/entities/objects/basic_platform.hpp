@@ -29,4 +29,6 @@ public:
   void load(std::string_view object) override;
 
   std::string save() override;
+
+  void showEditorOptions() override;
 };
