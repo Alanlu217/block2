@@ -4,7 +4,6 @@
 #include "managers/resource_manager.hpp"
 #include "window.hpp"
 
-#include <iostream>
 #include <raylib.h>
 
 Squircle::Squircle() {
@@ -15,6 +14,19 @@ Squircle::Squircle() {
   pos = {0, 0};
 }
 
-void Squircle::draw() { win::drawTexture(squircle_texture, pos); }
+void Squircle::draw() {
+  // win::drawTexturePro(
+  //     squircle_texture,
+  //     {0, 0, float(squircle_texture->width),
+  //     float(squircle_texture->height)}, {pos.x, pos.y, width, width}, {0,
+  //     width / 2});
+
+  DrawTexturePro(
+      *squircle_texture,
+      {0, 0, float(squircle_texture->width), float(squircle_texture->height)},
+      {pos.x, static_cast<float>(win::toWindowUnits(pos.y, width)), width,
+       width},
+      {0, 0}, 0.0f, WHITE);
+}
 
 Rectangle Squircle::getBounds() { return {pos.x, pos.y, width, width}; }
