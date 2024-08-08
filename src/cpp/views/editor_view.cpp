@@ -65,7 +65,7 @@ void EditorView::update_selection() {
   if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
     bool selected_nothing = true;
 
-    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{0, 0, 600, 55})) {
+    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{0, 0, 600, 35})) {
       return; // Mouse is in menu
     }
 
@@ -248,12 +248,13 @@ void EditorView::render(const double deltaTime) {
   }
 
   ImGui::SetNextWindowPos(ImVec2{0, 0});
-  ImGui::SetNextWindowSize(ImVec2{600, 55});
+  ImGui::SetNextWindowSize(ImVec2{600, 35});
   auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
                ImGuiWindowFlags_AlwaysAutoResize |
                ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking |
                ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav |
-               ImGuiWindowFlags_NoFocusOnAppearing;
+               ImGuiWindowFlags_NoFocusOnAppearing |
+               ImGuiWindowFlags_NoTitleBar;
 
   if (selected_objects.size() == 1) {
     ImGui::Begin("object Editor", NULL, flags);
