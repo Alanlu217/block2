@@ -2,6 +2,7 @@
 
 #include "constants.hpp"
 #include "entities/objects/basic_platform.hpp"
+#include "entities/objects/object.hpp"
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
@@ -199,8 +200,9 @@ void EditorView::update_selection() {
 
   // Add new object
   if (IsKeyPressed(KEY_A)) {
-    objects->push_back(
-        std::make_unique<BasicPlatform>(mouse_pos.x, mouse_pos.y, 100, 10));
+    ObjectP temp = createObject();
+    temp->setPosition(mouse_pos.x, mouse_pos.y);
+    objects->push_back(std::move(temp));
   }
 
   // Copy object dimensions
@@ -220,13 +222,25 @@ void EditorView::update_selection() {
   }
 }
 
+ObjectP EditorView::createObject() {
+  ObjectP object;
+  switch (active_object) {
+  case 0:
+    return std::make_unique<BasicPlatform>();
+  case 1:
+    return std::make_unique<BasicPlatform>(0, 0, 1000, 1000);
+  default:
+    return std::make_unique<BasicPlatform>();
+  }
+}
+
 void EditorView::delete_selected_objects() {
   for (auto plat : selected_objects) {
     auto pos =
         std::find_if(objects->begin(), objects->end(),
                      [plat](auto &object) { return plat == object.get(); });
     if (pos != objects->end())
-      objects->erase(pos, objects->end());
+      objects->erase(pos, pos + 1);
   }
   selected_objects = {};
 }
@@ -306,8 +320,20 @@ void EditorView::render(const double deltaTime) {
                    SaveManager::saveToFile(file_name, game_state).c_str(), 50);
     }
     ImGui::SameLine();
-    ImGui::InputText("Save Name", file_name, 50);
+    ImGui::InputText("Save Name", file_name, 25);
     ImGui::SameLine();
+
+    if (ImGui::BeginCombo("combo 1", object_options[active_object], 0)) {
+      for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
+        const bool is_selected = (active_object == n);
+        if (ImGui::Selectable(object_options[n], is_selected))
+          active_object = n;
+
+        if (is_selected)
+          ImGui::SetItemDefaultFocus();
+      }
+      ImGui::EndCombo();
+    }
 
     ImGui::End();
   }

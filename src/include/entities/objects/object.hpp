@@ -3,7 +3,6 @@
 #include <memory>
 #include <raylib.h>
 #include <string_view>
-#include <vector>
 
 typedef Rectangle *BoundsP;
 

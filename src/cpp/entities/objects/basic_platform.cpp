@@ -9,7 +9,9 @@
 #include <sstream>
 #include <string_view>
 
-BasicPlatform::BasicPlatform() { rect = {0, 0, 0, 0}; }
+const std::string BasicPlatform::id = "Platform";
+
+BasicPlatform::BasicPlatform() { rect = {0, 0, 100, 10}; }
 BasicPlatform::BasicPlatform(const BasicPlatform &platform)
     : rect(platform.rect) {}
 BasicPlatform::BasicPlatform(float x, float y, float width, float height) {

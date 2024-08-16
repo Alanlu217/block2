@@ -3,6 +3,7 @@
 #include "entities/objects/object.hpp"
 
 #include <raylib.h>
+#include <string>
 #include <string_view>
 
 class BasicPlatform : public Object {
@@ -14,7 +15,7 @@ public:
   BasicPlatform(const BasicPlatform &platform);
   BasicPlatform(float x, float y, float width, float height);
 
-  const std::string id = "Platform";
+  static const std::string id;
 
   void draw() override;
 
