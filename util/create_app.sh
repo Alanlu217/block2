@@ -6,9 +6,11 @@ name=$3
 
 cd ${dir}
 mkdir -p app_out/${name}.app/Contents/MacOS
+mkdir -p app_out/${name}.app/Contents/Resources
 
 cp ${name} app_out/${name}.app/Contents/MacOS
 cp -r assets app_out/${name}.app/Contents/MacOS
+cp assets/block.icns app_out/${name}.app/Contents/Resources/block.icns
 
 cd app_out/${name}.app/Contents/
 
@@ -25,7 +27,7 @@ echo "<?xml version=\"1.0\" ?>
   <key>CFBundleExecutable</key>
   <string>main</string>
   <key>CFBundleIconFile</key>
-  <string>Test.icns</string>
+  <string>block</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundleName</key>
