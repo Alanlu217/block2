@@ -2,7 +2,6 @@
 
 #include "game_state.hpp"
 #include "managers/physics_manager.hpp"
-#include "window.hpp"
 
 #include <imgui.h>
 #include <raylib.h>

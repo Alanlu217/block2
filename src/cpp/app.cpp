@@ -1,6 +1,5 @@
 #include "app.hpp"
 
-#include "entities/objects/basic_platform.hpp"
 #include "events/event.hpp"
 #include "events/toggle_debug_event.hpp"
 #include "game_state.hpp"
@@ -35,7 +34,7 @@ App::App() {
 
   SaveManager::loadDefault(game_state);
 
-  views["start"] = std::make_shared<StartView>();
+  views["start"] = std::make_shared<StartView>(game_state);
   views["game"] = std::make_shared<GameView>(game_state);
   views["editor"] = std::make_shared<EditorView>(game_state);
   views["death"] = std::make_shared<DeathView>();

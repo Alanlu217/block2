@@ -1,17 +1,22 @@
 #pragma once
 
+#include "game_state.hpp"
 #include "managers/resource_manager.hpp"
 #include "view.hpp"
 
 class StartView : public View {
 private:
+  GameStateP game_state;
+
   Rectangle start_button_rect;
   Rectangle editor_button_rect;
 
   FontP button_font;
 
+  char file_name[25] = "default";
+
 public:
-  StartView();
+  StartView(GameStateP state);
 
   virtual ~StartView() = default;
 

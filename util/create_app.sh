@@ -46,6 +46,9 @@ echo "<?xml version=\"1.0\" ?>
 
 cd MacOS
 
+mkdir scores
+mkdir saves
+
 echo "#!/bin/bash
 path=\$(dirname \"\$0\");cd \$path;./${name}" > main
 chmod +x main

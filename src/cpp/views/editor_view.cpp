@@ -6,7 +6,6 @@
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
-#include "managers/physics_manager.hpp"
 #include "managers/save_manager.hpp"
 #include "window.hpp"
 
@@ -14,7 +13,6 @@
 #include <cmath>
 #include <cstring>
 #include <imgui.h>
-#include <iostream>
 #include <memory>
 #include <raylib.h>
 #include <raymath.h>
@@ -323,17 +321,17 @@ void EditorView::render(const double deltaTime) {
     ImGui::InputText("Save Name", file_name, 25);
     ImGui::SameLine();
 
-    if (ImGui::BeginCombo("combo 1", object_options[active_object], 0)) {
-      for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
-        const bool is_selected = (active_object == n);
-        if (ImGui::Selectable(object_options[n], is_selected))
-          active_object = n;
+    // if (ImGui::BeginCombo("combo 1", object_options[active_object], 0)) {
+    //   for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
+    //     const bool is_selected = (active_object == n);
+    //     if (ImGui::Selectable(object_options[n], is_selected))
+    //       active_object = n;
 
-        if (is_selected)
-          ImGui::SetItemDefaultFocus();
-      }
-      ImGui::EndCombo();
-    }
+    //     if (is_selected)
+    //       ImGui::SetItemDefaultFocus();
+    //   }
+    //   ImGui::EndCombo();
+    // }
 
     ImGui::End();
   }

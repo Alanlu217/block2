@@ -8,7 +8,6 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
-#include <sstream>
 #include <string>
 
 namespace SaveManager {
@@ -22,7 +21,9 @@ ObjectP toObject(std::string_view object) {
 }
 
 std::string saveObjectsToFile(std::string save_name, GameStateP state) {
-  std::filesystem::create_directory("saves");
+  if (!std::filesystem::exists("saves")) {
+    std::filesystem::create_directory("saves");
+  }
   std::ofstream file("saves/" + save_name + ".block", std::ios::trunc);
 
   for (const auto &object : state->objects) {
@@ -32,6 +33,46 @@ std::string saveObjectsToFile(std::string save_name, GameStateP state) {
   file << "END";
 
   return save_name;
+}
+
+std::string loadFromExternalFile(std::string save_name, GameStateP state) {
+  if (std::filesystem::path(save_name).extension() != ".block") {
+    return "File is not the corrent format";
+  }
+  std::ifstream file(save_name, std::ios::in);
+
+  if (!file.good()) {
+    return "File Not Found";
+  }
+  state->objects.clear();
+
+  std::string type;
+  file >> type;
+
+  while (type != "END") {
+    ObjectP object = toObject(type);
+
+    std::string line;
+    std::getline(file, line);
+    object->load(line);
+
+    state->objects.push_back(std::move(object));
+
+    file >> type;
+  }
+
+  std::string stem = std::string(std::filesystem::path(save_name).stem());
+  std::string to = "saves/" + stem + ".block";
+  try {
+    if (std::filesystem::exists(to)) {
+      std::filesystem::remove(to);
+    }
+    std::filesystem::copy(save_name, to);
+  } catch (std::filesystem::filesystem_error e) {
+    std::cout << "Could not copy" << "\n";
+  }
+
+  return stem;
 }
 
 std::string loadObjectsFromFile(std::string save_name, GameStateP state) {
@@ -61,7 +102,9 @@ std::string loadObjectsFromFile(std::string save_name, GameStateP state) {
 }
 
 std::string saveScoreToFile(std::string save_name, GameStateP state) {
-  std::filesystem::create_directory("scores");
+  if (!std::filesystem::exists("scores")) {
+    std::filesystem::create_directory("scores");
+  }
   std::ofstream file("scores/" + save_name + ".score", std::ios::trunc);
 
   file << "MaxHeight " << state->max_height << "\n";

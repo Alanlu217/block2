@@ -2,12 +2,15 @@
 
 #include "constants.hpp"
 #include "events/event.hpp"
+#include "game_state.hpp"
+#include "imgui.h"
 #include "managers/event_manager.hpp"
 #include "managers/resource_manager.hpp"
+#include "managers/save_manager.hpp"
 
 #include <raylib.h>
 
-StartView::StartView() {
+StartView::StartView(GameStateP state) : game_state(state) {
   start_button_rect = {float(constants::window_width) / 2 - 120,
                        float(constants::window_height) / 2 - 120, 240, 80};
 
@@ -67,6 +70,34 @@ void StartView::render(const double deltaTime) {
              {float(constants::window_width) / 2 - size.x / 2,
               float(constants::window_height) / 2 - size.y / 2 + 83},
              60, 0, WHITE);
+
+  ImGui::SetNextWindowPos(ImVec2{0, 0});
+  ImGui::SetNextWindowSize(ImVec2{600, 35});
+  auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+               ImGuiWindowFlags_AlwaysAutoResize |
+               ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking |
+               ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav |
+               ImGuiWindowFlags_NoFocusOnAppearing |
+               ImGuiWindowFlags_NoTitleBar;
+
+  ImGui::Begin("Level Selector", NULL, flags);
+  ImGui::SameLine();
+  if (ImGui::Button("Load")) {
+    std::strncpy(file_name,
+                 SaveManager::loadFromFile(file_name, game_state).c_str(), 50);
+  }
+  ImGui::SameLine();
+  ImGui::InputText("Save Name", file_name, 25);
+  ImGui::End();
+
+  if (IsFileDropped()) {
+    FilePathList files = LoadDroppedFiles();
+    std::string file{files.paths[0]};
+    UnloadDroppedFiles(files);
+    std::strncpy(file_name,
+                 SaveManager::loadFromExternalFile(file, game_state).c_str(),
+                 50);
+  }
 }
 
 void StartView::close() { button_font = nullptr; }
