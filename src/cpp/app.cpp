@@ -14,7 +14,6 @@
 #include "window.hpp"
 
 #include <imgui.h>
-#include <iostream>
 #include <memory>
 #include <raylib.h>
 #include <rlImGui.h>
