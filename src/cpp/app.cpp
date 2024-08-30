@@ -14,9 +14,11 @@
 #include "window.hpp"
 
 #include <imgui.h>
+#include <iostream>
 #include <memory>
 #include <raylib.h>
 #include <rlImGui.h>
+#include <thread>
 
 App::App() {
   SetTraceLogLevel(LOG_NONE);
@@ -40,11 +42,13 @@ App::App() {
   views["death"] = std::make_shared<DeathView>();
   ViewManager::init("start", views);
 
-  delta_update_time = 0;
-  last_update_time = GetTime();
-  last_render_time = GetTime();
+  next_render_time = now();
+  next_update_time = now();
+  last_update = now();
+  last_render = now();
 
-  sleep_time = 0;
+  setTargetFPS(target_fps);
+  setTargetUPS(target_ups);
 
   EventManager::addListener(CloseWindowEvent,
                             [](Event event) { CloseWindow(); });
@@ -66,30 +70,49 @@ App::~App() {
   CloseWindow();
 }
 
+void App::setTargetFPS(double fps) {
+  using namespace std::chrono_literals;
+  render_interval =
+      std::chrono::duration_cast<std::chrono::nanoseconds>((1.0 / fps) * 1s);
+}
+
+void App::setTargetUPS(double ups) {
+  using namespace std::chrono_literals;
+  update_interval =
+      std::chrono::duration_cast<std::chrono::nanoseconds>((1.0 / ups) * 1s);
+}
+
 bool App::isOpen() { return !WindowShouldClose(); }
 
 void App::run() {
-  double current_time = GetTime();
+  using namespace std::chrono_literals;
 
-  double update_time_left =
-      1.0 / target_ups - (current_time - last_update_time);
-  double render_time_left =
-      1.0 / target_fps - (current_time - last_render_time);
+  if (next_render_time < next_update_time) {
+    std::this_thread::sleep_until(next_render_time);
+    next_render_time += render_interval;
+    auto n = now();
+    if (n > next_render_time) {
+      next_render_time = n;
+    }
 
-  if (update_time_left < render_time_left) {
-    WaitTime(update_time_left);
+    std::chrono::nanoseconds delta =
+        std::chrono::duration_cast<std::chrono::nanoseconds>(n - last_render);
+    last_render = n;
+    render(delta.count() / 1000000000.0);
 
-    update(current_time - last_update_time);
-
-    delta_update_time = current_time - last_update_time;
-
-    last_update_time = current_time;
   } else {
-    WaitTime(render_time_left);
+    std::this_thread::sleep_until(next_update_time);
+    next_update_time += update_interval;
+    auto n = now();
+    if (n > next_update_time) {
+      next_update_time = n;
+    }
 
-    render(current_time - last_render_time);
-
-    last_render_time = current_time;
+    std::chrono::nanoseconds delta =
+        std::chrono::duration_cast<std::chrono::nanoseconds>(n - last_update);
+    last_update = n;
+    update(delta.count() / 1000000000.0);
+    last_update_delta = delta;
   }
 }
 
@@ -100,11 +123,13 @@ void App::render(double delta_time) {
   ClearBackground(Color{46, 46, 46, 1});
 
   ViewManager::render(delta_time);
+  // std::cout << delta_time << "\n";
 
   if (game_state->show_debug) {
     ImGui::Begin("Debug");
     ImGui::Text("FPS: %i", static_cast<int>(1 / delta_time));
-    ImGui::Text("UPS: %i", static_cast<int>(1 / delta_update_time));
+    ImGui::Text("UPS: %i", static_cast<int>(
+                               1 / (last_update_delta.count() / 1000000000.0)));
 
     if (ImGui::BeginListBox(
             "Views", ImVec2(-FLT_MIN - 35,

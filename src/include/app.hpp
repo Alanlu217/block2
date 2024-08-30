@@ -4,6 +4,9 @@
 #include "game_state.hpp"
 #include "managers/view_manager.hpp"
 
+#include <chrono>
+using namespace std::chrono_literals;
+
 const int target_ups = 1200;
 const int target_fps = 240;
 
@@ -13,11 +16,17 @@ private:
 
   GameStateP game_state;
 
-  double delta_update_time;
-  double last_update_time;
-  double last_render_time;
+  typedef std::chrono::time_point<std::chrono::steady_clock> time_point;
+  time_point now() { return std::chrono::steady_clock::now(); }
 
-  double sleep_time;
+  time_point next_update_time, next_render_time;
+  time_point last_update, last_render;
+  std::chrono::nanoseconds update_interval, render_interval;
+
+  std::chrono::nanoseconds last_update_delta = 0ns;
+
+  void setTargetFPS(double fps);
+  void setTargetUPS(double ups);
 
   void update(double delta_time);
   void render(double delta_time);
