@@ -22,6 +22,7 @@ void GameView::init() {
   camera->zoom = 1;
 
   game_state->height = 0;
+  game_state->jumps_made = 0;
 };
 
 void GameView::update(const double deltaTime) {
@@ -29,6 +30,7 @@ void GameView::update(const double deltaTime) {
     TraceLog(LOG_INFO, "Drag at: X: %f, Y: %f", drag->x, drag->y);
     if (squircle->grounded || haxs) {
       squircle->vel = *drag;
+      game_state->jumps_made++;
     }
   }
 
@@ -71,8 +73,8 @@ void GameView::render(const double deltaTime) {
   dragger->drawArrow(*squircle);
   EndMode2D();
 
-  game_state->entities.height_display.draw(game_state->height,
-                                           game_state->max_height);
+  game_state->entities.height_display.draw(
+      game_state->height, game_state->max_height, game_state->jumps_made);
 
   dragger->drawCircle();
 }

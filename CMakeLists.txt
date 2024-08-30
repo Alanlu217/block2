@@ -46,7 +46,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/entities/squircle.cpp"
     "src/cpp/entities/dragger.cpp"
     "src/cpp/entities/background.cpp"
-    "src/cpp/entities/height_display.cpp"
+    "src/cpp/entities/hud.cpp"
 
     "src/cpp/entities/objects/basic_platform.cpp"
 )

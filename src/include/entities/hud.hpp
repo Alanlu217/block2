@@ -4,10 +4,10 @@
 
 class HeightDisplay {
 private:
-  FontP height_font;
+  FontP hud_font;
 
 public:
   HeightDisplay();
 
-  void draw(float height, float max_height);
+  void draw(float height, float max_height, int jumps);
 };
