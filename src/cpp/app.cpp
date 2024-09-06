@@ -31,6 +31,8 @@ App::App() {
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   io.ConfigDockingWithShift = true;
 
+  SetExitKey(KEY_NULL);
+
   game_state = std::make_shared<GameState>();
 
   SaveManager::loadDefault(game_state);

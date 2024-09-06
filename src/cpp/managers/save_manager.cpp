@@ -61,7 +61,7 @@ std::string loadFromExternalFile(std::string save_name, GameStateP state) {
     file >> type;
   }
 
-  std::string stem = std::string(std::filesystem::path(save_name).stem());
+  std::string stem = std::filesystem::path(save_name).stem().string();
   std::string to = "saves/" + stem + ".block";
   try {
     if (std::filesystem::exists(to)) {

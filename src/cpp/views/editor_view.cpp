@@ -192,7 +192,7 @@ void EditorView::update_selection() {
   }
 
   // Delete object
-  if (IsKeyPressed(KEY_D)) {
+  if (IsKeyPressed(KEY_D) || IsKeyPressed(KEY_BACKSPACE)) {
     delete_selected_objects();
   }
 
@@ -205,8 +205,10 @@ void EditorView::update_selection() {
 
   // Copy object dimensions
   if (IsKeyPressed(KEY_C)) {
-    copied_object = std::make_unique<BasicPlatform>(
-        *dynamic_cast<BasicPlatform *>(selected_objects[0]));
+    if (!selected_objects.empty()) {
+      copied_object = std::make_unique<BasicPlatform>(
+          *dynamic_cast<BasicPlatform *>(selected_objects[0]));
+    }
   }
 
   // Pasts object
