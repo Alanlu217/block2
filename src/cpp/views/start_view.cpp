@@ -8,6 +8,8 @@
 #include "managers/resource_manager.hpp"
 #include "managers/save_manager.hpp"
 
+#include <cstdio>
+#include <cstring>
 #include <raylib.h>
 
 StartView::StartView(GameStateP state) : game_state(state) {
@@ -70,6 +72,14 @@ void StartView::render(const double deltaTime) {
              {float(constants::window_width) / 2 - size.x / 2,
               float(constants::window_height) / 2 - size.y / 2 + 83},
              60, 0, WHITE);
+
+  char version[10];
+  std::snprintf(version, 10, "%s.%s.%s", VERSION_MAJOR, VERSION_MINOR,
+                VERSION_PATCH);
+
+  size = MeasureTextEx(*button_font, version, 14, 0);
+  DrawTextEx(*button_font, version,
+             {5, float(constants::window_height) - size.y - 5}, 14, 0, WHITE);
 
   ImGui::SetNextWindowPos(ImVec2{0, 0});
   ImGui::SetNextWindowSize(ImVec2{600, 35});
