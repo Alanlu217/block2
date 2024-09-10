@@ -9,6 +9,7 @@
 
 class SpikyPlatform : public Object {
 private:
+  ObjectPhysics object_physics;
   Rectangle rect;
 
 public:
@@ -20,7 +21,7 @@ public:
 
   void draw() override;
 
-  BoundsP getBounds() override;
+  virtual ObjectPhysics getObjectPhysics() override;
 
   void setPosition(float x, float y) override;
 

@@ -6,7 +6,15 @@
 
 struct GameState;
 
-typedef Rectangle *BoundsP;
+struct ObjectPhysics {
+  Rectangle bounds;
+
+  // Percentage decrease per bounce
+  double bounce_velocity_reduction;
+
+  // Percentage decrease per second
+  double ground_friction_reduction;
+};
 
 class Object {
 public:
@@ -14,7 +22,7 @@ public:
 
   virtual void draw() {};
 
-  virtual BoundsP getBounds() = 0;
+  virtual ObjectPhysics getObjectPhysics() = 0;
 
   virtual void setPosition(float x, float y) = 0;
 

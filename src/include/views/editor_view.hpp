@@ -31,7 +31,8 @@ private:
 
   int active_object = 0;
 
-  const char *object_options[2] = {"basic_platform", "spiky_platform"};
+  const char *object_options[3] = {"basic_platform", "spiky_platform",
+                                   "icy_platform"};
 
   void update_selection();
 

@@ -7,15 +7,15 @@
 #include <string>
 #include <string_view>
 
-class BasicPlatform : public Object {
+class IcyPlatform : public Object {
 private:
   ObjectPhysics object_physics;
   Rectangle rect;
 
 public:
-  BasicPlatform();
-  BasicPlatform(const BasicPlatform &platform);
-  BasicPlatform(float x, float y, float width, float height);
+  IcyPlatform();
+  IcyPlatform(const IcyPlatform &platform);
+  IcyPlatform(float x, float y, float width, float height);
 
   static const std::string id;
 

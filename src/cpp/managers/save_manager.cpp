@@ -1,6 +1,7 @@
 #include "managers/save_manager.hpp"
 
 #include "entities/objects/basic_platform.hpp"
+#include "entities/objects/icy_platform.hpp"
 #include "entities/objects/object.hpp"
 #include "entities/objects/spiky_platform.hpp"
 #include "game_state.hpp"
@@ -16,6 +17,10 @@ namespace SaveManager {
 ObjectP toObject(std::string_view object) {
   if (object == "Platform") {
     return std::make_unique<BasicPlatform>();
+  } else if (object == "SpikyPlatform") {
+    return std::make_unique<SpikyPlatform>();
+  } else if (object == "IcyPlatform") {
+    return std::make_unique<IcyPlatform>();
   }
 
   return nullptr;

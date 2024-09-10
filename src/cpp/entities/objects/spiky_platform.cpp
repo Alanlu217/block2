@@ -1,5 +1,7 @@
 #include "entities/objects/spiky_platform.hpp"
 
+#include "constants.hpp"
+#include "entities/objects/object.hpp"
 #include "game_state.hpp"
 #include "imgui.h"
 #include "managers/event_manager.hpp"
@@ -23,7 +25,10 @@ SpikyPlatform::SpikyPlatform(float x, float y, float width, float height) {
 
 void SpikyPlatform::draw() { win::drawRectangle(rect, RED); }
 
-BoundsP SpikyPlatform::getBounds() { return &rect; }
+ObjectPhysics SpikyPlatform::getObjectPhysics() {
+  return {rect, constants::squircle::bounce_velocity_reduction,
+          constants::squircle::squircle_ground_friction_percent_decrease_per_s};
+};
 
 void SpikyPlatform::setPosition(float x, float y) {
   rect.x = x;

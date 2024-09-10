@@ -2,6 +2,7 @@
 
 #include "constants.hpp"
 #include "entities/objects/basic_platform.hpp"
+#include "entities/objects/icy_platform.hpp"
 #include "entities/objects/object.hpp"
 #include "entities/objects/spiky_platform.hpp"
 #include "events/change_view_event.hpp"
@@ -70,7 +71,10 @@ void EditorView::update_selection() {
     }
 
     for (auto &object : *objects) {
-      if (CheckCollisionPointRec(mouse_pos, *object->getBounds())) { //
+      Rectangle bounds = object->getObjectPhysics().bounds;
+
+      if (CheckCollisionPointRec(mouse_pos,
+                                 bounds)) { //
         selected_nothing = false;
 
         if (std::ranges::find(selected_objects, object.get()) !=
@@ -144,7 +148,8 @@ void EditorView::update_selection() {
       bool selected_nothing = true;
 
       for (auto &object : *objects) {
-        if (CheckCollisionRecs(selection_rect, *object->getBounds())) {
+        Rectangle bounds = object->getObjectPhysics().bounds;
+        if (CheckCollisionRecs(selection_rect, bounds)) {
           selected_nothing = false;
 
           if (std::ranges::find(selected_objects, object.get()) !=
@@ -177,9 +182,9 @@ void EditorView::update_selection() {
     mouse_drag_init = mouse_pos;
 
     for (auto object : selected_objects) {
-      Rectangle *bounds = object->getBounds();
+      Rectangle bounds = object->getObjectPhysics().bounds;
 
-      object->setPosition(bounds->x + delta.x, bounds->y + delta.y);
+      object->setPosition(bounds.x + delta.x, bounds.y + delta.y);
     }
 
     if (selected_objects.size() == 1) {
@@ -225,6 +230,8 @@ ObjectP EditorView::createObject() {
     return std::make_unique<BasicPlatform>();
   case 1:
     return std::make_unique<SpikyPlatform>();
+  case 2:
+    return std::make_unique<IcyPlatform>();
   default:
     return std::make_unique<BasicPlatform>();
   }
@@ -283,13 +290,15 @@ void EditorView::render(const double deltaTime) {
 
     if (ImGui::Button("X")) {
       for (auto object : selected_objects) {
-        object->setPosition(multi_object_editor_pos[0], object->getBounds()->y);
+        Rectangle bounds = object->getObjectPhysics().bounds;
+        object->setPosition(multi_object_editor_pos[0], bounds.y);
       }
     }
     ImGui::SameLine();
     if (ImGui::Button("Y")) {
       for (auto object : selected_objects) {
-        object->setPosition(object->getBounds()->x, multi_object_editor_pos[1]);
+        Rectangle bounds = object->getObjectPhysics().bounds;
+        object->setPosition(bounds.x, multi_object_editor_pos[1]);
       }
     }
 
@@ -346,7 +355,8 @@ void EditorView::render(const double deltaTime) {
   }
 
   for (auto object : selected_objects) {
-    win::drawRectangleLines(*object->getBounds(), 2, GREEN);
+    Rectangle bounds = object->getObjectPhysics().bounds;
+    win::drawRectangleLines(bounds, 2, GREEN);
   }
 
   if (mouse_drag_init.has_value()) {
