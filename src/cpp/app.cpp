@@ -59,6 +59,15 @@ App::App() {
     ViewManager::addView(std::get<ChangeViewEvent>(event).new_view);
   });
 
+  EventManager::addListener(StartTestEvent, [&](Event event) {
+    Vector2 pos = std::get<StartTestEvent>(event).squircle_pos;
+    float height = std::get<StartTestEvent>(event).height;
+    ViewManager::closeView(std::get<StartTestEvent>(event).old_view);
+    ViewManager::addView("game");
+    game_state->entities.squircle.pos = pos;
+    game_state->height = height;
+  });
+
   GameStateP state = game_state;
   EventManager::addListener(ToggleDebugEvent, [state](Event event) {
     state->show_debug = !state->show_debug;

@@ -5,7 +5,7 @@
 #include "entities/objects/icy_platform.hpp"
 #include "entities/objects/object.hpp"
 #include "entities/objects/spiky_platform.hpp"
-#include "events/change_view_event.hpp"
+#include "events/start_test_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
 #include "managers/save_manager.hpp"
@@ -250,7 +250,9 @@ void EditorView::delete_selected_objects() {
 
 void EditorView::render(const double deltaTime) {
 
-  update_selection();
+  if (!test_starting) {
+    update_selection();
+  }
 
   if (game_state->show_debug) {
     ImGui::Begin("EditorView");
@@ -306,12 +308,8 @@ void EditorView::render(const double deltaTime) {
   } else {
     ImGui::Begin("Editor", NULL, flags);
 
-    if (ImGui::Button("Play")) {
-      struct ChangeViewEvent event;
-      event.new_view = "game";
-      event.old_view = "editor";
-
-      EventManager::triggerEvent(event);
+    if (ImGui::Button("Test")) {
+      test_starting = true;
     }
     ImGui::SameLine();
     if (ImGui::Button("Load")) {
@@ -370,6 +368,27 @@ void EditorView::render(const double deltaTime) {
                   std::abs(win::getMouseY() + game_state->height -
                            mouse_drag_init->y)},
         2, Color{255, 255, 255, 100});
+  }
+
+  if (test_starting) {
+    auto mouse_pos = win::getMousePos();
+    mouse_pos.y += game_state->height;
+
+    game_state->entities.squircle.pos = {
+        mouse_pos.x - game_state->entities.squircle.width / 2,
+        mouse_pos.y - game_state->entities.squircle.width / 2};
+    game_state->entities.squircle.draw();
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+      test_starting = false;
+
+      struct StartTestEvent event;
+      event.old_view = "editor";
+      event.height = game_state->height;
+      event.squircle_pos = game_state->entities.squircle.pos;
+
+      EventManager::triggerEvent(event);
+    }
   }
 
   EndMode2D();
