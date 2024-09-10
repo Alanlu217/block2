@@ -325,10 +325,12 @@ void EditorView::render(const double deltaTime) {
                    SaveManager::saveToFile(file_name, game_state).c_str(), 50);
     }
     ImGui::SameLine();
+    ImGui::SetNextItemWidth(180);
     ImGui::InputText("Save Name", file_name, 25);
     ImGui::SameLine();
 
-    if (ImGui::BeginCombo("combo 1", object_options[active_object], 0)) {
+    ImGui::SetNextItemWidth(160);
+    if (ImGui::BeginCombo("Type", object_options[active_object], 0)) {
       for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
         const bool is_selected = (active_object == n);
         if (ImGui::Selectable(object_options[n], is_selected))
