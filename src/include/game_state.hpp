@@ -7,11 +7,14 @@
 #include "entities/squircle.hpp"
 
 #include <memory>
+#include <optional>
 #include <raylib.h>
 #include <string>
 
 struct GameState {
   std::string name = "default";
+
+  std::string death_message = "Null";
 
   bool show_debug = false;
 

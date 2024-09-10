@@ -40,7 +40,7 @@ App::App() {
   views["start"] = std::make_shared<StartView>(game_state);
   views["game"] = std::make_shared<GameView>(game_state);
   views["editor"] = std::make_shared<EditorView>(game_state);
-  views["death"] = std::make_shared<DeathView>();
+  views["death"] = std::make_shared<DeathView>(game_state);
   ViewManager::init("start", views);
 
   next_render_time = now();

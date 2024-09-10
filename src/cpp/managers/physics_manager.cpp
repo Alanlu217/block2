@@ -1,17 +1,14 @@
 #include "managers/physics_manager.hpp"
 
 #include "constants.hpp"
-#include "entities/objects/basic_platform.hpp"
 #include "entities/objects/object.hpp"
 #include "entities/squircle.hpp"
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
 #include "managers/save_manager.hpp"
-#include "window.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <raylib.h>
 
 namespace physics {
@@ -124,6 +121,7 @@ void update(const double delta_time, GameStateP game_state) {
 
   if (squircle.pos.y + squircle.width < game_state->height) {
     SaveManager::saveScoreToFile(game_state->name, game_state);
+    game_state->death_message = "Died from the floor";
 
     struct ChangeViewEvent event {
       "game", "death"

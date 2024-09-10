@@ -2,12 +2,13 @@
 
 #include "constants.hpp"
 #include "events/event.hpp"
+#include "game_state.hpp"
 #include "managers/event_manager.hpp"
 #include "managers/resource_manager.hpp"
 
 #include <raylib.h>
 
-DeathView::DeathView() {
+DeathView::DeathView(GameStateP state) : game_state(state) {
   exit_button_rect = {float(constants::window_width) / 2 - 120,
                       float(constants::window_height) / 2 + 40, 240, 80};
 
@@ -25,6 +26,12 @@ void DeathView::update(const double deltaTime) {}
 void DeathView::render(const double deltaTime) {
   auto mouse_pos = GetMousePosition();
 
+  // Death Message
+  auto size =
+      MeasureTextEx(*button_font, game_state->death_message.c_str(), 24, 0);
+  DrawTextEx(*button_font, game_state->death_message.c_str(),
+             {constants::window_width / 2 - size.x / 2, 200}, 24, 0, WHITE);
+
   // Start Button
   if (CheckCollisionPointRec(mouse_pos, exit_button_rect)) {
     DrawRectangleRec(exit_button_rect, Color{255, 255, 255, 50});
@@ -40,7 +47,7 @@ void DeathView::render(const double deltaTime) {
   }
   DrawRectangleLinesEx(exit_button_rect, 2, Color{255, 255, 255, 50});
 
-  auto size = MeasureTextEx(*button_font, "Exit", 60, 0);
+  size = MeasureTextEx(*button_font, "Exit", 60, 0);
 
   DrawTextEx(*button_font, "Exit",
              {float(constants::window_width) / 2 - size.x / 2,
