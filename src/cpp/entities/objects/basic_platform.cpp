@@ -2,6 +2,7 @@
 
 #include "constants.hpp"
 #include "entities/objects/object.hpp"
+#include "game_state.hpp"
 #include "imgui.h"
 #include "window.hpp"
 
@@ -27,7 +28,7 @@ void BasicPlatform::setPosition(float x, float y) {
   rect.y = y;
 }
 
-void BasicPlatform::update() {}
+void BasicPlatform::update(GameStateP state) {}
 
 void BasicPlatform::load(std::string_view object) {
   std::stringstream s{std::string{object}};

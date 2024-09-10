@@ -2,6 +2,7 @@
 
 #include "entities/objects/basic_platform.hpp"
 #include "entities/objects/object.hpp"
+#include "entities/objects/spiky_platform.hpp"
 #include "game_state.hpp"
 
 #include <filesystem>
@@ -156,7 +157,7 @@ void loadDefault(GameStateP state) {
     std::vector<ObjectP> &platforms = state->objects;
     platforms.push_back(std::make_unique<BasicPlatform>(0, 0, 600, 10));
     platforms.push_back(std::make_unique<BasicPlatform>(40, 200, 200, 10));
-    platforms.push_back(std::make_unique<BasicPlatform>(300, 600, 200, 10));
+    platforms.push_back(std::make_unique<SpikyPlatform>(300, 600, 200, 10));
 
     state->max_height = 0;
   }

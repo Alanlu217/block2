@@ -49,6 +49,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/entities/hud.cpp"
 
     "src/cpp/entities/objects/basic_platform.cpp"
+    "src/cpp/entities/objects/spiky_platform.cpp"
 )
 
 target_include_directories(${PROJECT_NAME}

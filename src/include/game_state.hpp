@@ -3,13 +3,12 @@
 #include "entities/background.hpp"
 #include "entities/dragger.hpp"
 #include "entities/hud.hpp"
-#include "entities/objects/basic_platform.hpp"
+#include "entities/objects/object.hpp"
 #include "entities/squircle.hpp"
 
 #include <memory>
 #include <raylib.h>
 #include <string>
-#include <vector>
 
 struct GameState {
   std::string name = "default";

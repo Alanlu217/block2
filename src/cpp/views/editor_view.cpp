@@ -3,6 +3,7 @@
 #include "constants.hpp"
 #include "entities/objects/basic_platform.hpp"
 #include "entities/objects/object.hpp"
+#include "entities/objects/spiky_platform.hpp"
 #include "events/change_view_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
@@ -183,11 +184,6 @@ void EditorView::update_selection() {
 
     if (selected_objects.size() == 1) {
       auto &object = selected_objects[0];
-
-      // gui_rect[0] = object->rect.x;
-      // gui_rect[1] = object->rect.y;
-      // gui_rect[2] = object->rect.width;
-      // gui_rect[3] = object->rect.height;
     }
   }
 
@@ -228,7 +224,7 @@ ObjectP EditorView::createObject() {
   case 0:
     return std::make_unique<BasicPlatform>();
   case 1:
-    return std::make_unique<BasicPlatform>(0, 0, 1000, 1000);
+    return std::make_unique<SpikyPlatform>();
   default:
     return std::make_unique<BasicPlatform>();
   }
@@ -323,17 +319,17 @@ void EditorView::render(const double deltaTime) {
     ImGui::InputText("Save Name", file_name, 25);
     ImGui::SameLine();
 
-    // if (ImGui::BeginCombo("combo 1", object_options[active_object], 0)) {
-    //   for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
-    //     const bool is_selected = (active_object == n);
-    //     if (ImGui::Selectable(object_options[n], is_selected))
-    //       active_object = n;
+    if (ImGui::BeginCombo("combo 1", object_options[active_object], 0)) {
+      for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
+        const bool is_selected = (active_object == n);
+        if (ImGui::Selectable(object_options[n], is_selected))
+          active_object = n;
 
-    //     if (is_selected)
-    //       ImGui::SetItemDefaultFocus();
-    //   }
-    //   ImGui::EndCombo();
-    // }
+        if (is_selected)
+          ImGui::SetItemDefaultFocus();
+      }
+      ImGui::EndCombo();
+    }
 
     ImGui::End();
   }

@@ -4,6 +4,8 @@
 #include <raylib.h>
 #include <string_view>
 
+struct GameState;
+
 typedef Rectangle *BoundsP;
 
 class Object {
@@ -16,7 +18,7 @@ public:
 
   virtual void setPosition(float x, float y) = 0;
 
-  virtual void update() {};
+  virtual void update(std::shared_ptr<GameState> state) {};
 
   virtual const std::string_view getID() = 0;
 

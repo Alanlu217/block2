@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entities/objects/object.hpp"
+#include "game_state.hpp"
 
 #include <raylib.h>
 #include <string>
@@ -23,7 +24,7 @@ public:
 
   void setPosition(float x, float y) override;
 
-  void update() override;
+  void update(GameStateP state) override;
 
   const std::string_view getID() override { return id; };
 
