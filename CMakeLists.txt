@@ -65,7 +65,7 @@ target_compile_definitions(${PROJECT_NAME}
     PRIVATE ASSETS_DIR="assets/"
 
     PRIVATE VERSION_MAJOR="1"
-    PRIVATE VERSION_MINOR="0"
+    PRIVATE VERSION_MINOR="1"
     PRIVATE VERSION_PATCH="0"
 )
 

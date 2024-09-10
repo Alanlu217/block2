@@ -16,8 +16,9 @@ private:
 
   GameStateP game_state;
 
-  typedef std::chrono::time_point<std::chrono::steady_clock> time_point;
-  time_point now() { return std::chrono::steady_clock::now(); }
+  typedef std::chrono::time_point<std::chrono::high_resolution_clock>
+      time_point;
+  time_point now() { return std::chrono::high_resolution_clock::now(); }
 
   time_point next_update_time, next_render_time;
   time_point last_update, last_render;
