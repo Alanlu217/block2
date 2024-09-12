@@ -27,7 +27,8 @@ void SpikyPlatform::draw() { win::drawRectangle(rect, RED); }
 
 ObjectPhysics SpikyPlatform::getObjectPhysics() {
   return {rect, constants::squircle::bounce_velocity_reduction,
-          constants::squircle::squircle_ground_friction_percent_decrease_per_s};
+          constants::squircle::squircle_ground_friction_percent_decrease_per_s,
+          true};
 };
 
 void SpikyPlatform::setPosition(float x, float y) {

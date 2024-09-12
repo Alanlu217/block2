@@ -24,7 +24,8 @@ void BasicPlatform::draw() { win::drawRectangle(rect, WHITE); }
 ObjectPhysics BasicPlatform::getObjectPhysics() {
   return object_physics = {rect, constants::squircle::bounce_velocity_reduction,
                            constants::squircle::
-                               squircle_ground_friction_percent_decrease_per_s};
+                               squircle_ground_friction_percent_decrease_per_s,
+                           true};
 }
 
 void BasicPlatform::setPosition(float x, float y) {

@@ -14,6 +14,9 @@ struct ObjectPhysics {
 
   // Percentage decrease per second
   double ground_friction_reduction;
+
+  // Should interact with squircle
+  bool isCollider;
 };
 
 class Object {

@@ -5,6 +5,7 @@
 #include "entities/objects/icy_platform.hpp"
 #include "entities/objects/object.hpp"
 #include "entities/objects/spiky_platform.hpp"
+#include "entities/objects/text_object.hpp"
 #include "events/start_test_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
@@ -195,6 +196,12 @@ void EditorView::update_selection() {
     }
   }
 
+  if (CheckCollisionPointRec(
+          GetMousePosition(),
+          Rectangle{0, 0, editor_menu_size.x, editor_menu_size.y})) {
+    return; // Mouse is in menu
+  }
+
   // Delete object
   if (IsKeyPressed(KEY_D) || IsKeyPressed(KEY_BACKSPACE)) {
     delete_selected_objects();
@@ -233,6 +240,8 @@ ObjectP EditorView::createObject() {
     return std::make_unique<SpikyPlatform>();
   case 2:
     return std::make_unique<IcyPlatform>();
+  case 3:
+    return std::make_unique<TextObject>();
   default:
     return std::make_unique<BasicPlatform>();
   }
@@ -276,13 +285,7 @@ void EditorView::render(const double deltaTime) {
                ImGuiWindowFlags_NoFocusOnAppearing |
                ImGuiWindowFlags_NoTitleBar;
 
-  if (selected_objects.size() == 1) {
-    ImGui::Begin("object Editor", NULL, flags);
-
-    selected_objects[0]->showEditorOptions();
-
-    ImGui::End();
-  } else if (selected_objects.size() > 1) {
+  if (selected_objects.size() > 1) {
     ImGui::Begin("Multi object Editor", NULL, flags);
 
     ImGui::DragFloat2("X, Y", multi_object_editor_pos);
@@ -331,23 +334,27 @@ void EditorView::render(const double deltaTime) {
     // ImGui::SetNextItemWidth(180);
     ImGui::InputText("Save Name", file_name, 25);
 
-    if (ImGui::Button("Test")) {
-      test_starting = true;
-    }
-
-    ImGui::SameLine();
-
-    // ImGui::SetNextItemWidth(160);
-    if (ImGui::BeginCombo("Type", object_options[active_object], 0)) {
-      for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
-        const bool is_selected = (active_object == n);
-        if (ImGui::Selectable(object_options[n], is_selected))
-          active_object = n;
-
-        if (is_selected)
-          ImGui::SetItemDefaultFocus();
+    if (selected_objects.size() == 1) {
+      selected_objects[0]->showEditorOptions();
+    } else {
+      if (ImGui::Button("Test")) {
+        test_starting = true;
       }
-      ImGui::EndCombo();
+
+      ImGui::SameLine();
+
+      // ImGui::SetNextItemWidth(160);
+      if (ImGui::BeginCombo("Type", object_options[active_object], 0)) {
+        for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
+          const bool is_selected = (active_object == n);
+          if (ImGui::Selectable(object_options[n], is_selected))
+            active_object = n;
+
+          if (is_selected)
+            ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+      }
     }
 
     ImGui::End();

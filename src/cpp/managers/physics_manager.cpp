@@ -57,6 +57,10 @@ void update(const double delta_time, GameStateP game_state) {
     object->update(game_state);
 
     ObjectPhysics physics = object->getObjectPhysics();
+    if (!physics.isCollider) {
+      continue;
+    }
+
     Rectangle bounds = physics.bounds;
 
     // Collision detected

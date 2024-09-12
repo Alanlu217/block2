@@ -4,6 +4,7 @@
 #include "entities/objects/icy_platform.hpp"
 #include "entities/objects/object.hpp"
 #include "entities/objects/spiky_platform.hpp"
+#include "entities/objects/text_object.hpp"
 #include "game_state.hpp"
 
 #include <filesystem>
@@ -21,6 +22,8 @@ ObjectP toObject(std::string_view object) {
     return std::make_unique<SpikyPlatform>();
   } else if (object == "IcyPlatform") {
     return std::make_unique<IcyPlatform>();
+  } else if (object == "Text") {
+    return std::make_unique<TextObject>();
   }
 
   return nullptr;

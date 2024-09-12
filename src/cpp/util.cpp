@@ -2,6 +2,7 @@
 #include "entities/objects/basic_platform.hpp"
 #include "entities/objects/icy_platform.hpp"
 #include "entities/objects/spiky_platform.hpp"
+#include "entities/objects/text_object.hpp"
 #include <memory>
 
 ObjectP createObject(std::string id) {
@@ -11,6 +12,8 @@ ObjectP createObject(std::string id) {
     return std::make_unique<IcyPlatform>();
   } else if (id == "SpikyPlatform") {
     return std::make_unique<SpikyPlatform>();
+  } else if (id == "Text") {
+    return std::make_unique<TextObject>();
   }
 
   return nullptr;
@@ -27,6 +30,8 @@ ObjectP copyObject(Object *object) {
   } else if (id == "SpikyPlatform") {
     return std::make_unique<SpikyPlatform>(
         *dynamic_cast<SpikyPlatform *>(object));
+  } else if (id == "Text") {
+    return std::make_unique<TextObject>(*dynamic_cast<TextObject *>(object));
   }
 
   return nullptr;
