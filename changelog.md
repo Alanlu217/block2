@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.4.0
+ - Added text object.
+
 ## v1.3.1
  - Fixed error where platforms other than basic_platform could not be copied and pasted.
  - Added normal play button in editor mode.

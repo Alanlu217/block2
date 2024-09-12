@@ -68,8 +68,8 @@ target_compile_definitions(${PROJECT_NAME}
     PRIVATE ASSETS_DIR="assets/"
 
     PRIVATE VERSION_MAJOR="1"
-    PRIVATE VERSION_MINOR="3"
-    PRIVATE VERSION_PATCH="1"
+    PRIVATE VERSION_MINOR="4"
+    PRIVATE VERSION_PATCH="0"
 )
 
 add_custom_command(
