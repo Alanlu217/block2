@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.1
+ - Fixed error where platforms other than basic_platform could not be copied and pasted.
+ - Added normal play button in editor mode.
+
 ## v1.3.0
  - Changed play button in editor mode to test. After pressing it, it will allow you to place the squircle somewhere and will retain squircle position and height. Basically just makes testing easier.
 

@@ -68,7 +68,7 @@ target_compile_definitions(${PROJECT_NAME}
 
     PRIVATE VERSION_MAJOR="1"
     PRIVATE VERSION_MINOR="3"
-    PRIVATE VERSION_PATCH="0"
+    PRIVATE VERSION_PATCH="1"
 )
 
 add_custom_command(
