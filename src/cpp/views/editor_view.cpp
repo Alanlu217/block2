@@ -9,6 +9,7 @@
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
 #include "managers/save_manager.hpp"
+#include "util.hpp"
 #include "window.hpp"
 
 #include <algorithm>
@@ -66,7 +67,9 @@ void EditorView::update_selection() {
   if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
     bool selected_nothing = true;
 
-    if (CheckCollisionPointRec(GetMousePosition(), Rectangle{0, 0, 600, 35})) {
+    if (CheckCollisionPointRec(
+            GetMousePosition(),
+            Rectangle{0, 0, editor_menu_size.x, editor_menu_size.y})) {
       return; // Mouse is in menu
     }
 
@@ -207,8 +210,7 @@ void EditorView::update_selection() {
   // Copy object dimensions
   if (IsKeyPressed(KEY_C)) {
     if (!selected_objects.empty()) {
-      copied_object = std::make_unique<BasicPlatform>(
-          *dynamic_cast<BasicPlatform *>(selected_objects[0]));
+      copied_object = copyObject(selected_objects[0]);
     }
   }
 
@@ -217,8 +219,7 @@ void EditorView::update_selection() {
     selected_objects.clear();
 
     if (copied_object.has_value()) {
-      objects->push_back(std::make_unique<BasicPlatform>(
-          *dynamic_cast<BasicPlatform *>(copied_object->get())));
+      objects->push_back(copyObject(copied_object->get()));
     }
   }
 }
@@ -267,7 +268,7 @@ void EditorView::render(const double deltaTime) {
   }
 
   ImGui::SetNextWindowPos(ImVec2{0, 0});
-  ImGui::SetNextWindowSize(ImVec2{600, 35});
+  ImGui::SetNextWindowSize(editor_menu_size);
   auto flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
                ImGuiWindowFlags_AlwaysAutoResize |
                ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking |
@@ -308,8 +309,12 @@ void EditorView::render(const double deltaTime) {
   } else {
     ImGui::Begin("Editor", NULL, flags);
 
-    if (ImGui::Button("Test")) {
-      test_starting = true;
+    if (ImGui::Button("Play")) {
+      struct ChangeViewEvent event {
+        "editor", "game"
+      };
+
+      EventManager::triggerEvent(event);
     }
     ImGui::SameLine();
     if (ImGui::Button("Load")) {
@@ -323,11 +328,16 @@ void EditorView::render(const double deltaTime) {
                    SaveManager::saveToFile(file_name, game_state).c_str(), 50);
     }
     ImGui::SameLine();
-    ImGui::SetNextItemWidth(180);
+    // ImGui::SetNextItemWidth(180);
     ImGui::InputText("Save Name", file_name, 25);
+
+    if (ImGui::Button("Test")) {
+      test_starting = true;
+    }
+
     ImGui::SameLine();
 
-    ImGui::SetNextItemWidth(160);
+    // ImGui::SetNextItemWidth(160);
     if (ImGui::BeginCombo("Type", object_options[active_object], 0)) {
       for (int n = 0; n < IM_ARRAYSIZE(object_options); n++) {
         const bool is_selected = (active_object == n);

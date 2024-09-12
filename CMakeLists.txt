@@ -22,15 +22,16 @@ target_link_libraries(rlimgui PUBLIC imgui raylib)
 target_include_directories(rlimgui INTERFACE ${rlimgui_SOURCE_DIR})
 
 IF (WIN32)
-add_executable(${PROJECT_NAME} WIN32)
+  add_executable(${PROJECT_NAME} WIN32)
 ELSE()
-add_executable(${PROJECT_NAME})
+  add_executable(${PROJECT_NAME})
 ENDIF()
 
 target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/main.cpp"
     "src/cpp/app.cpp"
     "src/cpp/window.cpp"
+    "src/cpp/util.cpp"
 
     "src/cpp/managers/resource_manager.cpp"
     "src/cpp/managers/view_manager.cpp"
@@ -77,7 +78,7 @@ add_custom_command(
 )
 
 if(APPLE)
-add_custom_target(app
+  add_custom_target(app
     COMMAND ${PROJECT_SOURCE_DIR}/util/create_app.sh ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_NAME}
     DEPENDS ${PROJECT_NAME}
 )

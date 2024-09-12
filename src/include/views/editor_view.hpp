@@ -4,6 +4,7 @@
 #include "entities/objects/object.hpp"
 #include "entities/squircle.hpp"
 #include "game_state.hpp"
+#include "imgui.h"
 #include "view.hpp"
 
 #include <vector>
@@ -13,6 +14,8 @@ enum EditorState { Idle, Selecting, Dragging };
 class EditorView : public View {
 private:
   GameStateP game_state;
+
+  ImVec2 editor_menu_size = {600, 60};
 
   std::vector<ObjectP> *objects;
   Background *back_ground;
