@@ -13,7 +13,7 @@ private:
 
   FontP button_font;
 
-  char file_name[25] = "default";
+  char file_name[50] = "default";
 
 public:
   StartView(GameStateP state);
