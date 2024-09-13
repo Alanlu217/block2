@@ -5,6 +5,7 @@
 #include "game_state.hpp"
 #include "imgui.h"
 #include "managers/event_manager.hpp"
+#include "managers/input_manager.hpp"
 #include "managers/resource_manager.hpp"
 #include "managers/save_manager.hpp"
 
@@ -34,7 +35,7 @@ void StartView::render(const double deltaTime) {
   if (CheckCollisionPointRec(mouse_pos, start_button_rect)) {
     DrawRectangleRec(start_button_rect, Color{255, 255, 255, 50});
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (Input::isMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       struct ChangeViewEvent event {
         "start", "game"
       };
@@ -56,7 +57,7 @@ void StartView::render(const double deltaTime) {
   if (CheckCollisionPointRec(mouse_pos, editor_button_rect)) {
     DrawRectangleRec(editor_button_rect, Color{255, 255, 255, 50});
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (Input::isMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       struct ChangeViewEvent event {
         "start", "editor"
       };

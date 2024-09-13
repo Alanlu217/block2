@@ -4,6 +4,7 @@
 #include "events/event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
+#include "managers/input_manager.hpp"
 #include "managers/resource_manager.hpp"
 
 #include <raylib.h>
@@ -36,7 +37,7 @@ void DeathView::render(const double deltaTime) {
   if (CheckCollisionPointRec(mouse_pos, exit_button_rect)) {
     DrawRectangleRec(exit_button_rect, Color{255, 255, 255, 50});
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (Input::isMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       struct ChangeViewEvent event {
         "death", "start"
       };
@@ -58,7 +59,7 @@ void DeathView::render(const double deltaTime) {
   if (CheckCollisionPointRec(mouse_pos, restart_button_rect)) {
     DrawRectangleRec(restart_button_rect, Color{255, 255, 255, 50});
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (Input::isMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       struct ChangeViewEvent event {
         "death", "game"
       };

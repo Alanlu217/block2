@@ -9,6 +9,7 @@
 #include "events/start_test_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
+#include "managers/input_manager.hpp"
 #include "managers/save_manager.hpp"
 #include "util.hpp"
 #include "window.hpp"
@@ -46,14 +47,14 @@ void EditorView::update(const double deltaTime) {
   if (float mouse_wheel = GetMouseWheelMove(); mouse_wheel != 0) {
     movement = std::copysign(std::abs(mouse_wheel), mouse_wheel);
   } else {
-    if (IsKeyDown(KEY_UP)) {
+    if (Input::isKeyDown(KEY_UP)) {
       movement += 1;
-    } else if (IsKeyDown(KEY_DOWN)) {
+    } else if (Input::isKeyDown(KEY_DOWN)) {
       movement -= 1;
     }
   }
 
-  if (IsKeyDown(KEY_LEFT_SHIFT)) {
+  if (Input::isKeyDown(KEY_LEFT_SHIFT)) {
     game_state->height += movement * deltaTime * 4000;
   } else {
     game_state->height += movement * deltaTime * 1000;
@@ -65,7 +66,7 @@ void EditorView::update_selection() {
   mouse_pos.y += game_state->height;
 
   // Check for selection
-  if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+  if (Input::isMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
     bool selected_nothing = true;
 
     if (CheckCollisionPointRec(
@@ -82,8 +83,8 @@ void EditorView::update_selection() {
         selected_nothing = false;
 
         if (std::ranges::find(selected_objects, object.get()) !=
-            selected_objects.end()) {      // object already selected
-          if (IsKeyDown(KEY_LEFT_SHIFT)) { // Remove object
+            selected_objects.end()) {             // object already selected
+          if (Input::isKeyDown(KEY_LEFT_SHIFT)) { // Remove object
             selected_objects.erase(std::remove(selected_objects.begin(),
                                                selected_objects.end(),
                                                object.get()),
@@ -100,7 +101,7 @@ void EditorView::update_selection() {
           }
         } else // object not selected
 
-          if (IsKeyDown(KEY_LEFT_SHIFT)) { // Add object to selection
+          if (Input::isKeyDown(KEY_LEFT_SHIFT)) { // Add object to selection
             selected_objects.push_back(object.get());
 
             state = Idle;
@@ -126,7 +127,7 @@ void EditorView::update_selection() {
       return;
     }
 
-  } else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+  } else if (Input::isMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
 
     if (state == Dragging) {
       state = Idle;
@@ -158,7 +159,7 @@ void EditorView::update_selection() {
 
           if (std::ranges::find(selected_objects, object.get()) !=
               selected_objects.end()) {
-            if (IsKeyDown(KEY_LEFT_SHIFT)) {
+            if (Input::isKeyDown(KEY_LEFT_SHIFT)) {
               selected_objects.erase(std::remove(selected_objects.begin(),
                                                  selected_objects.end(),
                                                  object.get()),
@@ -203,26 +204,26 @@ void EditorView::update_selection() {
   }
 
   // Delete object
-  if (IsKeyPressed(KEY_D) || IsKeyPressed(KEY_BACKSPACE)) {
+  if (Input::isKeyPressed(KEY_D) || Input::isKeyPressed(KEY_BACKSPACE)) {
     delete_selected_objects();
   }
 
   // Add new object
-  if (IsKeyPressed(KEY_A)) {
+  if (Input::isKeyPressed(KEY_A)) {
     ObjectP temp = createObject();
     temp->setPosition(mouse_pos.x, mouse_pos.y);
     objects->push_back(std::move(temp));
   }
 
   // Copy object dimensions
-  if (IsKeyPressed(KEY_C)) {
+  if (Input::isKeyPressed(KEY_C)) {
     if (!selected_objects.empty()) {
       copied_object = copyObject(selected_objects[0]);
     }
   }
 
   // Pasts object
-  if (IsKeyPressed(KEY_V)) {
+  if (Input::isKeyPressed(KEY_V)) {
     selected_objects.clear();
 
     if (copied_object.has_value()) {
@@ -396,7 +397,7 @@ void EditorView::render(const double deltaTime) {
         mouse_pos.y - game_state->entities.squircle.width / 2};
     game_state->entities.squircle.draw();
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (Input::isMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       test_starting = false;
 
       struct StartTestEvent event;

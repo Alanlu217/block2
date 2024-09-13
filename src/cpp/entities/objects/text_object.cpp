@@ -32,7 +32,11 @@ TextObject::TextObject(Vector2 pos, std::string text, int size)
 void TextObject::draw() {
   auto s = MeasureTextEx(*font, text.c_str(), size, 0);
   Vector2 new_pos = {pos.x, static_cast<float>(win::toWindowUnits(pos.y, s.y))};
-  DrawTextEx(*font, text.c_str(), new_pos, size, 0, WHITE);
+  DrawTextEx(*font, text.c_str(), new_pos, size, 0,
+             Color{static_cast<unsigned char>(col[0] * 255),
+                   static_cast<unsigned char>(col[1] * 255),
+                   static_cast<unsigned char>(col[2] * 255),
+                   static_cast<unsigned char>(col[3] * 255)});
 };
 
 ObjectPhysics TextObject::getObjectPhysics() {
@@ -51,7 +55,7 @@ void TextObject::load(std::string_view object) {
   std::stringstream s{std::string{object}};
 
   float x, y, sz;
-  s >> x >> y >> sz;
+  s >> x >> y >> sz >> col[0] >> col[1] >> col[2] >> col[3];
 
   std::string t;
   s >> t;
@@ -64,22 +68,28 @@ void TextObject::load(std::string_view object) {
 
 std::string TextObject::save() {
   std::stringstream s;
-  s << pos.x << " " << pos.y << " " << size << " " << text;
+  s << pos.x << " " << pos.y << " " << size << " " << col[0] << " " << col[1]
+    << " " << col[2] << " " << col[3] << " " << text;
 
   return s.str();
 }
 
 void TextObject::showEditorOptions() {
-  ImGui::PushItemWidth(100);
-  ImGui::DragFloat("##1", &pos.x);
+  ImGui::SetNextItemWidth(70);
+  ImGui::DragFloat("x", &pos.x);
   ImGui::SameLine();
-  ImGui::DragFloat("##2", &pos.y);
+  ImGui::SetNextItemWidth(70);
+  ImGui::DragFloat("y", &pos.y);
   ImGui::SameLine();
-  ImGui::DragInt("##3", &size);
+  ImGui::SetNextItemWidth(40);
+  ImGui::DragInt("s", &size);
   ImGui::SameLine();
-  ImGui::InputText("##4", editor_text, 100);
+  ImGui::SetNextItemWidth(170);
+  ImGui::ColorEdit4("##4", col);
   ImGui::SameLine();
-  ImGui::Text("X Y W H");
+  ImGui::SetNextItemWidth(170);
+  ImGui::InputText("##5", editor_text, 100);
+  ImGui::SameLine();
 
   text = editor_text;
   if (text == "") {

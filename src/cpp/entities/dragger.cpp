@@ -1,12 +1,12 @@
 #include "entities/dragger.hpp"
 
 #include "constants.hpp"
+#include "managers/input_manager.hpp"
 #include "managers/resource_manager.hpp"
 #include "window.hpp"
 
 #include <cmath>
 #include <imgui.h>
-#include <iostream>
 #include <raylib.h>
 
 Dragger::Dragger() {
@@ -16,7 +16,8 @@ Dragger::Dragger() {
 }
 
 std::optional<Vector2> Dragger::update() {
-  if (drag_init_pos.has_value() && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+  if (drag_init_pos.has_value() &&
+      Input::isMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
     float x_diff = win::getMouseX() - drag_init_pos->x;
     float y_diff = win::getMouseY() - drag_init_pos->y;
 
@@ -32,7 +33,7 @@ std::optional<Vector2> Dragger::update() {
 
     return drag;
 
-  } else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+  } else if (Input::isMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
     drag_init_pos = win::getMousePos();
   }
 

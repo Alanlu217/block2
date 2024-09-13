@@ -4,6 +4,7 @@
 #include "events/toggle_debug_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
+#include "managers/input_manager.hpp"
 #include "managers/resource_manager.hpp"
 #include "managers/save_manager.hpp"
 #include "managers/view_manager.hpp"
@@ -30,6 +31,8 @@ App::App() {
   auto &io = ImGui::GetIO();
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   io.ConfigDockingWithShift = true;
+
+  Input::initialise();
 
   SetExitKey(KEY_NULL);
 
@@ -127,6 +130,9 @@ void App::run() {
 }
 
 void App::render(double delta_time) {
+  Input::update();
+  Input::startRender();
+
   BeginDrawing();
   rlImGuiBegin();
 
@@ -168,15 +174,19 @@ void App::render(double delta_time) {
   rlImGuiEnd();
   EndDrawing();
 
+  Input::resetRender();
   ResourceManager::clearUnused();
 }
 
 void App::update(double delta_time) {
-  if (IsKeyPressed(KEY_BACKSLASH)) {
+  Input::startUpdate();
+  if (Input::isKeyPressed(KEY_BACKSLASH)) {
     struct ToggleDebugEvent event;
     EventManager::triggerEvent(event);
   }
 
   EventManager::update();
   ViewManager::update(delta_time);
+
+  Input::resetUpdate();
 }

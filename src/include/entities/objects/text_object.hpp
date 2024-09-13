@@ -17,6 +17,7 @@ private:
 
   Vector2 pos;
   std::string text = "default";
+  float col[4] = {1, 1, 1, 1};
   char editor_text[100] = "default";
   int size;
 
