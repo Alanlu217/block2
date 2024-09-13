@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.4.1
+ - Text object's color can now be changed.
+
 ## v1.4.0
  - Added text object.
 
