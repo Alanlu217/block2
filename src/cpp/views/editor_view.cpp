@@ -1,17 +1,13 @@
 #include "views/editor_view.hpp"
 
 #include "constants.hpp"
-#include "entities/objects/basic_platform.hpp"
-#include "entities/objects/icy_platform.hpp"
 #include "entities/objects/object.hpp"
-#include "entities/objects/spiky_platform.hpp"
-#include "entities/objects/text_object.hpp"
+#include "entities/objects/objects.hpp"
 #include "events/start_test_event.hpp"
 #include "game_state.hpp"
 #include "managers/event_manager.hpp"
 #include "managers/input_manager.hpp"
 #include "managers/save_manager.hpp"
-#include "util.hpp"
 #include "window.hpp"
 
 #include <algorithm>
@@ -210,7 +206,7 @@ void EditorView::update_selection() {
 
   // Add new object
   if (Input::isKeyPressed(KEY_A)) {
-    ObjectP temp = createObject();
+    ObjectP temp = createObject(object_options[active_object]);
     temp->setPosition(mouse_pos.x, mouse_pos.y);
     objects->push_back(std::move(temp));
   }
@@ -229,22 +225,6 @@ void EditorView::update_selection() {
     if (copied_object.has_value()) {
       objects->push_back(copyObject(copied_object->get()));
     }
-  }
-}
-
-ObjectP EditorView::createObject() {
-  ObjectP object;
-  switch (active_object) {
-  case 0:
-    return std::make_unique<BasicPlatform>();
-  case 1:
-    return std::make_unique<SpikyPlatform>();
-  case 2:
-    return std::make_unique<IcyPlatform>();
-  case 3:
-    return std::make_unique<TextObject>();
-  default:
-    return std::make_unique<BasicPlatform>();
   }
 }
 

@@ -31,7 +31,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/main.cpp"
     "src/cpp/app.cpp"
     "src/cpp/window.cpp"
-    "src/cpp/util.cpp"
 
     "src/cpp/managers/resource_manager.cpp"
     "src/cpp/managers/view_manager.cpp"
@@ -50,6 +49,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/entities/background.cpp"
     "src/cpp/entities/hud.cpp"
 
+    "src/cpp/entities/objects/objects.cpp"
     "src/cpp/entities/objects/basic_platform.cpp"
     "src/cpp/entities/objects/spiky_platform.cpp"
     "src/cpp/entities/objects/icy_platform.cpp"

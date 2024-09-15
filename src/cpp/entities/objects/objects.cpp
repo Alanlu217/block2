@@ -1,4 +1,4 @@
-#include "util.hpp"
+#include "entities/objects/objects.hpp"
 #include "entities/objects/basic_platform.hpp"
 #include "entities/objects/icy_platform.hpp"
 #include "entities/objects/spiky_platform.hpp"

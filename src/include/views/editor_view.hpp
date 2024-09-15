@@ -35,14 +35,9 @@ private:
 
   int active_object = 0;
 
-  const char *object_options[4] = {"basic_platform", "spiky_platform",
-                                   "icy_platform", "text_object"};
-
   void update_selection();
 
   void delete_selected_objects();
-
-  ObjectP createObject();
 
 public:
   EditorView(GameStateP state);
