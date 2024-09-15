@@ -30,8 +30,10 @@ void DeathView::render(const double deltaTime) {
   // Death Message
   auto size =
       MeasureTextEx(*button_font, game_state->death_message.c_str(), 24, 0);
-  DrawTextEx(*button_font, game_state->death_message.c_str(),
-             {constants::window_width / 2 - size.x / 2, 200}, 24, 0, WHITE);
+  DrawTextEx(
+      *button_font, game_state->death_message.c_str(),
+      {static_cast<float>(constants::window_width) / 2 - size.x / 2, 200}, 24,
+      0, WHITE);
 
   // Start Button
   if (CheckCollisionPointRec(mouse_pos, exit_button_rect)) {

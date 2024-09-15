@@ -19,8 +19,8 @@
 #include <raymath.h>
 
 EditorView::EditorView(GameStateP state)
-    : game_state(state), objects(&state->objects), camera(&state->game_camera),
-      back_ground(&state->entities.back_ground) {}
+    : game_state(state), objects(&state->objects),
+      back_ground(&state->entities.back_ground), camera(&state->game_camera) {}
 
 void EditorView::init() {
   *camera = Camera2D{};
@@ -163,10 +163,6 @@ void EditorView::update_selection() {
             }
           } else {
             selected_objects.push_back(object.get());
-
-            if (selected_objects.size() == 1) {
-              auto &object = selected_objects[0];
-            }
           }
         }
       }
@@ -186,10 +182,6 @@ void EditorView::update_selection() {
       Rectangle bounds = object->getObjectPhysics().bounds;
 
       object->setPosition(bounds.x + delta.x, bounds.y + delta.y);
-    }
-
-    if (selected_objects.size() == 1) {
-      auto &object = selected_objects[0];
     }
   }
 

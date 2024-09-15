@@ -7,9 +7,9 @@
 #include <raylib.h>
 
 GameView::GameView(GameStateP state)
-    : game_state(state), objects(&state->objects),
-      squircle(&state->entities.squircle), dragger(&state->entities.dragger),
-      camera(&state->game_camera), back_ground(&state->entities.back_ground) {}
+    : game_state(state), squircle(&state->entities.squircle),
+      dragger(&state->entities.dragger), objects(&state->objects),
+      back_ground(&state->entities.back_ground), camera(&state->game_camera) {}
 
 void GameView::init() {
   squircle->pos = {300.0f - float(squircle->width) / 2, 100};
