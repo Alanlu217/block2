@@ -7,8 +7,8 @@
 #include "entities/squircle.hpp"
 
 #include <memory>
-#include <optional>
 #include <raylib.h>
+#include <vector>
 #include <string>
 
 struct GameState {
