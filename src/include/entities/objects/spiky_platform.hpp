@@ -13,9 +13,9 @@ private:
   Rectangle rect;
 
 public:
-  SpikyPlatform();
-  SpikyPlatform(const SpikyPlatform &platform);
   SpikyPlatform(float x, float y, float width, float height);
+  SpikyPlatform(const SpikyPlatform &platform);
+  SpikyPlatform();
 
   static const std::string id;
 

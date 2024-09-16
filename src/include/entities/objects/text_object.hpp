@@ -11,20 +11,18 @@
 
 class TextObject : public Object {
 private:
-  ObjectPhysics object_physics;
-
   FontP font;
 
   Vector2 pos;
   std::string text = "default";
-  float col[4] = {1, 1, 1, 1};
+  float col[4];
   char editor_text[100] = "default";
   int size;
 
 public:
-  TextObject();
-  TextObject(const TextObject &platform);
   TextObject(Vector2 pos, std::string text, int size);
+  TextObject(const TextObject &platform);
+  TextObject();
 
   static const std::string id;
 

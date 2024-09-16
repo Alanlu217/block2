@@ -13,9 +13,9 @@ private:
   Rectangle rect;
 
 public:
-  BasicPlatform();
-  BasicPlatform(const BasicPlatform &platform);
   BasicPlatform(float x, float y, float width, float height);
+  BasicPlatform(const BasicPlatform &platform);
+  BasicPlatform();
 
   static const std::string id;
 

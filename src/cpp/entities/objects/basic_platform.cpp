@@ -12,12 +12,15 @@
 
 const std::string BasicPlatform::id = "Platform";
 
-BasicPlatform::BasicPlatform() { rect = {0, 0, 100, 10}; }
-BasicPlatform::BasicPlatform(const BasicPlatform &platform)
-    : rect(platform.rect) {}
 BasicPlatform::BasicPlatform(float x, float y, float width, float height) {
   rect = {x, y, width, height};
 }
+
+BasicPlatform::BasicPlatform(const BasicPlatform &platform)
+    : BasicPlatform(platform.rect.x, platform.rect.y, platform.rect.width,
+                    platform.rect.height) {}
+
+BasicPlatform::BasicPlatform() : BasicPlatform(0, 0, 100, 10) {}
 
 void BasicPlatform::draw() { win::drawRectangle(rect, WHITE); }
 

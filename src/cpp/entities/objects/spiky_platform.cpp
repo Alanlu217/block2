@@ -14,14 +14,14 @@
 
 const std::string SpikyPlatform::id = "SpikyPlatform";
 
-SpikyPlatform::SpikyPlatform() { rect = {0, 0, 100, 10}; }
-
-SpikyPlatform::SpikyPlatform(const SpikyPlatform &platform)
-    : rect(platform.rect) {}
-
 SpikyPlatform::SpikyPlatform(float x, float y, float width, float height) {
   rect = {x, y, width, height};
 }
+SpikyPlatform::SpikyPlatform() : SpikyPlatform(0, 0, 100, 10) {}
+
+SpikyPlatform::SpikyPlatform(const SpikyPlatform &platform)
+    : SpikyPlatform(platform.rect.x, platform.rect.y, platform.rect.width,
+                    platform.rect.height) {}
 
 void SpikyPlatform::draw() { win::drawRectangle(rect, RED); }
 

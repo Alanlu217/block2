@@ -13,9 +13,9 @@ private:
   Rectangle rect;
 
 public:
-  IcyPlatform();
-  IcyPlatform(const IcyPlatform &platform);
   IcyPlatform(float x, float y, float width, float height);
+  IcyPlatform(const IcyPlatform &platform);
+  IcyPlatform();
 
   static const std::string id;
 

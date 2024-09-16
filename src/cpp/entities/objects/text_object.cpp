@@ -13,21 +13,15 @@
 
 const std::string TextObject::id = "Text";
 
-TextObject::TextObject() {
-  pos = {0, 0};
-  text = "default";
-  size = 12;
-
-  font = ResourceManager::getFont("comfortaa.ttf");
-}
-TextObject::TextObject(const TextObject &platform)
-    : pos(platform.pos), text(platform.text), size(platform.size) {
-  font = ResourceManager::getFont("comfortaa.ttf");
-}
 TextObject::TextObject(Vector2 pos, std::string text, int size)
     : pos(pos), text(text), size(size) {
   font = ResourceManager::getFont("comfortaa.ttf");
 }
+
+TextObject::TextObject() : TextObject({0, 0}, "default", 24) {}
+
+TextObject::TextObject(const TextObject &platform)
+    : TextObject(platform.pos, platform.text, platform.size) {}
 
 void TextObject::draw() {
   auto s = MeasureTextEx(*font, text.c_str(), size, 0);
@@ -41,7 +35,7 @@ void TextObject::draw() {
 
 ObjectPhysics TextObject::getObjectPhysics() {
   auto s = MeasureTextEx(*font, text.c_str(), size, 0);
-  return object_physics = {{pos.x, pos.y, s.x, s.y}, 0, 0, false};
+  return {{pos.x, pos.y, s.x, s.y}, 0, 0, false};
 }
 
 void TextObject::setPosition(float x, float y) {

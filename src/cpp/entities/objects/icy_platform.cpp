@@ -12,13 +12,15 @@
 
 const std::string IcyPlatform::id = "IcyPlatform";
 
-IcyPlatform::IcyPlatform() { rect = {0, 0, 100, 10}; }
-
-IcyPlatform::IcyPlatform(const IcyPlatform &platform) : rect(platform.rect) {}
-
 IcyPlatform::IcyPlatform(float x, float y, float width, float height) {
   rect = {x, y, width, height};
 }
+
+IcyPlatform::IcyPlatform(const IcyPlatform &platform)
+    : IcyPlatform(platform.rect.x, platform.rect.y, platform.rect.width,
+                  platform.rect.height) {}
+
+IcyPlatform::IcyPlatform() : IcyPlatform(0, 0, 100, 10) {}
 
 void IcyPlatform::draw() { win::drawRectangle(rect, BLUE); }
 
