@@ -58,7 +58,7 @@ void GhostPlatform::update(const double dt, GameStateP state) {
     time_count = 0;
     idx++;
 
-    if (idx > on_off_times.size()) {
+    if (idx >= on_off_times.size()) {
       idx = 0;
     }
 
