@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.0
+ - Added ghost platform that can be configured to turn "on" and "off" periodically.
+
 ## v1.4.1
  - Text object's color can now be changed.
 
