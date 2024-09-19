@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.1
+ - Fixed error with the ghost platform.
+
 ## v1.5.0
  - Added ghost platform that can be configured to turn "on" and "off" periodically.
 
