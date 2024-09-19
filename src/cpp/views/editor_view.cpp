@@ -34,6 +34,10 @@ void EditorView::init() {
   state = Idle;
   selected_objects = {};
   mouse_drag_init = {};
+
+  for (auto &object : game_state->objects) {
+    object->init();
+  }
 };
 
 void EditorView::update(const double deltaTime) {

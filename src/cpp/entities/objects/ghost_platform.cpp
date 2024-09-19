@@ -34,7 +34,7 @@ void GhostPlatform::init() {
 
 void GhostPlatform::draw() {
   if (is_on) {
-    win::drawRectangle(rect, Color{100, 100, 100, 255});
+    win::drawRectangle(rect, Color{150, 150, 150, 255});
   } else {
     win::drawRectangle(rect, Color{100, 100, 100, 100});
   }
