@@ -72,6 +72,14 @@ bool Input::isMouseButtonUp(int button) {
   return IsMouseButtonUp(button);
 }
 
+float Input::getMouseWheelMove() {
+  if (io->WantCaptureMouse) {
+    return false;
+  }
+
+  return GetMouseWheelMove();
+}
+
 void Input::update() {
   int key = GetKeyPressed();
   while (key != 0 && !keys.contains(key)) {

@@ -43,7 +43,7 @@ void TextObject::setPosition(float x, float y) {
   pos.y = y;
 }
 
-void TextObject::update(GameStateP state) {}
+void TextObject::update(const double dt, GameStateP state) {}
 
 void TextObject::load(std::string_view object) {
   std::stringstream s{std::string{object}};

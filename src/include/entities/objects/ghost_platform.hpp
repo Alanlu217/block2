@@ -7,17 +7,24 @@
 #include <string>
 #include <string_view>
 
-class IcyPlatform : public Object {
+class GhostPlatform : public Object {
 private:
   ObjectPhysics object_physics;
   Rectangle rect;
 
+  std::vector<double> on_off_times = {1, 1};
+  double time_count = 0;
+  int idx = 0;
+  bool is_on = true;
+
 public:
-  IcyPlatform(float x, float y, float width, float height);
-  IcyPlatform(const IcyPlatform &platform);
-  IcyPlatform();
+  GhostPlatform(float x, float y, float width, float height);
+  GhostPlatform(const GhostPlatform &platform);
+  GhostPlatform();
 
   static const std::string id;
+
+  void init() override;
 
   void draw() override;
 

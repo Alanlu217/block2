@@ -23,13 +23,15 @@ class Object {
 public:
   virtual ~Object() = default;
 
+  virtual void init() {};
+
   virtual void draw() {};
 
   virtual ObjectPhysics getObjectPhysics() = 0;
 
   virtual void setPosition(float x, float y) = 0;
 
-  virtual void update(std::shared_ptr<GameState> state) {};
+  virtual void update(const double dt, std::shared_ptr<GameState> state) {};
 
   virtual const std::string_view getID() = 0;
 

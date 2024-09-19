@@ -36,7 +36,7 @@ void SpikyPlatform::setPosition(float x, float y) {
   rect.y = y;
 }
 
-void SpikyPlatform::update(GameStateP state) {
+void SpikyPlatform::update(const double, GameStateP state) {
   if (CheckCollisionRecs(state->entities.squircle.getBounds(), rect)) {
     SaveManager::saveScoreToFile(state->name, state);
     state->death_message = "Died from a spiky platform";

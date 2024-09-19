@@ -28,6 +28,8 @@ public:
   static bool isMouseButtonDown(int button);
   static bool isMouseButtonUp(int button);
 
+  static float getMouseWheelMove();
+
 private:
   static std::map<int, std::map<KeyStateMode, KeyState>> keys;
 

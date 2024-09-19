@@ -13,6 +13,7 @@ add_library(
     imgui STATIC
     ${imgui_SOURCE_DIR}/imgui.cpp
     ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_demo.cpp
     ${imgui_SOURCE_DIR}/imgui_widgets.cpp
     ${imgui_SOURCE_DIR}/imgui_tables.cpp)
 target_include_directories(imgui INTERFACE ${imgui_SOURCE_DIR})
@@ -53,6 +54,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/entities/objects/basic_platform.cpp"
     "src/cpp/entities/objects/spiky_platform.cpp"
     "src/cpp/entities/objects/icy_platform.cpp"
+    "src/cpp/entities/objects/ghost_platform.cpp"
     "src/cpp/entities/objects/text_object.cpp"
 )
 

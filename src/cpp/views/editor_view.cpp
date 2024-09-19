@@ -40,7 +40,7 @@ void EditorView::update(const double deltaTime) {
 
   // Update height
   float movement = 0;
-  if (float mouse_wheel = GetMouseWheelMove(); mouse_wheel != 0) {
+  if (float mouse_wheel = Input::getMouseWheelMove(); mouse_wheel != 0) {
     movement = std::copysign(std::abs(mouse_wheel), mouse_wheel);
   } else {
     if (Input::isKeyDown(KEY_UP)) {

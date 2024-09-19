@@ -23,6 +23,10 @@ void GameView::init() {
 
   game_state->height = 0;
   game_state->jumps_made = 0;
+
+  for (auto &object : game_state->objects) {
+    object->init();
+  }
 };
 
 void GameView::update(const double deltaTime) {

@@ -1,11 +1,17 @@
 #pragma once
 
+#include "entities/objects/basic_platform.hpp"
+#include "entities/objects/ghost_platform.hpp"
+#include "entities/objects/icy_platform.hpp"
 #include "entities/objects/object.hpp"
+#include "entities/objects/spiky_platform.hpp"
+#include "entities/objects/text_object.hpp"
 
 #include <string>
 
-const static char *object_options[4] = {"Platform", "SpikyPlatform",
-                                        "IcyPlatform", "Text"};
+const static char *object_options[5] = {
+    BasicPlatform::id.c_str(), SpikyPlatform::id.c_str(),
+    IcyPlatform::id.c_str(), GhostPlatform::id.c_str(), TextObject::id.c_str()};
 
 ObjectP createObject(std::string id);
 

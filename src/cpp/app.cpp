@@ -147,6 +147,9 @@ void App::render(double delta_time) {
     ImGui::Text("UPS: %i", static_cast<int>(
                                1 / (last_update_delta.count() / 1000000000.0)));
 
+    ImGui::Text("Cap Mouse: %d", ImGui::GetIO().WantCaptureMouse);
+    ImGui::Text("Cap Key: %d", ImGui::GetIO().WantCaptureKeyboard);
+
     if (ImGui::BeginListBox(
             "Views", ImVec2(-FLT_MIN - 35,
                             ViewManager::getView().size() *

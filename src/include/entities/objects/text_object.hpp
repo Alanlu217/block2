@@ -32,7 +32,7 @@ public:
 
   void setPosition(float x, float y) override;
 
-  void update(GameStateP state) override;
+  void update(const double dt, GameStateP state) override;
 
   const std::string_view getID() override { return id; };
 

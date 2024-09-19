@@ -34,7 +34,7 @@ void IcyPlatform::setPosition(float x, float y) {
   rect.y = y;
 }
 
-void IcyPlatform::update(GameStateP state) {}
+void IcyPlatform::update(const double dt, GameStateP state) {}
 
 void IcyPlatform::load(std::string_view object) {
   std::stringstream s{std::string{object}};

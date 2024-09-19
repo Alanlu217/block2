@@ -54,7 +54,7 @@ void update(const double delta_time, GameStateP game_state) {
 
   // Check for platform collisions
   for (ObjectP &object : game_state->objects) {
-    object->update(game_state);
+    object->update(delta_time, game_state);
 
     ObjectPhysics physics = object->getObjectPhysics();
     if (!physics.isCollider) {
