@@ -25,8 +25,7 @@ IcyPlatform::IcyPlatform() : IcyPlatform(0, 0, 100, 10) {}
 void IcyPlatform::draw() { win::drawRectangle(rect, BLUE); }
 
 ObjectPhysics IcyPlatform::getObjectPhysics() {
-  return object_physics = {rect, constants::squircle::bounce_velocity_reduction,
-                           0, true};
+  return {rect, constants::squircle::bounce_velocity_reduction, 0, true};
 }
 
 void IcyPlatform::setPosition(float x, float y) {

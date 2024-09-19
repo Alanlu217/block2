@@ -9,7 +9,6 @@
 
 class GhostPlatform : public Object {
 private:
-  ObjectPhysics object_physics;
   Rectangle rect;
 
   std::vector<double> on_off_times = {1, 1};

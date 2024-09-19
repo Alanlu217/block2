@@ -17,6 +17,8 @@ private:
 
   Camera2D *camera;
 
+  bool paused = false;
+
   bool haxs = false;
 
 public:

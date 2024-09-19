@@ -8,8 +8,8 @@
 
 #include <memory>
 #include <raylib.h>
-#include <vector>
 #include <string>
+#include <vector>
 
 struct GameState {
   std::string name = "default";
@@ -17,6 +17,7 @@ struct GameState {
   std::string death_message = "Null";
 
   bool show_debug = false;
+  bool height_should_increase = true;
 
   float height = 0;
   float max_height = 0;

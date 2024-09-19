@@ -9,7 +9,6 @@
 
 class SpikyPlatform : public Object {
 private:
-  ObjectPhysics object_physics;
   Rectangle rect;
 
 public:

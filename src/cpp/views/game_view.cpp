@@ -30,6 +30,10 @@ void GameView::init() {
 };
 
 void GameView::update(const double deltaTime) {
+  if (paused) {
+    return;
+  }
+
   if (auto drag = dragger->update(); drag.has_value()) {
     TraceLog(LOG_INFO, "Drag at: X: %f, Y: %f", drag->x, drag->y);
     if (squircle->grounded || haxs) {
@@ -55,9 +59,14 @@ void GameView::render(const double deltaTime) {
     if (ImGui::Button("Haxs")) {
       haxs = !haxs;
     }
-
     ImGui::SameLine();
     ImGui::Text(": %d", haxs);
+    if (ImGui::Button("Height Haxs")) {
+      game_state->height_should_increase = !game_state->height_should_increase;
+    }
+    ImGui::SameLine();
+
+    ImGui::Text(": %d", game_state->height_should_increase);
 
     ImGui::End();
   }

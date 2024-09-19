@@ -9,7 +9,6 @@
 
 class BasicPlatform : public Object {
 private:
-  ObjectPhysics object_physics;
   Rectangle rect;
 
 public:

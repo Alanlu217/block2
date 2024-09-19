@@ -41,10 +41,9 @@ void GhostPlatform::draw() {
 }
 
 ObjectPhysics GhostPlatform::getObjectPhysics() {
-  return object_physics = {rect, constants::squircle::bounce_velocity_reduction,
-                           constants::squircle::
-                               squircle_ground_friction_percent_decrease_per_s,
-                           is_on};
+  return {rect, constants::squircle::bounce_velocity_reduction,
+          constants::squircle::squircle_ground_friction_percent_decrease_per_s,
+          is_on};
 }
 
 void GhostPlatform::setPosition(float x, float y) {
