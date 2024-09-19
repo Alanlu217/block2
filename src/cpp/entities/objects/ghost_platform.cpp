@@ -5,7 +5,6 @@
 #include "game_state.hpp"
 #include "window.hpp"
 
-#include <algorithm>
 #include <cstdio>
 #include <imgui.h>
 #include <iostream>
@@ -64,7 +63,6 @@ void GhostPlatform::update(const double dt, GameStateP state) {
       idx = 0;
     }
 
-    std::cout << "idx: " << idx << "\n";
     is_on = idx % 2 == 0;
   }
 }

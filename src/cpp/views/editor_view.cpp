@@ -235,6 +235,8 @@ void EditorView::render(const double deltaTime) {
 
   if (!test_starting) {
     update_selection();
+  } else if (Input::isKeyPressed(KEY_ESCAPE)) {
+    test_starting = false;
   }
 
   if (game_state->show_debug) {
