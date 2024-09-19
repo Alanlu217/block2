@@ -22,7 +22,7 @@ add_library(rlimgui STATIC ${rlimgui_SOURCE_DIR}/rlImgui.cpp)
 target_link_libraries(rlimgui PUBLIC imgui raylib)
 target_include_directories(rlimgui INTERFACE ${rlimgui_SOURCE_DIR})
 
-IF (WIN32 AND CMAKE_BUILD_TYPE MATCHES DEBUG)
+IF (WIN32 AND CMAKE_BUILD_TYPE MATCHES RELEASE)
   add_executable(${PROJECT_NAME} WIN32)
 ELSE()
   add_executable(${PROJECT_NAME})
