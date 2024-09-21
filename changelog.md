@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6.1
+ - Fix problem with text where it would default to be completely transparant (Color{0, 0, 0, 0}).
+
 ## v1.6.0
  - Implemented pausing.
 
