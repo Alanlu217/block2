@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6.0
+ - Implemented pausing.
+
 ## v1.5.1
  - Fixed error with the ghost platform.
 
