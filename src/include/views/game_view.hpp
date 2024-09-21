@@ -1,9 +1,9 @@
 #pragma once
 
-#include "entities/objects/basic_platform.hpp"
 #include "entities/objects/object.hpp"
 #include "entities/squircle.hpp"
 #include "game_state.hpp"
+#include "managers/resource_manager.hpp"
 #include "view.hpp"
 
 class GameView : public View {
@@ -15,11 +15,16 @@ private:
   std::vector<ObjectP> *objects;
   Background *back_ground;
 
+  TextureP play_button;
+  FontP button_font;
+
   Camera2D *camera;
 
   bool paused = false;
 
   bool haxs = false;
+
+  void displayDebug();
 
 public:
   GameView(GameStateP state);

@@ -19,6 +19,8 @@ public:
 
   std::optional<Vector2> update(); // Returns dragged value if drag released
 
+  void reset();
+
   void drawArrow(const Squircle &squircle);
 
   void drawCircle();

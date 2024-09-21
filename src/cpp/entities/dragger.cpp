@@ -40,6 +40,8 @@ std::optional<Vector2> Dragger::update() {
   return {};
 }
 
+void Dragger::reset() { drag_init_pos = {}; }
+
 void Dragger::drawArrow(const Squircle &squircle) {
   Vector2 pos = squircle.pos;
 
