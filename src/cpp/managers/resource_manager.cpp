@@ -25,7 +25,7 @@ FontP ResourceManager::getFont(const std::string &filepath) {
 
   if (font == fonts.end()) {
     auto temp = std::make_shared<Font>();
-    *temp = LoadFontEx((ASSETS_DIR + filepath).c_str(), 100, 0, 250);
+    *temp = LoadFontEx((ASSETS_DIR + filepath).c_str(), 200, 0, 250);
     fonts[filepath] = temp;
 
     return temp;
