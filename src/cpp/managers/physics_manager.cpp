@@ -80,7 +80,7 @@ void update(const double delta_time, GameStateP game_state) {
       if (minOverlap == topOverlap) {
         squircle.pos.y = bounds.y + bounds.height;
         squircle.vel.y =
-            abs(squircle.vel.y * physics.bounce_velocity_reduction);
+            std::abs(squircle.vel.y * physics.bounce_velocity_reduction);
 
         // If is idle, adjust height
         game_state->height +=
@@ -91,15 +91,15 @@ void update(const double delta_time, GameStateP game_state) {
 
       } else if (minOverlap == bottomOverlap) {
         squircle.pos.y = bounds.y - squircle.width;
-        squircle.vel.y = -abs(squircle.vel.y);
+        squircle.vel.y = -std::abs(squircle.vel.y);
 
       } else if (minOverlap == leftOverlap) {
         squircle.pos.x = bounds.x - squircle.width;
-        squircle.vel.x = -abs(squircle.vel.x);
+        squircle.vel.x = -std::abs(squircle.vel.x);
 
       } else if (minOverlap == rightOverlap) {
         squircle.pos.x = bounds.x + bounds.width;
-        squircle.vel.x = abs(squircle.vel.x);
+        squircle.vel.x = std::abs(squircle.vel.x);
       }
     }
 

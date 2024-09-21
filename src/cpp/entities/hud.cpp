@@ -1,5 +1,4 @@
 #include "entities/hud.hpp"
-#include "app.hpp"
 #include "raylib.h"
 #include <string>
 
@@ -16,6 +15,5 @@ void HeightDisplay::draw(float height, float max_height, int jumps) {
   std::string jumpText = "Jumps: " + std::to_string(jumps);
   Vector2 size = MeasureTextEx(*hud_font, jumpText.c_str(), 24, 0);
 
-  DrawTextEx(*hud_font, jumpText.c_str(),
-             {constants::window_width - size.x - 20, 20}, 24, 0, WHITE);
+  DrawTextEx(*hud_font, jumpText.c_str(), {20, 100}, 24, 0, WHITE);
 }
