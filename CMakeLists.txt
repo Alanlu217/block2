@@ -56,6 +56,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/cpp/entities/objects/icy_platform.cpp"
     "src/cpp/entities/objects/ghost_platform.cpp"
     "src/cpp/entities/objects/text_object.cpp"
+    "src/cpp/entities/objects/double_jump_item.cpp"
 )
 
 target_include_directories(${PROJECT_NAME}

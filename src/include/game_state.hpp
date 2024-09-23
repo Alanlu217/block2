@@ -23,6 +23,8 @@ struct GameState {
   float max_height = 0;
   int jumps_made = 0;
 
+  int double_jumps = 0;
+
   Camera2D game_camera;
 
   struct {

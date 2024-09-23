@@ -6,6 +6,7 @@
 #include "managers/input_manager.hpp"
 #include "managers/physics_manager.hpp"
 #include "managers/resource_manager.hpp"
+#include "raymath.h"
 
 #include <imgui.h>
 #include <raylib.h>
@@ -28,6 +29,8 @@ void GameView::init() {
   game_state->height = 0;
   game_state->jumps_made = 0;
 
+  game_state->double_jumps = 0;
+
   play_button = ResourceManager::getTexture("play.png");
   button_font = ResourceManager::getFont("comfortaa.ttf");
 
@@ -46,8 +49,13 @@ void GameView::update(const double deltaTime) {
   if (auto drag = dragger->update(); drag.has_value()) {
     TraceLog(LOG_INFO, "Drag at: X: %f, Y: %f", drag->x, drag->y);
     if (squircle->grounded || haxs) {
-      squircle->vel = *drag;
+      squircle->vel = Vector2Add(squircle->vel, *drag);
       game_state->jumps_made++;
+    } else if (game_state->double_jumps > 0) {
+      squircle->vel = Vector2Add(squircle->vel, *drag);
+      game_state->jumps_made++;
+
+      game_state->double_jumps--;
     }
   }
 
@@ -74,7 +82,7 @@ void GameView::displayDebug() {
   }
   ImGui::SameLine();
 
-  ImGui::Text(": %d", game_state->height_should_increase);
+  ImGui::Text(": %d", !game_state->height_should_increase);
 
   ImGui::End();
 }
@@ -101,10 +109,13 @@ void GameView::render(const double deltaTime) {
   dragger->drawArrow(*squircle);
   EndMode2D();
 
-  game_state->entities.height_display.draw(
-      game_state->height, game_state->max_height, game_state->jumps_made);
+  game_state->entities.height_display.draw(game_state);
 
-  dragger->drawCircle();
+  if (game_state->entities.squircle.grounded) {
+    dragger->drawCircle(GREEN);
+  } else {
+    dragger->drawCircle(RED);
+  }
 
   unsigned char opacity = 30;
   if (CheckCollisionPointRec(GetMousePosition(), {530, 10, 60, 60})) {

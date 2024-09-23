@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.7.0
+ - Added offset to ghost platform.
+ - Dragger can be activated by space in addition to left mouse clicks.
+ - Dragger will show green when squircle is grounded and red otherwise.
+ - Added double jump item which adds number of double jumps available.
+ - Additional jumping will cause velocity to add, not to be set.
+
 ## v1.6.1
  - Fix problem with text where it would default to be completely transparant (Color{0, 0, 0, 0}).
 

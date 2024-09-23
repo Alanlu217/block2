@@ -1,6 +1,9 @@
 #pragma once
 
 #include "managers/resource_manager.hpp"
+#include <memory>
+
+struct GameState;
 
 class HeightDisplay {
 private:
@@ -9,5 +12,5 @@ private:
 public:
   HeightDisplay();
 
-  void draw(float height, float max_height, int jumps);
+  void draw(std::shared_ptr<GameState> state);
 };

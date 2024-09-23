@@ -23,5 +23,5 @@ public:
 
   void drawArrow(const Squircle &squircle);
 
-  void drawCircle();
+  void drawCircle(Color color);
 };
