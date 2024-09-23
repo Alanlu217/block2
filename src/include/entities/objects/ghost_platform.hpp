@@ -11,10 +11,12 @@ class GhostPlatform : public Object {
 private:
   Rectangle rect;
 
+  double offset_time = 0;
   std::vector<double> on_off_times = {1, 1};
   double time_count = 0;
   int idx = 0;
   bool is_on = true;
+  bool offset_done = false;
 
 public:
   GhostPlatform(float x, float y, float width, float height);

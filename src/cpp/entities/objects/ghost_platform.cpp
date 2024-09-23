@@ -30,6 +30,7 @@ void GhostPlatform::init() {
   time_count = 0;
   idx = 0;
   is_on = true;
+  offset_done = false;
 }
 
 void GhostPlatform::draw() {
@@ -53,6 +54,13 @@ void GhostPlatform::setPosition(float x, float y) {
 
 void GhostPlatform::update(const double dt, GameStateP state) {
   time_count += dt;
+  if (!offset_done) {
+    if (time_count > offset_time) {
+      offset_done = true;
+      time_count = 0;
+    }
+    return;
+  }
 
   if (time_count > on_off_times[idx]) {
     time_count = 0;
@@ -75,6 +83,8 @@ void GhostPlatform::load(std::string_view object) {
 
   s >> x >> y >> width >> height;
 
+  s >> offset_time;
+
   int num_times;
   s >> num_times;
 
@@ -93,7 +103,8 @@ void GhostPlatform::load(std::string_view object) {
 
 std::string GhostPlatform::save() {
   std::stringstream s;
-  s << rect.x << " " << rect.y << " " << rect.width << " " << rect.height;
+  s << rect.x << " " << rect.y << " " << rect.width << " " << rect.height << " "
+    << offset_time;
 
   s << " " << on_off_times.size();
 
@@ -124,6 +135,15 @@ void GhostPlatform::showEditorOptions() {
                ImGuiWindowFlags_NoFocusOnAppearing |
                ImGuiWindowFlags_NoTitleBar;
   ImGui::Begin("Times Editor", NULL, flags);
+
+  float temp = offset_time;
+  ImGui::SetNextItemWidth(10);
+  ImGui::Text("O:");
+  ImGui::SameLine();
+  ImGui::SetNextItemWidth(60);
+  ImGui::DragFloat("##editOffset", &temp);
+  offset_time = temp;
+
   int count = 0;
   int to_del = -1;
   for (auto &i : on_off_times) {
