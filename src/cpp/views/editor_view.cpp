@@ -299,6 +299,14 @@ void EditorView::render(const double deltaTime) {
       EventManager::triggerEvent(event);
     }
     ImGui::SameLine();
+    if (ImGui::Button("Exit")) {
+      struct ChangeViewEvent event {
+        "editor", "start"
+      };
+
+      EventManager::triggerEvent(event);
+    }
+    ImGui::SameLine();
     if (ImGui::Button("Load")) {
       std::strncpy(file_name,
                    SaveManager::loadFromFile(file_name, game_state).c_str(),
