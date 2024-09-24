@@ -9,12 +9,12 @@ mkdir apps
 
 cd release
 rm -rf app_out
-ninja app
+cmake --build . --target app
 mv app_out/block.app "../apps/block-macos-amd64-v${version}.app"
 
 cd ../macosx-arm64-release
 rm -rf app_out
-ninja app
+cmake --build . --target app
 mv app_out/block.app "../apps/block-macos-arm64-v${version}.app"
 
 cd ..
