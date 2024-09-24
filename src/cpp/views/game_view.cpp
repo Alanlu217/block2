@@ -136,8 +136,9 @@ void GameView::render(const double deltaTime) {
                     static_cast<float>(play_button->height)},
                    {535, 20, 50, 40}, {0, 0}, 0, WHITE);
 
-    Rectangle exit_button_rect = {constants::window_width / 2 - 60,
-                                  constants::window_height / 2 - 30, 120, 60};
+    Rectangle exit_button_rect = {
+        static_cast<float>(constants::window_width) / 2 - 60,
+        static_cast<float>(constants::window_height) / 2 - 30, 120, 60};
     if (CheckCollisionPointRec(GetMousePosition(), exit_button_rect)) {
       DrawRectangleRec(exit_button_rect, Color{255, 255, 255, 50});
 

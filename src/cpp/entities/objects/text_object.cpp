@@ -7,6 +7,7 @@
 #include "window.hpp"
 
 #include <imgui.h>
+#include <iostream>
 #include <raylib.h>
 #include <sstream>
 #include <string_view>
@@ -51,19 +52,35 @@ void TextObject::load(std::string_view object) {
   float x, y, sz;
   s >> x >> y >> sz >> col[0] >> col[1] >> col[2] >> col[3];
 
-  std::string t;
-  s >> t;
+  std::string t = s.str();
+
+  int idx = 0;
+  for (char i : t) {
+    idx++;
+    if (i == '>') {
+      break;
+    }
+  }
+  t = t.substr(idx, t.size());
 
   pos.x = x;
   pos.y = y;
   text = t;
   size = sz;
+
+  int count = 0;
+  for (char i : text) {
+    if (count >= 100)
+      break;
+
+    editor_text[count++] = i;
+  }
 }
 
 std::string TextObject::save() {
   std::stringstream s;
   s << pos.x << " " << pos.y << " " << size << " " << col[0] << " " << col[1]
-    << " " << col[2] << " " << col[3] << " " << text;
+    << " " << col[2] << " " << col[3] << " >" << text;
 
   return s.str();
 }
