@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.7.1
+ - Add exit button to editor view.
+ - Fix bug where text objects cannot have spaces.
+
 ## v1.7.0
  - Added offset to ghost platform.
  - Dragger can be activated by space in addition to left mouse clicks.
