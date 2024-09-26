@@ -235,6 +235,16 @@ void EditorView::delete_selected_objects() {
   selected_objects = {};
 }
 
+static void HelpMarker(const char *desc) {
+  ImGui::TextDisabled("(?)");
+  if (ImGui::BeginItemTooltip()) {
+    ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+    ImGui::TextUnformatted(desc);
+    ImGui::PopTextWrapPos();
+    ImGui::EndTooltip();
+  }
+}
+
 void EditorView::render(const double deltaTime) {
 
   if (!test_starting) {
@@ -320,6 +330,18 @@ void EditorView::render(const double deltaTime) {
     ImGui::SameLine();
     // ImGui::SetNextItemWidth(180);
     ImGui::InputText("Save Name", file_name, 25);
+    ImGui::SameLine();
+
+    HelpMarker(
+        "Controls:\n"
+        "Scroll or use up / down arrow keys to move up and down. "
+        "Holding shift will increase the scrolling speed.\n"
+        "Select objects by clicking on them, or select multiple by "
+        "dragging the mouse.\n"
+        "Holding shift while selecting will add or remove from selection.\n\n"
+        "Add a new objects by pressing 'A'\n"
+        "Delete all selected objects by pressding 'D' or 'Backspace'\n"
+        "Copy objects by pressing 'C'. Then paste by pressing 'V'");
 
     if (selected_objects.size() == 1) {
       selected_objects[0]->showEditorOptions();
