@@ -18,7 +18,7 @@ add_library(
     ${imgui_SOURCE_DIR}/imgui_tables.cpp)
 target_include_directories(imgui INTERFACE ${imgui_SOURCE_DIR})
 
-add_library(rlimgui STATIC ${rlimgui_SOURCE_DIR}/rlImgui.cpp)
+add_library(rlimgui STATIC ${rlimgui_SOURCE_DIR}/rlImGui.cpp)
 target_link_libraries(rlimgui PUBLIC imgui raylib)
 target_include_directories(rlimgui INTERFACE ${rlimgui_SOURCE_DIR})
 
