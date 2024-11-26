@@ -14,6 +14,7 @@
 #include <cmath>
 #include <cstring>
 #include <imgui.h>
+#include <iostream>
 #include <memory>
 #include <raylib.h>
 #include <raymath.h>
@@ -34,6 +35,7 @@ void EditorView::init() {
   state = Idle;
   selected_objects = {};
   mouse_drag_init = {};
+  copied_object = {};
 
   for (auto &object : game_state->objects) {
     object->init();
@@ -134,7 +136,8 @@ void EditorView::update_selection() {
       mouse_drag_init = {};
     }
 
-    if (mouse_pos.x == mouse_drag_init->x && mouse_pos.y == mouse_pos.y &&
+    if (mouse_drag_init.has_value() && mouse_pos.x == mouse_drag_init->x &&
+        mouse_pos.y == mouse_pos.y &&
         state == Selecting) { // Selection is a point
       selected_objects.clear();
       state = Idle;
@@ -143,7 +146,7 @@ void EditorView::update_selection() {
       return;
     }
 
-    if (state == Selecting) {
+    if (mouse_drag_init.has_value() && state == Selecting) {
       const Rectangle selection_rect = {
           std::min(mouse_pos.x, mouse_drag_init->x),
           std::min(mouse_pos.y, mouse_drag_init->y),
@@ -178,7 +181,7 @@ void EditorView::update_selection() {
       }
     }
     mouse_drag_init = {};
-  } else if (state == Dragging) {
+  } else if (state == Dragging && mouse_drag_init.has_value()) {
     auto delta = Vector2Subtract(mouse_pos, *mouse_drag_init);
     mouse_drag_init = mouse_pos;
 
@@ -220,6 +223,7 @@ void EditorView::update_selection() {
 
     if (copied_object.has_value()) {
       objects->push_back(copyObject(copied_object->get()));
+      objects->at(objects->size() - 1)->setPosition(mouse_pos.x, mouse_pos.y);
     }
   }
 }
