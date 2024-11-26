@@ -14,7 +14,7 @@ const float air_friction_percent_decrease_per_s = 1;
 const float squircle_ground_friction_percent_decrease_per_s = 10;
 const float ground_friction_height = 10;
 const float bounce_velocity_reduction = 0.2;
-const float velocity_deadband = 0.4;
+const float velocity_deadband = 1;
 
 } // namespace squircle
 

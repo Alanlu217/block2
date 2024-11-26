@@ -8,7 +8,7 @@
 using namespace std::chrono_literals;
 
 const int target_ups = 1200;
-const int target_fps = 240;
+const int target_fps = 60;
 
 class App {
 private:

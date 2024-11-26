@@ -89,8 +89,6 @@ void update(const double delta_time, GameStateP game_state) {
               delta_time * constants::game::idle_height_increase;
         }
 
-        squircle.grounded = true;
-
       } else if (minOverlap == bottomOverlap) {
         squircle.pos.y = bounds.y - squircle.width;
         squircle.vel.y = -std::abs(squircle.vel.y);
@@ -116,6 +114,7 @@ void update(const double delta_time, GameStateP game_state) {
       squircle.vel.x = squircle.vel.x - squircle.vel.x *
                                             physics.ground_friction_reduction *
                                             delta_time;
+      squircle.grounded = true;
     }
 
     // Velocity deadbands
