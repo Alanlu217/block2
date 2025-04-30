@@ -15,7 +15,7 @@ To generate the build files run
 ```bash
 cmake . -B build
 ```
-then compile with
+Then compile with
 ```bash
 cmake --build build -j
 ```
