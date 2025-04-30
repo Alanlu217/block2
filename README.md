@@ -2,7 +2,7 @@
 
 A hard rage game written in C++.
 
-# Used Libraries
+# Required Libraries
 
  - [raylib](https://github.com/raysan5/raylib)
  - [imgui](https://github.com/ocornut/imgui)
