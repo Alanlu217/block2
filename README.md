@@ -1,6 +1,6 @@
 # Block2
 
-A simple rage game.
+A hard rage game written in C++.
 
 # Used Libraries
 
