@@ -1,0 +1,19 @@
+Platform 0 0 600 10
+DoubleJump 276 188 20
+Text 99 47 24 0 1 0.235294 1 >
+SpikyPlatform 0 1546 476 10
+SpikyPlatform 599 240 1 10000
+SpikyPlatform 0 241 1 10000
+SpikyPlatform -1 240 476 10
+SpikyPlatform 177 574 476 10
+Text 277 2117.52 24 1 1 1 1 >
+Text 264 2077.56 24 1 1 1 1 >
+Platform 257 770.136 100 10
+Text 216 991.136 24 1 1 1 1 >
+SpikyPlatform -1 1023 476 10
+SpikyPlatform 123 1319 476 10
+Platform 259 1939.11 100 10
+Text 109 114.155 24 0.176471 1 0 1 >hahah
+Text 150 977.081 24 1 1 1 1 >juuust a bit more...
+Text 247 2187.73 24 1 1 1 1 >gj
+END

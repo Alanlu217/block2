@@ -1,0 +1,17 @@
+Platform 0 0 600 10
+Platform 0 500 400 10
+Platform 500 500 100 10
+Platform 390 500 10 300
+Platform 200 900 400 10
+Platform 200 750 10 150
+Platform 200 510 10 150
+Platform 27 817.566 10 10
+Platform 143 614.566 10 10
+Platform 43 605.566 10 10
+Platform 129 777.566 10 10
+Platform 71 974.566 10 10
+Platform 135 868.566 10 10
+Platform 214 1226.57 100 10
+Platform 256 282 100 10
+SpikyPlatform 390 890 10 10
+END
